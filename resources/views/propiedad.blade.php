@@ -116,7 +116,7 @@
 									<ul class="list-no-icon">
 										<li><i class="fa fa-check"></i><b>Tipo: </b> 
 											@foreach ($types as $element)
-												<span class="label label-primary">{{ $element }}</span>
+												<span class="label label-primary">{{ $element -> name}}</span>
 											@endforeach
 										</li>
 

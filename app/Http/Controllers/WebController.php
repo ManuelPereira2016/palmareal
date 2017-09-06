@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use TeamTNT\TNTSearch\TNTSearch;
 use PalmaReal\Property;
+use PalmaReal\Locations;
 use PalmaReal\PropertyTypes;
 use PalmaReal\Admin;
 use PalmaReal\Banner;
@@ -90,9 +91,10 @@ class WebController extends Controller
         $footer = Page::FindOrFail(7);
         $media = Media::where('media.table', 'properties')->get();
         $properties_types = PropertyTypes::all();
+        $locations = Locations::all()->pluck('name')->toArray();
 
         $properties = Property::orderBy('created_at', 'desc')->paginate(12);
-        return view('inmobiliaria')->with(['properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media , 'tags' => $tags]);
+        return view('inmobiliaria')->with(['properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media , 'tags' => $tags, 'locations' => $locations]);
     }
     
     public function search(Request $request){
@@ -104,11 +106,23 @@ class WebController extends Controller
         $maps = Map::where('id', 1)->first();
         $footer = Page::FindOrFail(7);
         $media = Media::where('media.table', 'properties')->get();
+        $locations = Locations::all()->pluck('name')->toArray();
+        $bathrooms_options = "";
+        $rooms_options = "";
+        $garages_options = "";
 
         if($request->has('name')){
             $properties = Property::search($request->name)->get();
         } else {
             $properties = Property::orderBy('created_at', 'desc')->get();
+        }
+
+        if($request->has('locations')){
+            $full_text = implode(',', $request->get('locations'));
+
+            $find = Property::search($full_text)->get()->pluck('id')->toArray();
+
+            $properties = $properties->whereIn('id', $find);
         }
 
         if($request->min_price){
@@ -127,36 +141,52 @@ class WebController extends Controller
             $properties = $properties->where('size', '<', $request->max_size);            
         }
 
-        if($request->rooms){
-            if($request->rooms == '5'){
-                $symbol = '>=';
-            } else {
-                $symbol = '=';
-            }
-            $properties = $properties->where('rooms', $symbol, $request->rooms);            
+        if($request->has('rooms')){
+            $new_properties = new Collection();
+            foreach($request->get('rooms') as $val)
+            {
+                if($val == '5'){
+                    $symbol = '>=';
+                } else {
+                    $symbol = '=';
+                }
+                $new_properties = $new_properties->merge($properties->where('rooms', $symbol, (int)$val));
+            }  
+            $properties = $new_properties;
         }
 
-        if($request->bathrooms){
-            if($request->rooms == '4'){
-                $symbol = '>=';
-            } else {
-                $symbol = '=';
+        if($request->has('bathrooms')){
+            $new_properties = new Collection();
+            foreach($request->get('bathrooms') as $val)
+            {
+                if($val == '4'){
+                    $symbol = '>=';
+                } else {
+                    $symbol = '=';
+                }
+                $new_properties = $new_properties->merge($properties->where('bathrooms', $symbol, (int)$val));
             }
-            $properties = $properties->where('bathrooms', '=', $request->bathrooms);            
+
+            $properties = $new_properties;
         }
 
-        if($request->garages){
-            if($request->rooms == '4'){
-                $symbol = '>=';
-            } else {
-                $symbol = '=';
+        if($request->has('garages')){
+            $new_properties = new Collection();
+            foreach($request->get('garages') as $val)
+            {
+                if($val == '4'){
+                    $symbol = '>=';
+                } else {
+                    $symbol = '=';
+                }
+                $new_properties = $new_properties->merge($properties->where('garages', $symbol, (int)$val));
             }
-            $properties = $properties->where('garages', $symbol, $request->garages);            
+            $properties = $new_properties;
         }
 
-        if($request->property_type){
+        if($request->has('property_types')){
             $properties = $properties->filter(function($item) use ($request){
-                if (count($item->types->where('id', $request->property_type)->all())){
+                if (count($item->types->whereIn('id', $request->property_types)->all())){
                     return True;
                 }
             });
@@ -168,7 +198,74 @@ class WebController extends Controller
             flash('Se han encontrado '. count($properties) .' resultados', 'info');
         }
 
-        return view('inmobiliaria')->with(['properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media, 'tags' => $tags]);
+        // Look for the selected filters
+        for($i=1; $i <= 4; $i++){
+            $selected = "";
+            if($i==1){
+                $msg = "1 baño";
+            } elseif ($i==4) {
+                $msg = "Mas de 4 Baños";
+            } else {
+                $msg = $i . " Baños";
+            }
+
+            if($request->has('bathrooms')){
+                if(in_array($i, $request['bathrooms'])){
+                    $selected = 'checked="checked"';
+                }
+            }     
+
+            $bathrooms_options .= "<div class='checkbox'><label class='text-capitalize'><input name='bathrooms[]' " . $selected . " type='checkbox' value='" . $i . "' />" . 
+                $msg . "</label></div>";
+        }
+
+        for($i=1; $i <= 4; $i++){
+            $selected = "";
+            if($i==1){
+                $msg = "1 Garage";
+            } elseif ($i==4) {
+                $msg = "Mas de 4 Garages";
+            } else {
+                $msg = $i . " Garages";
+            }
+
+            if($request->has('garages')){
+                if(in_array($i, $request['garages'])){
+                    $selected = 'checked="checked"';
+                }
+            }
+
+            $garages_options .= '
+                <div class="checkbox"><label class="text-capitalize">
+                <input name="garages[]" ' . 
+                $selected . ' type="checkbox" value="' . $i . '" />' . 
+                $msg . '</label></div>';
+        }
+
+        for($i=1; $i <= 5; $i++){
+            $selected = "";
+            if($i==1){
+                $msg = "1 Habitación";
+            } elseif ($i==5) {
+                $msg = "Mas de 5 Habitaciones";
+            } else {
+                $msg = $i . " Habitaciones";
+            }
+
+            if($request->has('rooms')){
+                if(in_array($i, $request['rooms'])){
+                    $selected = 'checked="checked"';
+                }
+            }
+
+            $rooms_options .= '
+                <div class="checkbox"><label class="text-capitalize">
+                <input name="rooms[]" ' . 
+                $selected . ' type="checkbox" value="' . $i . '" />' . 
+                $msg . '</label></div>';
+        }
+
+        return view('inmobiliaria')->with(['bathrooms_options' => $bathrooms_options, 'rooms_options' => $rooms_options, 'garages_options' => $garages_options, 'request' => $request->toArray(), 'properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media, 'tags' => $tags, 'locations' => $locations]);
     }
      /**
      * Show the application dashboard.
@@ -188,7 +285,7 @@ class WebController extends Controller
             // $admin = Admin::FindOrFail($property -> admin);
             $proximities = explode(',', $property -> proximities);
             $characteristics = explode(',', $property -> characteristics);
-            $types = explode(',', $property -> type);
+            $types = $property -> types;
             return view('propiedad')->with(['property' => $property, 'proximities' => $proximities, 'characteristics' => $characteristics,  'images' => $images, 'types' => $types, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps]);
         } else {
             flash('La prpiedad no existe', 'danger');

@@ -41,7 +41,7 @@ class PropertyController extends Controller
     {
         $property = Property::FindOrFail($id);
         $modality = explode(',', $property -> modality);
-        $p_types = explode(',', $property -> PropertyTypes);
+        $p_types = $property->types->pluck('id')->toArray();
         $p_tas = explode(',', $property -> tags);
         $types = PropertyTypes::all();
         $tags = Tag::all();
@@ -158,7 +158,7 @@ class PropertyController extends Controller
         $proximities = explode(',', $property -> proximities);
         $characteristics = explode(',', $property -> characteristics);
         $modalities = explode(',', $property -> modality);
-        $types = explode(',', $property -> types);
+        $types = $property->types;
         $tags = explode(',', $property -> tags);
 
         return view('admin.propiedades.show')
@@ -182,15 +182,35 @@ class PropertyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try{  
-            
-            $type = implode(',', $request -> type);
+        try{            
+            if($request->has('tags')){
+                $tags = implode(',', $request -> tags );
+            } else {
+                $tags = '';
+            }
+
             $modality = implode(',', $request -> modality);
-            $tags = implode(',', $request -> tags);
-            $request -> merge(['modality' => $modality, 'type' => $type, 'tags' => $tags]);
-          
-            Property::FindOrFail($id)->
-            update($request -> all()); 
+            $request -> merge(['modality' => $modality, 'tags' => $tags]);
+            $types = array();
+
+            // your arrays can be done like this
+            foreach($request->get('type') as $val)
+            {
+                array_push($types, $val);
+            }
+
+            // Delete previous property types
+            PropertiesTypesRelations::where('property_id', $id) -> delete();
+
+            foreach( $types as $type){
+                $relation = new PropertiesTypesRelations;
+                $relation->property_id = $id;
+                $relation->properties_type_id = (int)$type;
+
+                $relation->save();
+            }
+
+            Property::FindOrFail($id)->  update($request -> all()); 
 
             Historical::insert([
                 'transaction' => 2, 
@@ -226,6 +246,7 @@ class PropertyController extends Controller
                 }
             } 
             
+            PropertiesTypesRelations::where('property_id', $id) -> delete();
             Media::where('item', $id) -> delete();
             Property::FindOrFail($id) -> delete();
             Historical::insert([

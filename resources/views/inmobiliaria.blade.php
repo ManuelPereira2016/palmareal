@@ -28,7 +28,7 @@
                             @include('flash::message')      
                         </div>
                         <div class="form-group">
-                            <input id="name" name="name" type="text" class="form-control" placeholder="Indique una o mas palabras claves" >
+                            <input id="name" name="name" type="text" class="form-control" placeholder="Indique una o mas palabras claves" value="@if(isset($request)){{$request['name']}}@endif" >
                         </div>
                        {{--  <div class="form-group">
                            <div class="row">
@@ -47,10 +47,10 @@
                             <h4>Precio</h4>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input id="min-price" name="min_price" type="number" class="form-control" placeholder="Minimo" >
+                                    <input id="min-price" name="min_price" type="number" class="form-control" value="@if(isset($request)){{$request['min_price']}}@endif" placeholder="Minimo" >
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="max-price" name="max_price" type="number" class="form-control" placeholder="Maximo" >
+                                    <input id="max-price" name="max_price" type="number" class="form-control" value="@if(isset($request)){{$request['max_price']}}@endif" placeholder="Maximo" >
                                 </div>
                             </div>
                         </div>
@@ -58,52 +58,102 @@
                             <h4>Tamaño de la Propiedad</h4>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input id="min-size" name="min_size" type="number" class="form-control" placeholder="Min m²" >
+                                    <input id="min-size" name="min_size" type="number" class="form-control" value="min_size" placeholder="Min m²" >
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="max-size" name="max_size" type="number" class="form-control" placeholder="Max m²" >
+                                    <input id="max-size" name="max_size" type="number" class="form-control" value="@if(isset($request)){{$request['max_size']}}@endif" placeholder="Max m²" >
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <h4>Tipos de Propiedad</h4>
-                                    <select class="form-control" name="property_type" style="width: 100%;">
-                                        <option></option>
-                                        @foreach ($properties_types as $type)
-                                            <option value="{{$type -> id}}">{{$type->name}}</option>
-                                        @endforeach
-                                    </select>
+                                @foreach ($properties_types as $type)
+                                    <div class="checkbox">
+                                        <label class="text-capitalize"><input name="property_types[]" type="checkbox" 
+                                        @if (isset($request)) 
+                                            @if (isset($request["property_types"]))
+                                            @if (in_array($type->id, $request["property_types"])) checked="checked" 
+                                            @endif
+                                            @endif
+                                        @endif
+                                         value="{{$type->id}}" />{{$type->name}}</label>
+                                    </div>
+                                @endforeach
                         </div>
                         <div class="form-group">
                             <h4>Baños</h4>
-                            <select class="form-control" name="bathrooms" style="width: 100%;">
-                                <option selected disabled value=''></option>
-                                <option value="1">1 Baño</option>
-                                <option value="2">2 Baños</option>
-                                <option value="3">3 Baños</option>
-                                <option value="4">Mas de 4 Baños</option>
-                            </select>
+                                @if (isset($request))
+                                {!! $bathrooms_options !!}
+                                @else
+                                <div class="checkbox">
+                                    <label ><input name="bathrooms[]" type="checkbox" value="1" />1 Baño</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label ><input name="bathrooms[]" type="checkbox" value="2" />2 Baños</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label ><input name="bathrooms[]" type="checkbox" value="3" />3 Baños</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label ><input name="bathrooms[]" type="checkbox" value="4" />Mas de 4 Baños</label>
+                                </div>
+                                @endif
                         </div>
                         <div class="form-group">
                             <h4>Habitaciones</h4>
-                            <select class="form-control" name="rooms" style="width: 100%;">
-                                <option selected disabled value=''></option>
-                                <option value="1">1 Habitación</option>
-                                <option value="2">2 Habitaciones</option>
-                                <option value="3">3 Habitaciones</option>
-                                <option value="4">4 Habitaciones</option>
-                                <option value="5">Mas de 5 Habitaciones</option>
-                            </select>
+                                @if (isset($request))
+                                {!! $rooms_options !!}
+                                @else
+                                <div class="checkbox">
+                                    <label><input name="rooms[]" type="checkbox" value="1" />1 Habitación</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input name="rooms[]" type="checkbox" value="2" />2 Habitaciones</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input name="rooms[]" type="checkbox" value="3" />3 Habitaciones</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input name="rooms[]" type="checkbox" value="4" />4 Habitaciones</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input name="rooms[]" type="checkbox" value="5" />Más de 5 Habitaciones</label>
+                                </div>  
+                                @endif 
                         </div>
                         <div class="form-group">
                             <h4>Garages</h4>
-                            <select class="form-control" name="garages" style="width: 100%;">
-                                <option selected disabled value=''></option>
-                                <option value="1">1 Garage</option>
-                                <option value="2">2 Garages</option>
-                                <option value="3">3 Garages</option>
-                                <option value="4">Mas de 4 Garages</option>
-                            </select>
+                                @if (isset($request))
+                                {!! $garages_options !!}
+                                @else
+                                <div class="checkbox">
+                                    <label><input name="garages[]" type="checkbox" value="1" />1 Garage</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input name="garages[]" type="checkbox" value="2" />2 Garages</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input name="garages[]" type="checkbox" value="3" />3 Garages</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input name="garages[]" type="checkbox" value="4" />Más de 4 Garages</label>
+                                </div>
+                                @endif                      
+                        </div>
+                        <div class="form-group">
+                            <h4>Ubicación</h4>
+                            @foreach ($locations as $element)
+                                <div class="checkbox">
+                                    <label class="text-capitalize"><input name="locations[]" type="checkbox"
+                                    @if (isset($request)) 
+                                        @if (isset($request["locations"])) 
+                                        @if (in_array($element, $request["locations"])) checked="checked" 
+                                        @endif
+                                        @endif
+                                    @endif
+                                     value="{{ $element }}" />{{ $element }}</label>
+                                </div>
+                            @endforeach
                         </div>
                     </form>                
             </div>

@@ -60,7 +60,7 @@
 						    	<p><b>Tipo</b></p>
 				              	<p>
 				              	@foreach ($types as $element)
-				              		<span class="label label-primary text-capitalize">{{ $element }}</span>
+				              		<span class="label label-primary text-capitalize">{{ $element -> name}}</span>
 				              	@endforeach
 				              	</p>
 			              	</div>

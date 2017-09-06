@@ -95,7 +95,7 @@
                         @foreach ($types as $element)
                             <div class="checkbox">
                                 <label>
-                                    <input class="type" type="checkbox" name="type[]" value="{{ $element -> name }}" @if (in_array($element -> name, $p_types)) checked="checked" @endif> {{ $element -> name }}
+                                    <input class="type" type="checkbox" name="type[]" value="{{ $element -> id }}" @if (in_array($element -> id, $p_types)) checked="checked" @endif> {{ $element -> name }}
                                 </label>
                             </div>
                         @endforeach

@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use PalmaReal\Historical;
 use PalmaReal\Admin;
-// use PalmaReal\Historical;
 
 class PerfilController extends Controller
 {
