@@ -1,0 +1,383 @@
+
+@charset "UTF-8";
+@import 'http://fonts.googleapis.com/css?family=Open+Sans:600,400';
+/*!
+ * Style CSS V1.1 (http://palmareal.com)
+ * Copyright 2017 Palma Real.
+ * Autor: Christian Aguilar (aguilarwebs.com.ve)
+ */
+
+ @font-face{
+	font-family: 'PeaceSansWebfont';
+	src:url('../fonts/PeaceSansWebfont.ttf');
+}
+
+body{
+	background-image: url('../imgs/pattern.gif');
+	background-position: left top;
+	background-repeat: repeat;
+}
+main{
+	padding-top:20px;
+	padding-bottom: 20px;
+}
+.btn.btn-second{
+	border: solid 1px #29B554;
+	color: #29B554;
+	background-color: transparent;
+	border-radius: 5px;
+	transition: all 0.3s linear;
+}
+.btn.btn-second:hover{
+	color: #FFF;
+	background-color: #29B554;
+	transition: all 0.3s linear;
+
+}
+
+.form-stand input, .form-stand textarea{
+	border:solid 1px #003065;
+	background-color: transparent;
+	color: #00313F;
+	padding: 20px 10px;
+	margin: 10px auto;
+	border-radius: 0;
+}
+.form-stand button, button.hvr-sweep-to-right{
+	cursor: pointer;
+	background-color: transparent;
+	text-decoration: none;
+	padding: 10px 20px;
+	color: #00313F !important;
+	border:solid 1px #003065;
+	border-radius: 0;
+}
+
+/***********************
+		wrapper
+***********************/
+
+#wrapper-page{
+	display: block;
+	position: relative;
+	width: 100%;
+	max-width: 1300px;
+	margin: auto;
+	box-shadow: 0px 0px 25px #666;
+	background-color: #FFF;
+}
+
+
+/***********************
+		Tags global
+***********************/
+.content-header{
+	padding: 20px;
+	text-align: center;
+}
+.content-body img{
+	display: block;
+	margin: 20px auto;
+	width: 400px;
+	height: auto;
+	max-width: 90% !important;
+}
+h2{
+	font-family: 'PeaceSansWebfont';
+	font-size: 21pt;
+	font-weight: 100;
+	color: #023064;
+}
+h2:after{
+	content:"";
+	padding-left:15px;
+	letter-spacing:-1px; 
+	border-bottom: 3px solid #20B24D; 
+	display: block; 
+	width: 70%; 
+	margin: 25px auto;}
+small.subtitle{
+	font-size: 12pt;
+	color: #20B24D;
+}
+main p{
+	font-family: 'Open Sans';
+	font-size: 12pt;
+	line-height: 18pt;
+	color: #757575;
+
+}
+/***********************
+		Data top page
+***********************/
+
+.dt-top-page{
+	padding: 5px;
+	border-bottom: solid 1px #e1e1e1;
+}
+.dt-top-page .data-page{
+	margin-top: 5px;
+	color: #999;
+	font-size: 9pt;	
+}
+.dt-top-page .data-page i{
+	font-size: 9pt;
+	margin-right: 5pt;
+	text-align: center;
+
+}
+.dt-top-page .social-links{
+	list-style:none;
+	padding: 0;
+	margin:0;
+}
+.dt-top-page .social-links li{
+	display: inline-block;
+	margin-right: 10px;
+}
+.dt-top-page .social-links li a{
+	display: block;
+	color: #999;
+	line-height: 25px;
+	text-align: center;
+	font-size: 12pt;
+}
+
+/***********************
+		Banner
+***********************/
+.banner{
+	display: block;
+	width: 100%;
+}
+.banner img{
+	display: block;
+	width: 100%;
+}
+
+/***********************
+		Navbar
+***********************/
+.navbar{
+	margin-bottom: 0;
+}
+.navbar.nav-page {
+    background-color: #FFF;
+}
+.navbar-brand {
+	height: auto;
+}
+.navbar-brand img{
+	display: block;
+	height: auto;
+	width: 300px;
+}
+.navbar-nav{
+	margin-top: 15px;
+}
+.navbar-nav > li > a, .navbar-nav > li > span{
+	color: #003164;
+	text-transform: uppercase;
+	font-size: 9pt;
+	font-weight: 100;
+}
+ .navbar-nav > li > span{
+ 	display: inline-block;
+ 	line-height: 20px;    
+ 	padding:15px 10px;
+ }
+.navbar-nav > li:hover > a, .navbar-nav > li > a:hover,.navbar-nav > li > a:active, .navbar-nav > li > a:focus, .navbar-nav > li > a.active, .navbar-nav > li > a.open,  .navbar-nav > li > span:hover,  .navbar-nav > li > span.active {
+	background-color: #023064;
+	color: #FFF;
+}
+.navbar-nav > li:hover .dropdown-menu{
+	display: block;
+}
+.dropdown-menu > li > a:hover {
+	background-color: #023064;
+	color: #FFF;
+}
+@media (min-width: 1000px){	
+	.navbar-brand img{
+		width: 400px;
+	}
+}
+
+@media (max-width: 900px) {
+	.navbar-brand img{
+		width: 400px;
+	}
+  	.navbar-header {
+      	float: none;
+  	}
+  	.navbar-left,.navbar-right {
+      float: none !important;
+  	}
+  	.navbar-toggle {
+  		margin-top: 20px;
+      	display: block;
+        border-color: #ddd;
+  	}
+  	.navbar-toggle .icon-bar {
+	    background-color: #888;
+	}
+
+	.navbar-toggle .icon-bar {
+	    display: block;
+	    width: 22px;
+	    height: 2px;
+	    border-radius: 1px;
+	}
+  	.navbar-collapse {
+      	border-top: 1px solid transparent;
+      	box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+  	}
+  	.navbar-fixed-top {
+      	top: 0;
+      	border-width: 0 0 1px;
+  	}
+ 	.navbar-nav {
+      	float: none!important;
+      	margin-top: 7.5px;
+  	}
+  	.navbar-nav>li {
+      	float: none;
+  	}
+  	.navbar-nav>li>a {
+      	padding-top: 10px;
+      	padding-bottom: 10px;
+  	}
+  	.navbar > 
+  	.collapse.in{
+      	display:block !important;
+  	}
+}
+/***********************
+		Carousel
+***********************/
+
+.carousel-inner .item img{
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+	border-top: 3px solid #20B24D; 
+}
+/***********************
+		Google Map Plugin
+***********************/
+#wrap-map{
+	width: 100%;
+	border-bottom: 3px solid #20B24D; 
+}
+ #map {
+   width: 100%;
+   height: 400px;
+   background-color: grey;
+ }
+/***********************
+		Footer
+***********************/
+#footer-wrap{
+	padding: 20px 0;
+	background-color: #FFF;
+	color: #FFF;
+}
+footer h4{
+	color: #003164;
+	font-size: 18pt;
+	padding-bottom: 10px;
+	border-bottom: solid 1px #E1E1E1;
+}
+footer p{
+	color: #747474;
+	line-height: 18pt;
+}
+footer .ft-sec-pag{
+	padding: 20px 50px !important;
+}
+.menu-footer{
+	padding-left: 0;
+}
+.menu-footer li{
+	font-size: 11pt;
+	padding-bottom: 3px;
+}
+.menu-footer li a{
+	color: #747474;
+}
+#fb-inner {
+	display: block;
+	position: relative;
+	width: 90%;
+	text-align: center;
+	margin: auto;
+	overflow: hidden;
+}
+
+#copyright{
+	display: block;
+	clear: both;
+	width: 100%;
+	background-color: #003164;
+	color: #FFF;
+	padding: 25px;
+}
+
+
+
+/***********************
+		Inicio
+***********************/
+.thumbnail{
+	padding: 0;
+	border-radius: 5px;
+	overflow: hidden;
+	transition: all 0.3s linear;
+}
+.thumbnail:hover{
+	transform: scale(1.02);
+	transition: all 0.3s linear;
+}
+.thumbnail .caption{
+	padding: 15px;
+}
+.thumbnail .caption h3{
+	font-size: 16pt;
+}
+.thumbnail .caption p{
+	font-size: 10pt;
+}
+.thumbnail .caption .price{
+	font-size: 10pt; 
+	font-weight: 800;
+	color: #20B24D;
+}
+.form-search{
+	background-color: #003164;
+	border: solid 1px #003164;
+	border-radius: 5px;
+	padding: 10px;
+
+}
+.form-style .form-control{
+	border: 1px solid #003164;
+	border-radius: 3px;
+	background-color: #FFF;
+	box-shadow: none; 
+	color: #003164;
+	padding: 3px 10px;
+}
+.form-style .label-control{
+	font-family:'PeaceSansWebfont';
+	font-weight: 100;
+	color: #FFF;
+}
+
+.card {
+  min-height: 430px;
+}
+
+.card img {
+  height: 140px;
+  width: 100%;
+}
