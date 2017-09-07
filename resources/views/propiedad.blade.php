@@ -35,7 +35,8 @@
 	@include('flash::message')	
 	<article class="container">
 	  	<header class="header-article">
-		  	<h2 class="title-article text-center">{{ $property -> name }}</h2>
+            <a href="{{ url('inmobiliaria')}}" class="btn btn-success" style="float:left;">Volver</a>
+		  	<h2 class="title-article text-center"><span style="margin-left: -70px;">{{ $property -> name }}</span></h2>
 	  	</header>	
 	  	<section id="property" class="body-article">
 	  		<div class="row">

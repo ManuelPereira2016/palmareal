@@ -2,7 +2,7 @@
 
 @section('title', $page -> title)
 @section('content')
-    <article class="container">
+    <article id="home" class="container">
         <section>
             <header class="content-header">
                 <h2 class="text-capitalize">{{ $page -> title }}</h2>
@@ -20,7 +20,7 @@
             <div class="row">
                 @foreach ($properties as $element)
                     <div class="col-sm-6 col-md-3">
-                            <div class="thumbnail">
+                            <div class="thumbnail card">
                                 @if(array_key_exists($element -> id, $item = array_column($media->toArray(), 'url', 'item')))
                                     <img src="{{ Storage::disk('properties')->url($item[$element -> id]) }}" alt="Imagen de propiedad">
                                 @else

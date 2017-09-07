@@ -69,6 +69,7 @@
         <script type="text/javascript" src="{{ asset('vendors/bootstrap/js/bootstrap.min.js') }}?v=3.3.7"></script>
         <!-- Scripts -->
         <script type="text/javascript" src="{{ asset('vendors/owlcarousel/owl.carousel.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
         <script>
             $(document).ready(function() {
      
