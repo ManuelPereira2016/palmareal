@@ -69,7 +69,7 @@
         <script type="text/javascript" src="{{ asset('vendors/owlcarousel/owl.carousel.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/functions.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
-        @if (Request::path() != 'propiedad')
+        @if (strpos(Request::path(), 'propiedad') === false)
         <!-- Google Maps Plugin -->
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9KS1GeaKAQk7LCDqAJclffYKE_izcBFk&callback=initMap"></script>
         @else

@@ -1,4 +1,4 @@
-@if (Request::path() != 'propiedad')
+@if (strpos(Request::path(), 'propiedad') === false)
 <div id="wrap-map">
     <header class="content-header">
         <h2>Google Maps</h2>
