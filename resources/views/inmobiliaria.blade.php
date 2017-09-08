@@ -15,20 +15,19 @@
             </div>
         </section>
         <div class="row">
-            <div class="col-md-12 content-header">
+            <div class="col-md-12 content-header" id="properties-page">
                 <h2>Ultimas Propiedades</h2>
                 <small class="subtitle">Mire las ultimas propiedades cargadas</small>
             </div>
             <div class="col-md-3" style="background-color: #e1e1e1; "> 
-                          
-                    <form action="{{ route('search') }}" method="post">
+                    <form id="form">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <h3>Busqueda</h3>
-                            @include('flash::message')      
+                            <div class="alert" id="message" style="display: none;"></div>     
                         </div>
                         <div class="form-group">
-                            <input id="name" name="name" type="text" class="form-control" placeholder="Indique una o mas palabras claves" value="@if(isset($request)){{$request['name']}}@endif" >
+                            <input id="name" name="name" type="text" class="form-control" placeholder="Indique una o mas palabras claves" value="" >
                         </div>
                        {{--  <div class="form-group">
                            <div class="row">
@@ -47,10 +46,10 @@
                             <h4>Precio</h4>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input id="min-price" name="min_price" type="number" class="form-control" value="@if(isset($request)){{$request['min_price']}}@endif" placeholder="Minimo" >
+                                    <input id="min-price" name="min_price" type="number" class="form-control" value="" placeholder="Minimo" >
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="max-price" name="max_price" type="number" class="form-control" value="@if(isset($request)){{$request['max_price']}}@endif" placeholder="Maximo" >
+                                    <input id="max-price" name="max_price" type="number" class="form-control" value="" placeholder="Maximo" >
                                 </div>
                             </div>
                         </div>
@@ -61,7 +60,7 @@
                                     <input id="min-size" name="min_size" type="number" class="form-control" value="min_size" placeholder="Min m²" >
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="max-size" name="max_size" type="number" class="form-control" value="@if(isset($request)){{$request['max_size']}}@endif" placeholder="Max m²" >
+                                    <input id="max-size" name="max_size" type="number" class="form-control" value="" placeholder="Max m²" >
                                 </div>
                             </div>
                         </div>
@@ -70,21 +69,12 @@
                                 @foreach ($properties_types as $type)
                                     <div class="checkbox">
                                         <label class="text-capitalize"><input name="property_types[]" type="checkbox" 
-                                        @if (isset($request)) 
-                                            @if (isset($request["property_types"]))
-                                            @if (in_array($type->id, $request["property_types"])) checked="checked" 
-                                            @endif
-                                            @endif
-                                        @endif
                                          value="{{$type->id}}" />{{$type->name}}</label>
                                     </div>
                                 @endforeach
                         </div>
                         <div class="form-group">
                             <h4>Baños</h4>
-                                @if (isset($request))
-                                {!! $bathrooms_options !!}
-                                @else
                                 <div class="checkbox">
                                     <label ><input name="bathrooms[]" type="checkbox" value="1" />1 Baño</label>
                                 </div>
@@ -97,13 +87,9 @@
                                 <div class="checkbox">
                                     <label ><input name="bathrooms[]" type="checkbox" value="4" />Mas de 4 Baños</label>
                                 </div>
-                                @endif
                         </div>
                         <div class="form-group">
                             <h4>Habitaciones</h4>
-                                @if (isset($request))
-                                {!! $rooms_options !!}
-                                @else
                                 <div class="checkbox">
                                     <label><input name="rooms[]" type="checkbox" value="1" />1 Habitación</label>
                                 </div>
@@ -119,13 +105,9 @@
                                 <div class="checkbox">
                                     <label><input name="rooms[]" type="checkbox" value="5" />Más de 5 Habitaciones</label>
                                 </div>  
-                                @endif 
                         </div>
                         <div class="form-group">
                             <h4>Garages</h4>
-                                @if (isset($request))
-                                {!! $garages_options !!}
-                                @else
                                 <div class="checkbox">
                                     <label><input name="garages[]" type="checkbox" value="1" />1 Garage</label>
                                 </div>
@@ -137,20 +119,13 @@
                                 </div>
                                 <div class="checkbox">
                                     <label><input name="garages[]" type="checkbox" value="4" />Más de 4 Garages</label>
-                                </div>
-                                @endif                      
+                                </div>               
                         </div>
                         <div class="form-group">
                             <h4>Ubicación</h4>
                             @foreach ($locations as $element)
                                 <div class="checkbox">
-                                    <label class="text-capitalize"><input name="locations[]" type="checkbox"
-                                    @if (isset($request)) 
-                                        @if (isset($request["locations"])) 
-                                        @if (in_array($element, $request["locations"])) checked="checked" 
-                                        @endif
-                                        @endif
-                                    @endif
+                                    <label class="text-capitalize"><input name="locations[]" type="checkbox" 
                                      value="{{ $element }}" />{{ $element }}</label>
                                 </div>
                             @endforeach
@@ -158,26 +133,27 @@
                     </form>                
             </div>
             <div class="col-md-9">
+                <div id="properties-container">
                 @php($i=1)
                 <div class="row">
                     @foreach ($properties as $element)
                         <div class="col-sm-6 col-md-4">
                             <div class="thumbnail card">
-                                @if(array_key_exists($element -> id, $item = array_column($media->toArray(), 'url', 'item')))
-                                    <img src="{{ Storage::disk('properties')->url($item[$element -> id]) }}" alt="Imagen de propiedad">
+                                @if(count($element["images"]))
+                                    <img src="{{ Storage::disk('properties')->url($element['images'][0]) }}" alt="Imagen de propiedad">
                                 @else
                                     <img src="{{ Storage::disk('images')->url('propiety-default.jpg') }}" alt="Imagen de propiedad">
                                 @endif
                                 <div class="caption">
-                                    <h3 style="height: 45px; overflow: hidden">{{ $element -> name }}</h3>
-                                    <div class="price">@if ($element -> price > 0) $  {{ $element -> price }} @endif </div>
-                                    @if (!empty($element -> types))
-                                        @foreach (($element -> types) as $value)
-                                            <div class="label label-default">{{ $value -> name }}</div>
-                                        @endforeach                          
+                                    <h3 style="height: 45px; overflow: hidden">{{ $element["name"] }}</h3>
+                                    <div class="price">@if ($element["price"] > 0) $  {{ $element["price"] }} @endif </div>
+                                    @if (!empty($element["types"]))
+                                        @foreach (($element["types"]) as $value)
+                                            <div class="label label-default">{{ $value["name"] }}</div>
+                                        @endforeach 
                                     @endif
-                                    <p class="text-justify">{{ substr($element -> description, 0, 100) }}</p>
-                                   <a href="{{ action('WebController@propiedad', $element -> id ) }}" class="btn btn-second" role="button">Ver más</a>
+                                    <p class="text-justify break-words">{{ substr($element["description"], 0, 100) }}</p>
+                                   <a href="{{ action('WebController@propiedad', $element['id'] ) }}" class="btn btn-second" role="button">Ver más</a>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +165,11 @@
                     @endforeach
                 </div>
                 {{ $properties -> links() }}
+                </div>
             </div>
         </div>
 	</article>
+@endsection
+@section('scripts')
+<script type="text/javascript">new searchPage()</script>
 @endsection

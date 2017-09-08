@@ -61,18 +61,30 @@
                 });
             }
         </script>
-        <!-- Google Maps Plugin -->
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9KS1GeaKAQk7LCDqAJclffYKE_izcBFk&callback=initMap"></script>
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script type="text/javascript" src="{{ asset('vendors/jquery.min.js') }}"></script>
         <!-- Scripts -->
         <script type="text/javascript" src="{{ asset('vendors/bootstrap/js/bootstrap.min.js') }}?v=3.3.7"></script>
         <!-- Scripts -->
         <script type="text/javascript" src="{{ asset('vendors/owlcarousel/owl.carousel.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/functions.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+        @if (Request::path() != 'propiedad')
+        <!-- Google Maps Plugin -->
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9KS1GeaKAQk7LCDqAJclffYKE_izcBFk&callback=initMap"></script>
+        @else
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9KS1GeaKAQk7LCDqAJclffYKE_izcBFk"></script>
+        <script type="text/javascript" src="{{ asset('js/locationpicker.jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/maps.js') }}"></script>
+        @endif
         <script>
             $(document).ready(function() {
-     
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
                 $("#owl-demo").owlCarousel({
                  
                     navigation : true, // Show next and prev buttons

@@ -62,6 +62,7 @@
 	</div>
 	<!-- ./wrapper -->
 	@yield('modals')
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9KS1GeaKAQk7LCDqAJclffYKE_izcBFk&libraries=places"></script>
 <!-- jQuery 2.2.3 -->
 <script src="{{ asset('adminlte/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -72,6 +73,9 @@
 <script src="{{ asset('adminlte/dist/js/app.min.js') }}"></script>
 <!-- SlimScroll 1.3.0 -->
 <script src="{{ asset('adminlte/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/locationpicker.jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/functions.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/maps.js') }}"></script>
 @yield('scripts')
 </body>
 </html>

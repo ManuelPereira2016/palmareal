@@ -13,6 +13,7 @@ use PalmaReal\Media;
 use PalmaReal\Message;
 use PalmaReal\Historical;
 use PalmaReal\PropertyTypes;
+use PalmaReal\GoogleMapsLocations;
 use PalmaReal\PropertiesTypesRelations;
 use PalmaReal\Tag;
 
@@ -73,8 +74,8 @@ class PropertyController extends Controller
             if (!empty($request -> file('image'))) {
                 $formats = ['jpg', 'jpeg', 'png', 'svg'];
                 foreach ($request -> file('image') as $element) {
-                    if (in_array($element->getClientOriginalExtension(), $formats) && $element->getClientSize()>2000000) {
-                        flash('Una o varias imagenes superan los 2MB de tamaño', 'danger');
+                    if (in_array($element->getClientOriginalExtension(), $formats) ) {
+                        flash('Una o varias imagenes tienen una extension invalida!', 'danger');
                         return back();
                         exit(0);
                     }
@@ -110,6 +111,19 @@ class PropertyController extends Controller
                     $relation->properties_type_id = (int)$type;
 
                     $relation->save();
+                }
+
+                if($request->has('maps_location')){
+                    $config = json_decode($request->maps_location);
+
+                    $location = new GoogleMapsLocations;
+                    $location->property_id = $idProperty;
+                    $location->address = $config->address;
+                    $location->longitude = $config->longitude;
+                    $location->latitude = $config->latitude;
+                    $location->ratio = $config->ratio;
+
+                    $location->save();
                 }
                 
                 foreach ($image as $element) {

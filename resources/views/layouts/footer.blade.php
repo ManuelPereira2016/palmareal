@@ -1,3 +1,4 @@
+@if (Request::path() != 'propiedad')
 <div id="wrap-map">
     <header class="content-header">
         <h2>Google Maps</h2>
@@ -5,6 +6,7 @@
     </header>
     <div id="map"></div>
 </div>
+@endif
 <div class="container" id="footer-wrap">
 	<div class="row">
 		<div class="col-md-4 ft-sec-pag">

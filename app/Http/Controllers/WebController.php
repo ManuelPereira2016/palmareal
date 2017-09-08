@@ -12,6 +12,7 @@ use TeamTNT\TNTSearch\TNTSearch;
 use PalmaReal\Property;
 use PalmaReal\Locations;
 use PalmaReal\PropertyTypes;
+use PalmaReal\GoogleMapsLocations;
 use PalmaReal\Admin;
 use PalmaReal\Banner;
 use PalmaReal\Media;
@@ -49,18 +50,43 @@ class WebController extends Controller
      * @param  int $perPage number of pages
      * @return Illuminate\Pagination\LengthAwarePaginator    new LengthAwarePaginator instance 
      */
-    public function paginate($items, $perPage)
+    public function paginate($items, $perPage, $request)
     {
         if(is_array($items)){
             $items = collect($items);
         }
 
+        if($request->has('page')){
+            $page = $request->page;
+        } else {
+            $page = 1;
+        }
+        
+        $offset = ($page * $perPage) - $perPage;
+        $itemsForCurrentPage = array_slice($items->toArray(), $offset, $perPage, true);
+        
+        $final_items = collect();
+        foreach ($itemsForCurrentPage as $key => $value) {
+            $final_items[] = $value;
+        }
+ 
         return new LengthAwarePaginator(
-            $items->forPage(Paginator::resolveCurrentPage() , $perPage),
-            $items->count(), $perPage,
-            Paginator::resolveCurrentPage(),
+            $final_items,
+            $items->count(),
+            $perPage,
+            $page,
             ['path' =>Paginator::resolveCurrentPath()]
         );
+    }
+
+    public function makeArrayFromObject($obj){
+        $collection = collect();
+
+        $obj->each(function($item) use ($collection) {
+            $collection[] = $item;
+        });
+
+        return $collection;
     }
 
     /**
@@ -82,7 +108,7 @@ class WebController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function inmobiliaria()
+    public function inmobiliaria(Request $request)
     {
         $tags = Tag::all();
         $banners = Banner::where('page', 3)->get();
@@ -93,7 +119,16 @@ class WebController extends Controller
         $properties_types = PropertyTypes::all();
         $locations = Locations::all()->pluck('name')->toArray();
 
-        $properties = Property::orderBy('created_at', 'desc')->paginate(12);
+        $properties = Property::orderBy('created_at', 'desc')->get();
+
+        $properties = $properties->map(function($prop) use ($media){
+            $prop_images = $media->whereIn('item', $prop->id)->pluck('url')->toArray();
+            $prop['images'] = $prop_images;
+            return $prop;
+        });
+
+        $properties = $this->paginate($properties, 12, $request);
+
         return view('inmobiliaria')->with(['properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media , 'tags' => $tags, 'locations' => $locations]);
     }
     
@@ -107,9 +142,7 @@ class WebController extends Controller
         $footer = Page::FindOrFail(7);
         $media = Media::where('media.table', 'properties')->get();
         $locations = Locations::all()->pluck('name')->toArray();
-        $bathrooms_options = "";
-        $rooms_options = "";
-        $garages_options = "";
+        $message = "";
 
         if($request->has('name')){
             $properties = Property::search($request->name)->get();
@@ -184,89 +217,33 @@ class WebController extends Controller
             $properties = $new_properties;
         }
 
+        // After every filter was ended we need our object to get ready to response.
+        $properties = $this->makeArrayFromObject($properties);
+
         if($request->has('property_types')){
-            $properties = $properties->filter(function($item) use ($request){
+            $new_properties = collect();
+            $properties->each(function($item) use ($request, $new_properties) {
                 if (count($item->types->whereIn('id', $request->property_types)->all())){
-                    return True;
+                    $new_properties[] = $item;
                 }
             });
+
+            $properties = $new_properties;
+        }       
+
+        // Verificamos los valores que se enviaron.
+        $input = $request->except('_token');
+        foreach ($input as $key => $value) {
+            if($value){
+                $message = flash('Se han encontrado '. count($properties) .' resultados', 'info')->messages;
+            }
         }
 
-        $properties = $this->paginate($properties, 12);
+        $properties = $this->paginate($properties, 12, $request);
 
-        if($request->has('name')){
-            flash('Se han encontrado '. count($properties) .' resultados', 'info');
-        }
-
-        // Look for the selected filters
-        for($i=1; $i <= 4; $i++){
-            $selected = "";
-            if($i==1){
-                $msg = "1 baño";
-            } elseif ($i==4) {
-                $msg = "Mas de 4 Baños";
-            } else {
-                $msg = $i . " Baños";
-            }
-
-            if($request->has('bathrooms')){
-                if(in_array($i, $request['bathrooms'])){
-                    $selected = 'checked="checked"';
-                }
-            }     
-
-            $bathrooms_options .= "<div class='checkbox'><label class='text-capitalize'><input name='bathrooms[]' " . $selected . " type='checkbox' value='" . $i . "' />" . 
-                $msg . "</label></div>";
-        }
-
-        for($i=1; $i <= 4; $i++){
-            $selected = "";
-            if($i==1){
-                $msg = "1 Garage";
-            } elseif ($i==4) {
-                $msg = "Mas de 4 Garages";
-            } else {
-                $msg = $i . " Garages";
-            }
-
-            if($request->has('garages')){
-                if(in_array($i, $request['garages'])){
-                    $selected = 'checked="checked"';
-                }
-            }
-
-            $garages_options .= '
-                <div class="checkbox"><label class="text-capitalize">
-                <input name="garages[]" ' . 
-                $selected . ' type="checkbox" value="' . $i . '" />' . 
-                $msg . '</label></div>';
-        }
-
-        for($i=1; $i <= 5; $i++){
-            $selected = "";
-            if($i==1){
-                $msg = "1 Habitación";
-            } elseif ($i==5) {
-                $msg = "Mas de 5 Habitaciones";
-            } else {
-                $msg = $i . " Habitaciones";
-            }
-
-            if($request->has('rooms')){
-                if(in_array($i, $request['rooms'])){
-                    $selected = 'checked="checked"';
-                }
-            }
-
-            $rooms_options .= '
-                <div class="checkbox"><label class="text-capitalize">
-                <input name="rooms[]" ' . 
-                $selected . ' type="checkbox" value="' . $i . '" />' . 
-                $msg . '</label></div>';
-        }
-
-        return view('inmobiliaria')->with(['bathrooms_options' => $bathrooms_options, 'rooms_options' => $rooms_options, 'garages_options' => $garages_options, 'request' => $request->toArray(), 'properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media, 'tags' => $tags, 'locations' => $locations]);
+        return response()->json(['properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties->all(), 'media' => $media, 'tags' => $tags, 'locations' => $locations, 'message' => $message, 'paginator' => view('pagination.properties')->with(['properties' => $properties])->render()]);
     }
+
      /**
      * Show the application dashboard.
      *
@@ -280,18 +257,29 @@ class WebController extends Controller
             $maps = Map::where('id', 1)->first();
             $footer = Page::FindOrFail(7);
             $banners = Banner::where('page', 4)->get();
+            $location = GoogleMapsLocations::where('property_id', $id)->get();
             
             $images = media::where(['table' => 'properties', 'item' => $id])->get();
+
             // $admin = Admin::FindOrFail($property -> admin);
             $proximities = explode(',', $property -> proximities);
             $characteristics = explode(',', $property -> characteristics);
             $types = $property -> types;
-            return view('propiedad')->with(['property' => $property, 'proximities' => $proximities, 'characteristics' => $characteristics,  'images' => $images, 'types' => $types, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps]);
+            return view('propiedad')->with(['property' => $property, 'proximities' => $proximities, 'characteristics' => $characteristics,  'images' => $images, 'types' => $types, 'footer' => $footer, 'location' => $location, 'banners' => $banners, 'maps' => $maps]);
         } else {
             flash('La prpiedad no existe', 'danger');
             return back();
         }
         
+    }
+
+    public function getPropertyLocation(Request $request){
+        if($request->has('id')){
+            $location = GoogleMapsLocations::where('property_id', $request->id)->get();
+            return response()->json($location);
+        } else {
+            return response()->json('No se envio el id!.');
+        }
     }
 
     /**

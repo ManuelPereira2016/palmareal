@@ -24,6 +24,7 @@ Route::get('contacto',              'WebController@contacto');
 Route::post('contacto',              'WebController@contactoSend')->name('contacto.send');
 Route::post('enviar-mensaje', 'WebController@sendMessage')->name('sendMessage');
 
+Route::get('property-location', 'WebController@getPropertyLocation');
 //Rutas para el login de administradores
 
 

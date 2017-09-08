@@ -182,4 +182,18 @@
 	  		@endif
 		</section>
 	</article>
+	@if (count($location))
+	<div id="wrap-map">
+	    <header class="content-header">
+	        <h2>Ubicacion Exacta</h2>
+	    </header>
+	    <!-- <div id="map-2"></div> -->
+        <div id="map-2" style="background-color: grey;height: 400px;margin-left: auto;margin-right: auto;margin-bottom: 20px;"></div>
+	</div>
+	@endif
+@endsection
+@section('scripts')
+<script type="text/javascript">
+new showLocation();
+</script>
 @endsection

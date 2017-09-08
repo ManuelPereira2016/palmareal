@@ -4,6 +4,7 @@ namespace PalmaReal;
 
 use Illuminate\Database\Eloquent\Model;
 use PalmaReal\Admin;
+use PalmaReal\Media;
 use Laravel\Scout\Searchable;
 
 class Property extends Model
@@ -13,6 +14,7 @@ class Property extends Model
     protected $fillable = [
     	'id', 'name', 'description', 'location', 'modality', 'code', 'proximities', 'characteristics', 'tags', 'admin', 'size', 'rooms', 'bathrooms', 'garages', 'antiquity', 'price', 'views', 'status'
     ];
+    protected $with = array('types');
     use Searchable;
     
     public function admin()
