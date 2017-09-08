@@ -141,7 +141,6 @@
         <div class="row">
             <div class="col-md-6">
                 <label for="image" class="control-label">Imagen <span class="text-danger">*</span></label><br>
-                <small class="text-primary">El peso maximo permitido por imagen es de 2MB</small>
                 <div id="wrapimg">
                     <div class="warp-btn-file">
                         <div class="form-control">                                          
