@@ -22,7 +22,9 @@ Route::get('inmobiliaria/propiedad/{id}',    'WebController@propiedad');
 Route::get('corretaje',             'WebController@corretaje');
 Route::get('contacto',              'WebController@contacto');
 Route::post('contacto',              'WebController@contactoSend')->name('contacto.send');
+Route::post('add-comment',   'WebController@commentSend')->name('commentSend');
 Route::post('enviar-mensaje', 'WebController@sendMessage')->name('sendMessage');
+Route::post('rate-property', 'WebController@rateProperty')->name('rateProperty');
 
 Route::get('property-location', 'WebController@getPropertyLocation');
 //Rutas para el login de administradores

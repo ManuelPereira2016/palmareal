@@ -11,6 +11,7 @@ use PalmaReal\Property;
 use PalmaReal\User;
 use PalmaReal\Media;
 use PalmaReal\Message;
+use PalmaReal\PropertyComments;
 use PalmaReal\Historical;
 use PalmaReal\PropertyTypes;
 use PalmaReal\GoogleMapsLocations;
@@ -41,14 +42,23 @@ class PropertyController extends Controller
     public function edit($id)
     {
         $property = Property::FindOrFail($id);
+
         $modality = explode(',', $property -> modality);
         $p_types = $property->types->pluck('id')->toArray();
         $p_tas = explode(',', $property -> tags);
         $types = PropertyTypes::all();
         $tags = Tag::all();
-        return view('admin.propiedades.edit')->with([ 'property' => $property, 'modality' => $modality, 'types' => $types, 'p_types' => $p_types, 'tags' => $tags]);
+        $location = GoogleMapsLocations::where('property_id', $id)->first();
 
-        
+        $comments = PropertyComments::where('property_id', $id)->get();
+
+        $config = json_encode([ 'ratio' => $location["ratio"],
+            'longitude' => $location["longitude"],
+            'latitude' => $location["latitude"],
+            'address' => $location["address"]
+        ]);
+
+        return view('admin.propiedades.edit')->with(['comments' => $comments, 'location' => $config, 'property' => $property, 'modality' => $modality, 'types' => $types, 'p_types' => $p_types, 'tags' => $tags]);        
     }
     /**
      * Show the form for creating a new resource.
@@ -73,13 +83,13 @@ class PropertyController extends Controller
          try{                
             if (!empty($request -> file('image'))) {
                 $formats = ['jpg', 'jpeg', 'png', 'svg'];
-                foreach ($request -> file('image') as $element) {
-                    if (in_array($element->getClientOriginalExtension(), $formats) ) {
-                        flash('Una o varias imagenes tienen una extension invalida!', 'danger');
-                        return back();
-                        exit(0);
-                    }
-                }
+                // foreach ($request -> file('image') as $element) {
+                //     if (in_array($element->getClientOriginalExtension(), $formats) ) {
+                //         flash('Una o varias imagenes tienen una extension invalida!', 'danger');
+                //         return back();
+                //         exit(0);
+                //     }
+                // }
                 if(empty($request -> tags)){
                     $request -> request -> add(['tags' => []]);
                 }
@@ -136,7 +146,6 @@ class PropertyController extends Controller
                 $insert_media = Media::insert($files_records);                                 
             }
 
-
             Historical::insert([
                 'transaction' => 1, 
                 'description' => 'La propiedad ' . $idProperty . ' fue creada', 
@@ -175,6 +184,8 @@ class PropertyController extends Controller
         $types = $property->types;
         $tags = explode(',', $property -> tags);
 
+        $comments = PropertyComments::where('property_id', $id)->get();
+
         return view('admin.propiedades.show')
         ->with([
             'property' => $property, 
@@ -183,6 +194,7 @@ class PropertyController extends Controller
             'characteristics' => $characteristics,
             'modalities' => $modalities,
             'types' => $types,
+            'comments' => $comments,
             'tags' => $tags
         ]);
     }
@@ -222,6 +234,22 @@ class PropertyController extends Controller
                 $relation->properties_type_id = (int)$type;
 
                 $relation->save();
+            }
+
+            if($request->has('maps_location')){
+                // Delete previous google map location
+                GoogleMapsLocations::where('property_id', $id) -> delete();
+
+                $config = json_decode($request->maps_location);
+
+                $location = new GoogleMapsLocations;
+                $location->property_id = $id;
+                $location->address = $config->address;
+                $location->longitude = $config->longitude;
+                $location->latitude = $config->latitude;
+                $location->ratio = $config->ratio;
+
+                $location->save();
             }
 
             Property::FindOrFail($id)->  update($request -> all()); 

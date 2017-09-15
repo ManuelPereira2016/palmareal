@@ -29,7 +29,11 @@
                 </select>
             </div> 
         </div> 
-    </div>  
+    </div> 
+    <div class="form-group">
+        <label for="city">Ciudad  <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="city" name="city" placeholder="Ciudad" required="required">
+    </div> 
     <div class="form-group">
         <label for="ubicacion">Ubicación  <span class="text-danger">*</span></label>
         <input type="text" class="form-control" id="ubicacion" name="location" placeholder="Direccion del inmueble" maxlength="150" required="required">
@@ -38,11 +42,11 @@
     <div class="form-group">
         <label for="ubicacion">Ubicación en el Mapa <span class="text-danger">*</span></label>
         &nbsp&nbsp<a href="#google-maps-location" data-toggle="modal" class="btn btn-primary">Ver Mapa</a>
-    </div> 
+    </div>
     <div class="row">
         <div class="col-md-3">                    
             <div class="form-group">
-                <label for="price">Precio  <span class="text-danger">*</span></label>
+                <label for="price">Precio <span class="text-danger">*</span></label>
                 <input type="number" class="form-control" id="price" name="price" placeholder="$ 0000,00" maxlength="2" required="required" value="0">
             </div> 
         </div>
@@ -141,7 +145,7 @@
         <div class="row">
             <div class="col-md-6">
                 <label for="image" class="control-label">Imagen <span class="text-danger">*</span></label><br>
-                <div id="wrapimg">
+                <div id="wrapimg" style="max-height: 180px;overflow: auto;">
                     <div class="warp-btn-file">
                         <div class="form-control">                                          
                             <input class="col-md-11" name="image[]" id="image" type="file" required="required">     
@@ -170,13 +174,10 @@
 <script type="text/javascript">
     $(document).ready(function(){
         var count = 1;
-        var nummax = 5
         
         $("#btnadd").click(function() {  
-            if(count < nummax){
-                $('#wrapimg').append('<div class="form-control" style="margin-top: 15px;"><input id="imagen' + count + '" type="file" class="col-md-11" name="image[]" required="required" /><a href="javascript:void(0)" class="btnremove btn btn-danger btn-xs"><i class="fa fa-remove"></i></a></div>');
-                count++;
-            }
+            $('#wrapimg').append('<div class="form-control" style="margin-top: 15px;"><input id="imagen' + count + '" type="file" class="col-md-11" name="image[]" required="required" /><a href="javascript:void(0)" class="btnremove btn btn-danger btn-xs"><i class="fa fa-remove"></i></a></div>');
+            count++;
             return false;
         });
 

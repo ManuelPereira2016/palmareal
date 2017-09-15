@@ -5,5 +5,6 @@
   "/js/searchPage.js": "/js/searchPage.js",
   "/js/*.js": "/js/*.js",
   "/js/maps.js": "/js/maps.js",
-  "/js/functions.js": "/js/functions.js"
+  "/js/functions.js": "/js/functions.js",
+  "/js/rateProperty.js": "/js/rateProperty.js"
 }

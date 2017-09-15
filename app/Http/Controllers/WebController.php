@@ -17,6 +17,8 @@ use PalmaReal\Admin;
 use PalmaReal\Banner;
 use PalmaReal\Media;
 use PalmaReal\Message;
+use PalmaReal\PropertyComments;
+use PalmaReal\BestProperties;
 use PalmaReal\Map;
 use PalmaReal\Page;
 use PalmaReal\Tag;
@@ -121,6 +123,12 @@ class WebController extends Controller
 
         $properties = Property::orderBy('created_at', 'desc')->get();
 
+        $best_properties = BestProperties::avg('avg');
+
+        if($best_properties){
+            $best_properties = $best_properties->take(4)->get();
+        }
+
         $properties = $properties->map(function($prop) use ($media){
             $prop_images = $media->whereIn('item', $prop->id)->pluck('url')->toArray();
             $prop['images'] = $prop_images;
@@ -129,7 +137,7 @@ class WebController extends Controller
 
         $properties = $this->paginate($properties, 12, $request);
 
-        return view('inmobiliaria')->with(['properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media , 'tags' => $tags, 'locations' => $locations]);
+        return view('inmobiliaria')->with(['best_properties' => $best_properties, 'properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media , 'tags' => $tags, 'locations' => $locations]);
     }
     
     public function search(Request $request){
@@ -258,6 +266,7 @@ class WebController extends Controller
             $footer = Page::FindOrFail(7);
             $banners = Banner::where('page', 4)->get();
             $location = GoogleMapsLocations::where('property_id', $id)->get();
+            $comments = PropertyComments::where('property_id', $id)->get();
             
             $images = media::where(['table' => 'properties', 'item' => $id])->get();
 
@@ -265,9 +274,9 @@ class WebController extends Controller
             $proximities = explode(',', $property -> proximities);
             $characteristics = explode(',', $property -> characteristics);
             $types = $property -> types;
-            return view('propiedad')->with(['property' => $property, 'proximities' => $proximities, 'characteristics' => $characteristics,  'images' => $images, 'types' => $types, 'footer' => $footer, 'location' => $location, 'banners' => $banners, 'maps' => $maps]);
+            return view('propiedad')->with(['comments' => $comments, 'property' => $property, 'proximities' => $proximities, 'characteristics' => $characteristics,  'images' => $images, 'types' => $types, 'footer' => $footer, 'location' => $location, 'banners' => $banners, 'maps' => $maps]);
         } else {
-            flash('La prpiedad no existe', 'danger');
+            flash('La propiedad no existe', 'danger');
             return back();
         }
         
@@ -316,7 +325,6 @@ class WebController extends Controller
             $request -> request -> add(['status' => 0]);
             $request -> request -> add(['subject' => 'Mensaje de contacto: '.$request -> subj ]);
             
-            
             Message::create($request -> all());
 
             Log::info('Proceso exitoso en WebController -> contactSend');
@@ -326,6 +334,41 @@ class WebController extends Controller
             flash('¡Error! Ha ocurrido un problema', 'danger');
         }
         return back();
+    }
+
+    public function commentSend(Request $request){
+        try{
+            PropertyComments::create($request -> all());
+
+            Log::info('Proceso exitoso en WebController -> commentSend');
+            flash('Mensaje enviado exitosamente', 'success');
+        }catch (\Exception $e) {
+            Log::error('Error en WebController -> commentSend. Error: ['.$e.']');
+            flash('¡Error! Ha ocurrido un problema', 'danger');
+
+        }
+        return back();
+    }
+
+    public function rateProperty(Request $request){
+        try{
+            $prop = BestProperties::where('property_id', $request->id);
+
+            if($prop){
+                $prop->avg += 1;
+                $prop->save();
+            } else {
+                $prop = new BestProperties;
+                $prop->property_id = $request->id;
+                $prop->avg += 1;
+                $prop->save();
+            }
+
+            return response()->json($prop);
+        }catch (\Exception $e) {
+            return response()->json($e);
+        }
+        // return back();
     }
 
     public function sendMessage(Request $request){

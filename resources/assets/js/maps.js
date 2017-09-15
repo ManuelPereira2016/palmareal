@@ -30,6 +30,17 @@ window.mapsSelector = class mapsSelector {
       $('#location-address').val(address)
 
     }
+
+    if($('#update-gmaps-config').length){
+      let old = JSON.parse($('#update-gmaps-config').val())
+
+      if(old.longitude){
+        $('#location-address').val(old.address)
+        $('#ratio').val(old.ratio)
+        $('#lat').val(old.latitude)
+        $('#lng').val(old.longitude)
+      }
+    }
   }
 
   saveLocationTemporary(){
@@ -40,8 +51,11 @@ window.mapsSelector = class mapsSelector {
       ratio: $('#ratio').val()
     }
 
-    $('#gmaps-config').val(JSON.stringify(data))
-
+    if($('#update-gmaps-config').length){
+      $('#update-gmaps-config').val(JSON.stringify(data))
+    } else {
+      $('#gmaps-config').val(JSON.stringify(data))
+    }
     $('#google-maps-location').modal('hide')
   }
 

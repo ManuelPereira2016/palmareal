@@ -438,3 +438,44 @@ footer .ft-sec-pag{
 .p-right {
 	padding-right: 0px;
 }
+
+.prisma-h4 {
+	font-family: 'PeaceSansWebfont';
+    font-weight: 100;
+    color: #023064;
+}
+
+.comment-body {
+	position: relative;
+    padding-left: 25px;
+    padding-top: 25px;
+    padding-right: 25px;
+    padding-bottom: 25px;
+    border: 1px solid #d0d0d0;
+    -moz-box-shadow: 0 2px 0 #e6e6e6;
+    box-shadow: 0 2px 0 #e6e6e6;
+    margin-bottom: 40px;
+    background-color: #fff;
+}
+
+.comment-author {
+	font-size: 18px;
+    margin-bottom: 12px;
+    color: #1a1a1a;
+}
+
+.comment-meta {
+	margin-bottom: 16px;
+	color: #808080;
+    text-decoration: none !important;
+    font-size: 14px;
+    font-family: 'proxima_nova_rgregular';
+}
+
+.comment-text {
+	line-height: 22px;
+    margin-top: 5px;
+    color: #373737;
+    font-size: 16px;
+    margin-bottom: 15px;
+}

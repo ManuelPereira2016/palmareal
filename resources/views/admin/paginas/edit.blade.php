@@ -1,14 +1,14 @@
 @extends('layouts.admin.default')
 @section('styles')
   <!-- bootstrap wysihtml5 - text editor -->
-  <link rel="stylesheet" href="{{ asset('adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('adminlte/plugins/tinymce/skins/lightgray/content.min.css') }}">
 @endsection
 @section('title', 'Editar pagina')
 @section('content')
     <div class="box box-primary">
         <form action="{{ route('paginas.update', $page -> id) }}" method="post">
             <div class="box-header">
-                <h3 class="box-title">Editar pageistrador</h3>
+                <h3 class="box-title">Editar pagina</h3>
             </div>
             <div class="box-body">
                 {{ csrf_field() }}
@@ -45,12 +45,29 @@
           <!-- /.box -->
 @endsection
 @section('scripts')
-    <script src="{{asset('adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}"></script>
+    <script src="{{asset('adminlte/plugins/tinymce/tinymce.min.js')}}"></script>
+    <script src="{{asset('adminlte/plugins/tinymce/themes/modern/theme.min.js')}}"></script>
     <script>
         
       $(function () {
         //bootstrap WYSIHTML5 - text editor
-        $("#content").wysihtml5();
+        tinymce.init({
+          selector: 'textarea',
+          height: 500,
+          theme: 'modern',
+          plugins: [
+            'advlist autolink lists link image charmap print preview hr anchor pagebreak ',
+            'searchreplace wordcount visualblocks visualchars code fullscreen spellchecker',
+            'insertdatetime media nonbreaking save table contextmenu directionality',
+            'template paste textcolor colorpicker textpattern imagetools codesample toc help emoticons hr'
+          ],
+          toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+          image_advtab: true,
+          content_css: [
+            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+            '//www.tinymce.com/css/codepen.min.css'
+          ]
+         });
       });
     </script>
 @endsection

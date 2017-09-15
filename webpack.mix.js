@@ -13,5 +13,6 @@ const { mix } = require('laravel-mix');
 
 mix.js('resources/assets/js/searchPage.js',	'public/js/app.js')
    .js('resources/assets/js/maps.js',	'public/js/maps.js')
+   .js('resources/assets/js/rateProperty.js',	'public/js/rateProperty.js')
    .js('resources/assets/js/functions.js',	'public/js/functions.js')
    .sass('resources/assets/sass/app.scss', 'public/css');
