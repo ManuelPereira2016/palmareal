@@ -133,8 +133,9 @@
                     <h2>Propiedades Destacadas</h2>
                     <div class="row">
                     @if ($best_properties)
+                    @php($i=1)
                     @foreach ($best_properties as $element)
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-4">
                             <div class="thumbnail card">
                                 @if(count($element["images"]))
                                     <img src="{{ Storage::disk('properties')->url($element['images'][0]) }}" alt="Imagen de propiedad">

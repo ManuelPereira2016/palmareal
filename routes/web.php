@@ -25,6 +25,7 @@ Route::post('contacto',              'WebController@contactoSend')->name('contac
 Route::post('add-comment',   'WebController@commentSend')->name('commentSend');
 Route::post('enviar-mensaje', 'WebController@sendMessage')->name('sendMessage');
 Route::post('rate-property', 'WebController@rateProperty')->name('rateProperty');
+Route::get('get-rate-property', 'WebController@getRateProperty')->name('getRateProperty');
 
 Route::get('property-location', 'WebController@getPropertyLocation');
 //Rutas para el login de administradores

@@ -112,6 +112,7 @@ class WebController extends Controller
      */
     public function inmobiliaria(Request $request)
     {
+        $best = null;
         $tags = Tag::all();
         $banners = Banner::where('page', 3)->get();
         $page = Page::FindOrFail(3);
@@ -123,10 +124,12 @@ class WebController extends Controller
 
         $properties = Property::orderBy('created_at', 'desc')->get();
 
-        $best_properties = BestProperties::avg('avg');
+        $best_properties = BestProperties::orderBy('avg', 'asc');
 
         if($best_properties){
-            $best_properties = $best_properties->take(4)->get();
+            $best_properties = $best_properties->limit(4)->pluck('property_id')->toArray();
+
+            $best = $properties->whereIn('id', $best_properties);
         }
 
         $properties = $properties->map(function($prop) use ($media){
@@ -137,7 +140,7 @@ class WebController extends Controller
 
         $properties = $this->paginate($properties, 12, $request);
 
-        return view('inmobiliaria')->with(['best_properties' => $best_properties, 'properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media , 'tags' => $tags, 'locations' => $locations]);
+        return view('inmobiliaria')->with(['best_properties' => $best, 'properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media , 'tags' => $tags, 'locations' => $locations]);
     }
     
     public function search(Request $request){
@@ -350,9 +353,26 @@ class WebController extends Controller
         return back();
     }
 
+    public function getRateProperty(Request $request){
+        try{
+            $prop = BestProperties::where('property_id', $request->id)->first();
+
+            if($prop == null){
+                $rated = false;
+            } else {
+                $rated = true;
+            }
+
+            return response()->json([ 'rated' => $rated ]);
+        }catch (\Exception $e) {
+            return response()->json($e);
+        }
+        // return back();
+    }
+
     public function rateProperty(Request $request){
         try{
-            $prop = BestProperties::where('property_id', $request->id);
+            $prop = BestProperties::where('property_id', $request->id)->first();
 
             if($prop){
                 $prop->avg += 1;
