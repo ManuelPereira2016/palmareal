@@ -144,7 +144,9 @@
                                 @endif
                                 <div class="caption">
                                     <h3 style="height: 45px; overflow: hidden">{{ $element["name"] }}</h3>
-                                    <div class="price">@if ($element["price"] > 0) $  {{ $element["price"] }} @endif </div>
+                                    <div class="price">
+                                    @if ($element["price"]) {{ $element["price"] }} @endif 
+                                    </div>
                                     @if (!empty($element["types"]))
                                         @foreach (($element["types"]) as $value)
                                             <div class="label label-default">{{ $value["name"] }}</div>

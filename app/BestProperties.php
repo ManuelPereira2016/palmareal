@@ -9,6 +9,6 @@ class BestProperties extends Model
     protected $table = 'best_properties';
     protected $primarykey = 'id';
     protected $fillable = [
-    	'id', 'property_id', 'avg'
+    	'id', 'property_id', 'avg', 'author'
     ];
 }

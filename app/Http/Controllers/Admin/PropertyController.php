@@ -13,6 +13,7 @@ use PalmaReal\Media;
 use PalmaReal\Message;
 use PalmaReal\PropertyComments;
 use PalmaReal\Historical;
+use PalmaReal\BestProperties;
 use PalmaReal\PropertyTypes;
 use PalmaReal\GoogleMapsLocations;
 use PalmaReal\PropertiesTypesRelations;
@@ -70,6 +71,50 @@ class PropertyController extends Controller
         $types = PropertyTypes::all();
         $tags = Tag::all();
         return view('admin.propiedades.create')->with(['types' => $types, 'tags' => $tags]);
+    }
+
+    public function getRateProperty(Request $request){
+        try{
+            $prop = BestProperties::where('property_id', $request->id)->first();
+
+            if($prop == null){
+                $rated = false;
+            } else {
+                $rated = true;
+            }
+
+            return response()->json([ 'rated' => $rated ]);
+        }catch (\Exception $e) {
+            return response()->json($e);
+        }
+        // return back();
+    }
+
+    public function rateProperty(Request $request){
+        try{
+            $prop = BestProperties::where('property_id', $request->id)->where('author', Auth::user() -> id)->first();
+
+            $count = BestProperties::all()->count();
+
+            if($count == 4){
+                return response()->json([ 'full' => true ]);
+            }
+
+            if($prop){
+                $prop->delete();
+            } else {
+                $prop = new BestProperties;
+                $prop->property_id = $request->id;
+                $prop->author = Auth::user() -> id;
+                $prop->avg = 1;
+                $prop->save();
+            }
+
+            return response()->json($prop);
+        }catch (\Exception $e) {
+            return response()->json($e);
+        }
+        // return back();
     }
 
     /**

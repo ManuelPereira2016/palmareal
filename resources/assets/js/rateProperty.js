@@ -9,7 +9,7 @@ window.rateProperties = class rateProperties {
   }
 
   setup(){
-    let id = window.location.href.split('propiedad/')[1];
+    let id = window.location.href.split('propiedades/')[1];
     axios.get(`/get-rate-property?id=${id}`)
     .then((res)=>{
       res = res.data;
@@ -23,17 +23,23 @@ window.rateProperties = class rateProperties {
   }
 
   rate(){
-    if($('#mark-property i').hasClass('fa-heart-o')){
-      axios.post('/rate-property', { id: window.location.href.split('propiedad/')[1] })
-      .then((res)=>{
-        $('#mark-property i').removeClass('fa-heart-o').addClass('fa-heart')
-      })
-      .catch((err)=>{
-        console.log(err);
-      })
-    } /* else {
-      $('#mark-property i').removeClass('fa-heart').addClass('fa-heart-o')
-    }*/
+    axios.post('/rate-property', { id: window.location.href.split('propiedades/')[1] })
+    .then((res)=>{
+      res = res.data;
+      if(!res.full){
+        if($('#mark-property i').hasClass('fa-heart-o')){
+          $('#mark-property i').removeClass('fa-heart-o').addClass('fa-heart')
+        } else {
+          $('#mark-property i').removeClass('fa-heart').addClass('fa-heart-o')
+        }
+      } else {
+        $('.content-header').prev('.alert').remove()
+        $('.content-header').before('<div class="alert alert-danger"> Ya han sido seleccionadas 4 propiedades!.</div>')
+      }
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
   }
 
   runEventListeners(){

@@ -1,40 +1,40 @@
 @extends('layouts.admin.default')
 @section('styles')
 <style>
-.comment-body {
-	position: relative;
-    padding-left: 25px;
-    padding-top: 25px;
-    padding-right: 25px;
-    padding-bottom: 25px;
-    border: 1px solid #d0d0d0;
-    -moz-box-shadow: 0 2px 0 #e6e6e6;
-    box-shadow: 0 2px 0 #e6e6e6;
-    margin-bottom: 40px;
-    background-color: #fff;
-}
+	.comment-body {
+		position: relative;
+		padding-left: 25px;
+		padding-top: 25px;
+		padding-right: 25px;
+		padding-bottom: 25px;
+		border: 1px solid #d0d0d0;
+		-moz-box-shadow: 0 2px 0 #e6e6e6;
+		box-shadow: 0 2px 0 #e6e6e6;
+		margin-bottom: 40px;
+		background-color: #fff;
+	}
 
-.comment-author {
-	font-size: 18px;
-    margin-bottom: 12px;
-    color: #1a1a1a;
-}
+	.comment-author {
+		font-size: 18px;
+		margin-bottom: 12px;
+		color: #1a1a1a;
+	}
 
-.comment-meta {
-	margin-bottom: 16px;
-	color: #808080;
-    text-decoration: none !important;
-    font-size: 14px;
-    font-family: 'proxima_nova_rgregular';
-}
+	.comment-meta {
+		margin-bottom: 16px;
+		color: #808080;
+		text-decoration: none !important;
+		font-size: 14px;
+		font-family: 'proxima_nova_rgregular';
+	}
 
-.comment-text {
-	line-height: 22px;
-    margin-top: 5px;
-    color: #373737;
-    font-size: 16px;
-    margin-bottom: 15px;
-}
+	.comment-text {
+		line-height: 22px;
+		margin-top: 5px;
+		color: #373737;
+		font-size: 16px;
+		margin-bottom: 15px;
+	}
 </style>
 @stop
 
@@ -44,6 +44,9 @@
 	<div class="box box-primary">
 		<div class="box-header with-border">  				
 			<a class="btn btn-primary" href="{{route('propiedades.index')}}">Regresar</a>
+			<a class="pull-right rate" style="padding-right: 25px;padding-top: 5px;" title="Destacada" id="mark-property" href="#">
+				<i class="fa fa-heart-o fa-2x" style="color:#5056FF;"></i>
+			</a>
 		</div>
 		<div class="box-body">
 			<ul class="box-list">
@@ -201,77 +204,82 @@
 				@endif
 			</div>
 		</div>
-		</div>
-		<div class="col-md-12">
-			<div class="box box-primary">
-				<div class="box-header with-border">
-					<h3 class="box-title">Comentarios</h3>
-				</div>
-				<div class="box-body">
-					@foreach ($comments as $element)
-					<div class="comment-body">
-						<div class="comment-author vcard">
-							<cite class="fn">{{ $element -> name }}</cite> <span class="says">dice:</span>
-						</div>
-						<div class="comment-meta">{{ $element -> created_at }}
-						</div>
-						<p class="comment-text">{{ $element -> content }}</p>
+	</div>
+	<div class="col-md-12">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title">Comentarios</h3>
+			</div>
+			<div class="box-body">
+				@foreach ($comments as $element)
+				<div class="comment-body">
+					<div class="comment-author vcard">
+						<cite class="fn">{{ $element -> name }}</cite> <span class="says">dice:</span>
 					</div>
-					@endforeach
+					<div class="comment-meta">{{ $element -> created_at }}
+					</div>
+					<p class="comment-text">{{ $element -> content }}</p>
 				</div>
+				@endforeach
 			</div>
 		</div>
-		@stop
-		@section('modals')
-		{{-- MODAL PARA AGREGAR IMAGEN --}}
-		<div class="modal fade" id="add-image" tabindex="-1" role="dialog" aria-labelledby="add-image">
-			<div class="modal-dialog">
-				<form action="{{ route('imagen.store') }}" method="post" enctype="multipart/form-data">
-					{{ csrf_field() }}
-					<input type="hidden" name="table" value="properties">
-					<input type="hidden" name="item" value="{{ $property -> id }}">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Agregar imagen</h4>
-						</div>
-						<div class="modal-body">
-							<p>Seleccione la imagen que desea agregar</p>
-							<div class="form-group">
-								<label for="imagen" class="form-label">Imagen <span class="text-danger">*</span></label>
-								<small class="text-danger">El peso maximo permitido por imagen es de 2MB</small>
-								<input type="file" name="image" required="required" class="form-control">
-							</div>
-						</div>    
-						<div class="modal-footer text-center">
-							<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-							<button type="submit" class="btn btn-success">Agregar</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-
-		<!-- Modal -->
-		<div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-delete">
-			<form action="{{ route('propiedades.destroy', $property -> id) }}" method="post"> 
+	</div>
+	@stop
+	@section('modals')
+	{{-- MODAL PARA AGREGAR IMAGEN --}}
+	<div class="modal fade" id="add-image" tabindex="-1" role="dialog" aria-labelledby="add-image">
+		<div class="modal-dialog">
+			<form action="{{ route('imagen.store') }}" method="post" enctype="multipart/form-data">
 				{{ csrf_field() }}
-				<input type="hidden" name="_method" value="delete">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="myModalLabel">Eliminar Propiedad</h4>
-						</div>
-						<div class="modal-body">     
-							<p>¿Esta seguro de eliminar la propiedad <b>{{ $property -> name}}</b>?</p>               
-						</div>
-						<div class="modal-footer text-center">
-							<button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-							<button type="submit" class="btn btn-danger">Eliminar</button>
-						</div>
+				<input type="hidden" name="table" value="properties">
+				<input type="hidden" name="item" value="{{ $property -> id }}">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Agregar imagen</h4>
 					</div>
-				</div>            
+					<div class="modal-body">
+						<p>Seleccione la imagen que desea agregar</p>
+						<div class="form-group">
+							<label for="imagen" class="form-label">Imagen <span class="text-danger">*</span></label>
+							<small class="text-danger">El peso maximo permitido por imagen es de 2MB</small>
+							<input type="file" name="image" required="required" class="form-control">
+						</div>
+					</div>    
+					<div class="modal-footer text-center">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+						<button type="submit" class="btn btn-success">Agregar</button>
+					</div>
+				</div>
 			</form>
 		</div>
-		@endsection
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-delete">
+		<form action="{{ route('propiedades.destroy', $property -> id) }}" method="post"> 
+			{{ csrf_field() }}
+			<input type="hidden" name="_method" value="delete">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Eliminar Propiedad</h4>
+					</div>
+					<div class="modal-body">     
+						<p>¿Esta seguro de eliminar la propiedad <b>{{ $property -> name}}</b>?</p>               
+					</div>
+					<div class="modal-footer text-center">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+						<button type="submit" class="btn btn-danger">Eliminar</button>
+					</div>
+				</div>
+			</div>            
+		</form>
+	</div>
+	@endsection
+	@section('scripts')
+	<script type="text/javascript">
+		new rateProperties();
+	</script>
+	@endsection

@@ -24,8 +24,6 @@ Route::get('contacto',              'WebController@contacto');
 Route::post('contacto',              'WebController@contactoSend')->name('contacto.send');
 Route::post('add-comment',   'WebController@commentSend')->name('commentSend');
 Route::post('enviar-mensaje', 'WebController@sendMessage')->name('sendMessage');
-Route::post('rate-property', 'WebController@rateProperty')->name('rateProperty');
-Route::get('get-rate-property', 'WebController@getRateProperty')->name('getRateProperty');
 
 Route::get('property-location', 'WebController@getPropertyLocation');
 //Rutas para el login de administradores
@@ -62,6 +60,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::resource('admin/imagen/',                'Admin\ImageController');
     Route::post('admin/propiedades/cambiar-estatus/{id}',            'Admin\PropertyController@status')->name('propiedades.status');
     Route::resource('admin/propiedades',            'Admin\PropertyController');
+    Route::post('rate-property', 'Admin\PropertyController@rateProperty')->name('rateProperty');
+    Route::get('get-rate-property', 'Admin\PropertyController@getRateProperty')->name('getRateProperty');
     Route::resource('admin/tipos',                  'Admin\TypeController');
     Route::post('admin/administradores/cambiar-estatus/{id}',            'Admin\AdminController@status')->name('administradores.status');    
     Route::post('admin/administradores/cambiar-clave/{id}',            'Admin\AdminController@changePassword')->name('administradores.password');

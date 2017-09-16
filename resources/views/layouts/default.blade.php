@@ -76,7 +76,6 @@
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9KS1GeaKAQk7LCDqAJclffYKE_izcBFk"></script>
         <script type="text/javascript" src="{{ asset('js/locationpicker.jquery.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/maps.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('js/rateProperty.js') }}"></script>
         @endif
         <script>
             $(document).ready(function() {

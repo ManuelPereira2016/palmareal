@@ -37,6 +37,7 @@
  	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
  	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
  	 <![endif]-->
+     <meta name="csrf-token" content="{{ csrf_token() }}">
  	 @yield('styles')
 </head>
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -76,6 +77,7 @@
 <script type="text/javascript" src="{{ asset('js/locationpicker.jquery.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/functions.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/maps.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/rateProperty.js') }}"></script>
 @yield('scripts')
 </body>
 </html>

@@ -68,9 +68,6 @@
 						<div class="panel panel-prisma">	  				
 							<div class="panel-heading">
 								<h4 style="display: inline;">Descripción</h4>
-								<a class="pull-right rate" title="Destacada" id="mark-property" href="#">
-									<i class="fa fa-heart-o fa-2x" style="color:#5056FF;"></i>
-								</a>
 							</div>
 							<div class="panel-body">
 								<p>{{ $property -> description }}</p>
@@ -239,6 +236,5 @@
 	@section('scripts')
 	<script type="text/javascript">
 		new showLocation();
-		new rateProperties();
 	</script>
 	@endsection
