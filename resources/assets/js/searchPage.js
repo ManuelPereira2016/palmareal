@@ -21,7 +21,7 @@ window.searchPage = class searchPage {
                     <div class="price">${ item.price ? item.price : ''}
                     </div>
                     ${types ? types.join('') : ''}
-                    <p class="text-justify break-words">${item.description.length > 60 ? item.description.substring(0,60) + '...' : item.description}</p>
+                    <div class="truncate"><p class="text-justify break-words">${item.description.length > 100 ? item.description.substring(0,100) + '...' : item.description}</p></div>
                     <a href="/inmobiliaria/propiedad/${item.id}" class="btn btn-second" role="button">Ver más</a>
                 </div>
             </div>

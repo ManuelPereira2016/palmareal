@@ -479,3 +479,11 @@ footer .ft-sec-pag{
     font-size: 16px;
     margin-bottom: 15px;
 }
+
+.truncate{
+	overflow: hidden;
+    word-break: break-all;
+    height: 100px;
+    margin-bottom: 5px;
+    word-wrap: break-word;
+}

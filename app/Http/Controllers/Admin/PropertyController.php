@@ -40,8 +40,8 @@ class PropertyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+     public function edit($id)
+     {
         $property = Property::FindOrFail($id);
 
         $modality = explode(',', $property -> modality);
@@ -57,7 +57,7 @@ class PropertyController extends Controller
             'longitude' => $location["longitude"],
             'latitude' => $location["latitude"],
             'address' => $location["address"]
-        ]);
+            ]);
 
         return view('admin.propiedades.edit')->with(['comments' => $comments, 'location' => $config, 'property' => $property, 'modality' => $modality, 'types' => $types, 'p_types' => $p_types, 'tags' => $tags]);        
     }
@@ -125,9 +125,9 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-         try{                
-            if (!empty($request -> file('image'))) {
-                $formats = ['jpg', 'jpeg', 'png', 'svg'];
+     try{                
+        if (!empty($request -> file('image'))) {
+            $formats = ['jpg', 'jpeg', 'png', 'svg'];
                 // foreach ($request -> file('image') as $element) {
                 //     if (in_array($element->getClientOriginalExtension(), $formats) ) {
                 //         flash('Una o varias imagenes tienen una extension invalida!', 'danger');
@@ -135,79 +135,83 @@ class PropertyController extends Controller
                 //         exit(0);
                 //     }
                 // }
-                if(empty($request -> tags)){
-                    $request -> request -> add(['tags' => []]);
-                }
-                // $type = implode(',', $request -> type);
-                $modality = implode(',', $request -> modality);
-                $tags = implode(',', $request -> tags);
-                $request -> merge(['modality' => $modality, 'tags' => $tags]);
+        }
 
-                $types = array();
+        if(empty($request -> tags)){
+            $request -> request -> add(['tags' => []]);
+        }
 
-                // your arrays can be done like this
-                foreach($request->get('type') as $val)
-                {
-                    array_push($types, $val);
-                }
+        // $type = implode(',', $request -> type);
+        $modality = implode(',', $request -> modality);
+        $tags = implode(',', $request -> tags);
+        $request -> merge(['modality' => $modality, 'tags' => $tags]);
 
-                $request-> request -> add([
-                    'views' => 0,
-                    'admin' => Auth::user() -> id,
-                    'code' => mt_rand(000000, 999999)
-                ]);
-                Property::create($request ->all());                 
-                $image = $request -> file('image');
-                $idProperty = Property::all() -> last() -> id;
+        $types = array();
 
-                foreach( $types as $type){
-                    $relation = new PropertiesTypesRelations;
-                    $relation->property_id = $idProperty;
-                    $relation->properties_type_id = (int)$type;
+        // your arrays can be done like this
+        foreach($request->get('type') as $val)
+        {
+            array_push($types, $val);
+        }
 
-                    $relation->save();
-                }
-
-                if($request->has('maps_location')){
-                    $config = json_decode($request->maps_location);
-
-                    $location = new GoogleMapsLocations;
-                    $location->property_id = $idProperty;
-                    $location->address = $config->address;
-                    $location->longitude = $config->longitude;
-                    $location->latitude = $config->latitude;
-                    $location->ratio = $config->ratio;
-
-                    $location->save();
-                }
-                
-                foreach ($image as $element) {
-                    $type_file = $element->getClientOriginalExtension();                      
-                    $file_name = time() . mt_rand() . $type_file;
-                    $element -> move('imgs/properties/', $file_name ); 
-                    $files_records[] = ['table' => 'properties', 'item' => $idProperty, 'url' => $file_name, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')];                  
-                }
-
-                $insert_media = Media::insert($files_records);                                 
-            }
-
-            Historical::insert([
-                'transaction' => 1, 
-                'description' => 'La propiedad ' . $idProperty . ' fue creada', 
-                'user' => Auth::user()->id, 
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+        $request-> request -> add([
+            'views' => 0,
+            'admin' => Auth::user() -> id,
+            'code' => mt_rand(000000, 999999)
             ]);
 
-            Log::error('Registro exitoso en PropertyController -> Store');
-            flash('Proceso exitoso', 'success');
-        }catch (\Exception $e) {
-            Log::error('Error en PropertyController -> Store. Error: ['.$e.']');
-            flash('¡Error! Ha ocurrido un problema', 'danger');
+        Property::create($request ->all());                 
+        $idProperty = Property::all() -> last() -> id;
 
+        foreach( $types as $type){
+            $relation = new PropertiesTypesRelations;
+            $relation->property_id = $idProperty;
+            $relation->properties_type_id = (int)$type;
+
+            $relation->save();
         }
-        return redirect('admin/propiedades');
+
+        if($request->has('maps_location')){
+            $config = json_decode($request->maps_location);
+
+            $location = new GoogleMapsLocations;
+            $location->property_id = $idProperty;
+            $location->address = $config->address;
+            $location->longitude = $config->longitude;
+            $location->latitude = $config->latitude;
+            $location->ratio = $config->ratio;
+
+            $location->save();
+        }
+
+        if (!empty($request -> file('image'))) {
+            $image = $request -> file('image');
+            foreach ($image as $element) {
+                $type_file = $element->getClientOriginalExtension();                      
+                $file_name = time() . mt_rand() . $type_file;
+                $element -> move('imgs/properties/', $file_name ); 
+                $files_records[] = ['table' => 'properties', 'item' => $idProperty, 'url' => $file_name, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')];                  
+            }
+        }
+
+        $insert_media = Media::insert($files_records);   
+
+        Historical::insert([
+            'transaction' => 1, 
+            'description' => 'La propiedad ' . $idProperty . ' fue creada', 
+            'user' => Auth::user()->id, 
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+        Log::error('Registro exitoso en PropertyController -> Store');
+        flash('Proceso exitoso', 'success');
+    } catch (\Exception $e) {
+        Log::error('Error en PropertyController -> Store. Error: ['.$e.']');
+        flash('¡Error! Ha ocurrido un problema', 'danger');
     }
+    //return redirect('admin/propiedades');
+}
 
     /**
      * Display the specified resource.
@@ -241,9 +245,9 @@ class PropertyController extends Controller
             'types' => $types,
             'comments' => $comments,
             'tags' => $tags
-        ]);
+            ]);
     }
-   
+
     /**
      * Update the specified resource in storage.
      *
@@ -281,7 +285,7 @@ class PropertyController extends Controller
                 $relation->save();
             }
 
-            if($request->has('maps_location')){
+            if(json_decode($request->maps_location)->longitude){
                 // Delete previous google map location
                 GoogleMapsLocations::where('property_id', $id) -> delete();
 
@@ -297,7 +301,7 @@ class PropertyController extends Controller
                 $location->save();
             }
 
-            Property::FindOrFail($id)->  update($request -> all()); 
+            Property::FindOrFail($id)->update($request -> all()); 
 
             Historical::insert([
                 'transaction' => 2, 
@@ -305,13 +309,13 @@ class PropertyController extends Controller
                 'user' => Auth::user()->id, 
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
-            ]);
+                ]);
 
             Log::error('Operacion exitosa en PropertyController -> update');
             flash('Proceso exitoso', 'success');
         }catch (\Exception $e) {
             Log::error('Error en PropertyController -> update. Error: ['.$e.']');
-            flash('¡Error! Ha ocurrido un problema', 'danger');
+            flash('¡Error! Ha ocurrido un problema'. var_dump($e), 'danger');
 
         }
         return redirect()->route('propiedades.show', $id);
@@ -326,32 +330,32 @@ class PropertyController extends Controller
     public function destroy($id)
     {
        try{               
-            $media = Media::where('item', $id)->get();       
-            foreach ($media as $element) {
-                if ($delete=Storage::disk('properties')->has($element -> url)) {
-                    $delete=Storage::disk('properties')->delete($element -> url);
-                }
-            } 
-            
-            PropertiesTypesRelations::where('property_id', $id) -> delete();
-            Media::where('item', $id) -> delete();
-            Property::FindOrFail($id) -> delete();
-            Historical::insert([
-                'transaction' => 3, 
-                'description' => 'La propiedad ' . $id . ' fue eliminada', 
-                'user' => Auth::user()->id, 
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+        $media = Media::where('item', $id)->get();       
+        foreach ($media as $element) {
+            if ($delete=Storage::disk('properties')->has($element -> url)) {
+                $delete=Storage::disk('properties')->delete($element -> url);
+            }
+        } 
+
+        PropertiesTypesRelations::where('property_id', $id) -> delete();
+        Media::where('item', $id) -> delete();
+        Property::FindOrFail($id) -> delete();
+        Historical::insert([
+            'transaction' => 3, 
+            'description' => 'La propiedad ' . $id . ' fue eliminada', 
+            'user' => Auth::user()->id, 
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
             ]);
-            Log::notice('Registro exitoso en propertyController -> destroy');
-        }catch (\Exception $e) {
-            Log::error('Error en propertyController -> destroy. Error: ['.$e.']');
-            flash('¡Error! Ha ocurrido un problema', 'danger');
-        }
-        
-        flash('Propiedad eliminada exitosamente ', 'success');
-        return redirect()->route('propiedades.index');
+        Log::notice('Registro exitoso en propertyController -> destroy');
+    }catch (\Exception $e) {
+        Log::error('Error en propertyController -> destroy. Error: ['.$e.']');
+        flash('¡Error! Ha ocurrido un problema', 'danger');
     }
+
+    flash('Propiedad eliminada exitosamente ', 'success');
+    return redirect()->route('propiedades.index');
+}
 
 
     /**
@@ -373,7 +377,7 @@ class PropertyController extends Controller
                 'user' => Auth::user()->id, 
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
-            ]);
+                ]);
             Log::notice('Registro exitoso en propertyController -> Update');
             flash('Estatus cambiado exitosamente', 'success');
         }catch (\Exception $e) {

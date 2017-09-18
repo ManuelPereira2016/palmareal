@@ -129,13 +129,12 @@
                     </form>                
             </div>
             <div class="col-md-9">
-                <div class="col-md-12 content-header" id="properties-page" style="padding-top: 0px;">
+                <div class="col-md-12 content-header" style="padding-top: 0px;">
                     <h2>Propiedades Destacadas</h2>
                     <div class="row">
                     @if ($best_properties)
-                    @php($i=1)
                     @foreach ($best_properties as $element)
-                        <div class="col-sm-6 col-md-4">
+                        <div class="col-sm-6 col-md-3 col-lg-3">
                             <div class="thumbnail card">
                                 @if(count($element["images"]))
                                     <img src="{{ Storage::disk('properties')->url($element['images'][0]) }}" alt="Imagen de propiedad">
@@ -152,16 +151,12 @@
                                             <div class="label label-default">{{ $value["name"] }}</div>
                                         @endforeach 
                                     @endif
-                                    <p class="text-justify break-words">{{ substr($element["description"], 0, 100) }}</p>
+                                    <div class="truncate">
+                                    <p class="text-justify break-words">{{ substr($element["description"], 0, 100) }}</p></div>
                                    <a href="{{ action('WebController@propiedad', $element['id'] ) }}" class="btn btn-second" role="button">Ver más</a>
                                 </div>
                             </div>
                         </div>
-                        @if ($i % 3 == 0 && $i != 1)
-                        </div>
-                        <div class="row">
-                        @endif
-                        @php($i++)
                     @endforeach
                     @endif
                     </div>
@@ -189,7 +184,8 @@
                                             <div class="label label-default">{{ $value["name"] }}</div>
                                         @endforeach 
                                     @endif
-                                    <p class="text-justify break-words">{{ substr($element["description"], 0, 100) }}</p>
+                                    <div class="truncate">
+                                    <p class="text-justify break-words">{{ substr($element["description"], 0, 100) }}</p></div>
                                    <a href="{{ action('WebController@propiedad', $element['id'] ) }}" class="btn btn-second" role="button">Ver más</a>
                                 </div>
                             </div>

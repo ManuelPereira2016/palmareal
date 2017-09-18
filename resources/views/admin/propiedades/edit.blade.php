@@ -66,10 +66,10 @@
                 </select>
             </div> 
         </div> 
-    </div>  
+    </div>
     <div class="form-group">
         <label for="city">Ciudad  <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" id="city" name="city" placeholder="Ciudad" required="required">
+        <input type="text" class="form-control" id="city" name="city" placeholder="Ciudad" required="required" value="{{ $property -> city }}">
     </div>
     <div class="form-group">
         <label for="ubicacion">Ubicación  <span class="text-danger">*</span></label>

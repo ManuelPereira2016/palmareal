@@ -55,6 +55,7 @@
           selector: 'textarea',
           height: 500,
           theme: 'modern',
+          language: 'es_MX',
           plugins: [
             'advlist autolink lists link image charmap print preview hr anchor pagebreak ',
             'searchreplace wordcount visualblocks visualchars code fullscreen spellchecker',

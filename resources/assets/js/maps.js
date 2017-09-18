@@ -2,17 +2,24 @@ import axios from 'axios'
 
 window.mapsSelector = class mapsSelector {
 	constructor() {
+    this.map = null;
+    var self = this;
+
     this.config = {
       location: {
         latitude: -0.240611,
         longitude: -79.188011
       },
       radius: 200,
+      enableAutocomplete: true,
       inputBinding: {
         latitudeInput: $('#lat'),
         longitudeInput: $('#lng'),
         radiusInput: $('#ratio'),
         locationNameInput: $('#location-address')
+      },
+      oninitialized: function(){
+        self.setup()
       }
     }
 
@@ -22,13 +29,10 @@ window.mapsSelector = class mapsSelector {
   setup(){
     let address = null
 
-    $('#location-box').locationpicker(this.config)
-
     if($('#ubicacion').val().length){
       address = $('#ubicacion').val()
 
       $('#location-address').val(address)
-
     }
 
     if($('#update-gmaps-config').length){
@@ -39,6 +43,15 @@ window.mapsSelector = class mapsSelector {
         $('#ratio').val(old.ratio)
         $('#lat').val(old.latitude)
         $('#lng').val(old.longitude)
+
+        $('#location-box').locationpicker({
+          radius: old.ratio,
+          enableAutocomplete: true,
+          location: {
+            longitude: old.longitude,
+            latitude: old.latitude
+          }
+        })
       }
     }
   }
@@ -49,6 +62,10 @@ window.mapsSelector = class mapsSelector {
       longitude: $('#lng').val(),
       address: $('#location-address').val(),
       ratio: $('#ratio').val()
+    }
+
+    if(data.address){
+      $('#ubicacion').val(data.address);
     }
 
     if($('#update-gmaps-config').length){
@@ -67,8 +84,8 @@ window.mapsSelector = class mapsSelector {
       this.saveLocationTemporary()
     })
 
-    $('#google-maps-location').on('shown.bs.modal', ()=>{
-      this.setup()
+    $('#google-maps-location').on('shown.bs.modal', (e)=>{
+      $('#location-box').locationpicker(this.config)
     })
   }
 }

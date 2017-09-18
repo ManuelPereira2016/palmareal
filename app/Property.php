@@ -12,7 +12,7 @@ class Property extends Model
     protected $table = 'properties';
     protected $primarykey = 'id';
     protected $fillable = [
-    	'id', 'name', 'description', 'location', 'modality', 'code', 'proximities', 'characteristics', 'tags', 'admin', 'size', 'rooms', 'bathrooms', 'garages', 'antiquity', 'price', 'views', 'status'
+    	'id', 'name', 'description', 'city', 'location', 'modality', 'code', 'proximities', 'characteristics', 'tags', 'admin', 'size', 'rooms', 'bathrooms', 'garages', 'antiquity', 'price', 'views', 'status'
     ];
     protected $with = array('types');
     use Searchable;
@@ -65,9 +65,16 @@ class Property extends Model
 
     public function toSearchableArray()
     {
-        $array = $this->toArray();
-
-        // Customize array...
-        return $array;
+        return [
+             'id' => $this->id,
+             'name' => $this->name,
+             'city' => $this->city,
+             'location' => $this->location,
+             'characteristics' => $this->characteristics,
+             'tags' => $this->tags,
+             'proximities' => $this->proximities,
+             'code' => $this->code,
+             'description' => $this->description
+        ];
     }
 }
