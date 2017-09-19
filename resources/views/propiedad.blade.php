@@ -43,10 +43,10 @@
 			<div class="col-md-8">
 				<div class="row">
 					<div class="col-md-12">
-						<div id="owl-demo" class="owl-carousel owl-theme" style="margin-bottom: 40px;"> 
+						<div id="owl-demo" class="owl-carousel owl-theme owl-min" style="margin-bottom: 40px;"> 
 							@foreach ($images as $element)
 							<div class="item">
-								<img src="{{ Storage::disk('properties')->url($element -> url) }}" alt="{{ $property -> nombre . ' ' . $property -> id}}" class="media">
+								<img src="{{ Storage::disk('properties')->url($element -> url) }}" alt="{{ $property -> nombre . ' ' . $property -> id}}" class="media img-responsive">
 							</div>
 							@endforeach			 
 						</div>
@@ -55,10 +55,10 @@
 				<div class="row">
 					<div class="col-md-12">
 						<ul class="data-list">
-							@if ($property -> size > 0 )<li class="col-xs-3"><i class="fa fa-arrows"></i><br> {{ $property -> size }}</li>@endif
-							@if ($property -> rooms > 0 )<li class="col-xs-3"><i class="fa fa-bed"></i><br>  {{ $property -> rooms }} </li>@endif
-							@if ($property -> bathrooms > 0 )<li class="col-xs-3"><i class="fa fa-bath"></i><br> {{ $property -> bathrooms }}</li>@endif
-							@if ($property -> garages > 0 )<li class="col-xs-3"><i class="fa fa-car"></i><br> {{ $property -> garages }}</li>@endif
+							@if ($property -> size > 0 )<li class="col-xs-3"><i class="fa fa-arrows" title="Tamaño"></i><br> {{ $property -> size }} m²</li>@endif
+							@if ($property -> rooms > 0 )<li title="Habitaciones" class="col-xs-3"><i class="fa fa-bed"></i><br>  {{ $property -> rooms }} </li>@endif
+							@if ($property -> bathrooms > 0 )<li title="Baños" class="col-xs-3"><i class="fa fa-bath"></i><br> {{ $property -> bathrooms }}</li>@endif
+							@if ($property -> garages > 0 )<li title="Garages" class="col-xs-3"><i class="fa fa-car"></i><br> {{ $property -> garages }}</li>@endif
 						</ul>
 					</div>
 				</div>
@@ -181,46 +181,6 @@
 		</div>
 		@endif
 	</section>
-	<div class="col-md-8">
-		<div id="commentsbox">
-			<span class="comments-heading"><h4 class="prisma-h4">Comentarios</h4></span>
-			<div id="comment-form">
-				<div id="respond" class="rounded">
-					<div class="cancel-comment-reply">
-						<p style="font-family: 'proxima_nova_rgregular';">Tu dirección de Correo no sera publicada</p>
-						<form action="{{ route('commentSend') }}" method="post" id="commentform">
-							{{ csrf_field() }}							
-							<div id="comment-author" class="form-group">
-								<input type="text" class="form-control" placeholder="Nombre (Requerido)" name="name" id="author" value="" size="22" tabindex="1" required="">
-							</div>
-							<div id="comment-email" class="form-group">
-								<input type="text" placeholder="Correo (No se publicara) (Requerido)" required="" class="form-control" name="email" id="email" value="" size="22" tabindex="2" />
-							</div>
-							<div id="comment-message" class="form-group">
-								<textarea name="content" class="form-control" placeholder="Mensaje" id="comment" required="" maxlength="100" style="margin-top: 0px;margin-bottom: 0px;resize:none;height: 150px;width: 100%;"></textarea>
-							</div>
-							<div class="form-group">
-								<input class="btn btn-primary" name="submit" type="submit" id="commentSubmit" tabindex="5" value="Enviar Comentario" />
-							</div>
-							<input type="hidden" name="property_id" value="{{ $property -> id}}" id="comment_post_ID" />
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-8" style="margin-top: 40px;">
-    @foreach ($comments as $element)
-		<div class="comment-body">
-			<div class="comment-author vcard">
-				<cite class="fn">{{ $element -> name }}</cite> <span class="says">dice:</span>
-			</div>
-			<div class="comment-meta">{{ $element -> created_at }}
-			</div>
-			<p class="comment-text">{{ $element -> content }}</p>
-		</div>
-	@endforeach
-	</div>
 
 	</article>
 	@if (count($location))

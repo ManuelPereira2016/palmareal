@@ -43,12 +43,14 @@ class PropertyController extends Controller
      public function edit($id)
      {
         $property = Property::FindOrFail($id);
+        $role = Auth::user() -> role;
 
         $modality = explode(',', $property -> modality);
         $p_types = $property->types->pluck('id')->toArray();
         $p_tas = explode(',', $property -> tags);
         $types = PropertyTypes::all();
         $tags = Tag::all();
+        $images = Media::where(['item' => $id])->get();
         $location = GoogleMapsLocations::where('property_id', $id)->first();
 
         $comments = PropertyComments::where('property_id', $id)->get();
@@ -59,7 +61,7 @@ class PropertyController extends Controller
             'address' => $location["address"]
             ]);
 
-        return view('admin.propiedades.edit')->with(['comments' => $comments, 'location' => $config, 'property' => $property, 'modality' => $modality, 'types' => $types, 'p_types' => $p_types, 'tags' => $tags]);        
+        return view('admin.propiedades.edit')->with([ 'role' => $role, 'images' => $images,'comments' => $comments, 'location' => $config, 'property' => $property, 'modality' => $modality, 'types' => $types, 'p_types' => $p_types, 'tags' => $tags]);        
     }
     /**
      * Show the form for creating a new resource.
@@ -213,6 +215,27 @@ class PropertyController extends Controller
     //return redirect('admin/propiedades');
 }
 
+    public function commentDelete($id)
+    {
+       try{
+        PropertyComments::where('id', $id) -> delete();
+        Historical::insert([
+            'transaction' => 3, 
+            'description' => 'El comentario ' . $id . ' fue eliminado', 
+            'user' => Auth::user()->id, 
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+            ]);
+        Log::notice('Eliminacion exitosa en propertyController -> destroy');
+        } catch (\Exception $e) {
+            Log::error('Error en propertyController -> destroy. Error: ['.$e.']');
+            flash('¡Error! Ha ocurrido un problema', 'danger');
+        }
+
+        flash('Comentario eliminado exitosamente ', 'success');
+        return back()->withInput();
+    }
+
     /**
      * Display the specified resource.
      *
@@ -225,6 +248,7 @@ class PropertyController extends Controller
         ->select('properties.*', 'admins.first_name as first_name', 'admins.last_name as last_name')
         ->join('admins', 'properties.admin', 'admins.id')
         ->first();
+        $role = Auth::user() -> role;
 
         $images = Media::where(['item' => $id])->get();
         $proximities = explode(',', $property -> proximities);
@@ -237,6 +261,7 @@ class PropertyController extends Controller
 
         return view('admin.propiedades.show')
         ->with([
+            'role' => $role,
             'property' => $property, 
             'images' => $images,
             'proximities' => $proximities,
@@ -302,6 +327,17 @@ class PropertyController extends Controller
             }
 
             Property::FindOrFail($id)->update($request -> all()); 
+
+            if (!empty($request -> file('image'))) {
+                $image = $request -> file('image');
+                foreach ($image as $element) {
+                    $type_file = $element->getClientOriginalExtension();                      
+                    $file_name = time() . mt_rand() . $type_file;
+                    $element -> move('imgs/properties/', $file_name ); 
+                    $files_records[] = ['table' => 'properties', 'item' => $id, 'url' => $file_name, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')];                  
+                }
+                $insert_media = Media::insert($files_records);   
+            }
 
             Historical::insert([
                 'transaction' => 2, 

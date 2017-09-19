@@ -487,3 +487,9 @@ footer .ft-sec-pag{
     margin-bottom: 5px;
     word-wrap: break-word;
 }
+
+.owl-carousel,.owl-min .owl-item img {
+    display: block;
+    height: 440px !important;
+    margin: 0 auto 15px !important;
+}

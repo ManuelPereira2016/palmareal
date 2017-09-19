@@ -35,6 +35,13 @@
 		font-size: 16px;
 		margin-bottom: 15px;
 	}
+	.truncate{
+		overflow: hidden;
+	    word-break: break-all;
+	    height: 100px;
+	    margin-bottom: 5px;
+	    word-wrap: break-word;
+	}
 </style>
 @stop
 
@@ -206,6 +213,34 @@
 		</div>
 	</div>
 	<div class="col-md-12">
+		<div class="box box-primary" id="commentsbox">
+			<span class="box-header comments-heading"><h4 class="prisma-h4">Enviar Comentario</h4></span>
+			<div class="box-body" id="comment-form">
+				<div id="respond" class="rounded">
+					<div class="cancel-comment-reply">
+						<p style="font-family: 'proxima_nova_rgregular';">Tu dirección de Correo no sera publicada</p>
+						<form action="{{ route('commentSend') }}" method="post" id="commentform">
+							{{ csrf_field() }}							
+							<div id="comment-author" class="form-group">
+								<input type="text" class="form-control" placeholder="Nombre (Requerido)" name="name" id="author" value="" size="22" tabindex="1" required="">
+							</div>
+							<div id="comment-email" class="form-group">
+								<input type="text" placeholder="Correo (No se publicara) (Requerido)" required="" class="form-control" name="email" id="email" value="" size="22" tabindex="2" />
+							</div>
+							<div id="comment-message" class="form-group">
+								<textarea name="content" class="form-control" placeholder="Mensaje" id="comment" required="" maxlength="100" style="margin-top: 0px;margin-bottom: 0px;resize:none;height: 150px;width: 100%;"></textarea>
+							</div>
+							<div class="form-group">
+								<input class="btn btn-primary" name="submit" type="submit" id="commentSubmit" tabindex="5" value="Enviar Comentario" />
+							</div>
+							<input type="hidden" name="property_id" value="{{ $property -> id}}" id="comment_post_ID" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
 		<div class="box box-primary">
 			<div class="box-header with-border">
 				<h3 class="box-title">Comentarios</h3>
@@ -215,10 +250,13 @@
 				<div class="comment-body">
 					<div class="comment-author vcard">
 						<cite class="fn">{{ $element -> name }}</cite> <span class="says">dice:</span>
+                        @if ($role == '999999')
+                        <a class="pull-right" href="{{ route('commentDelete', $element -> id) }}"><i class="fa fa-trash-o"></i></a>
+                        @endif
 					</div>
 					<div class="comment-meta">{{ $element -> created_at }}
 					</div>
-					<p class="comment-text">{{ $element -> content }}</p>
+					<div class="truncate"><p class="comment-text">{{ $element -> content }}</p></div>
 				</div>
 				@endforeach
 			</div>

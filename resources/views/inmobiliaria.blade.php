@@ -136,11 +136,13 @@
                     @foreach ($best_properties as $element)
                         <div class="col-sm-6 col-md-3 col-lg-3">
                             <div class="thumbnail card">
+                                <a href="{{ action('WebController@propiedad', $element['id'] ) }}" >
                                 @if(count($element["images"]))
                                     <img src="{{ Storage::disk('properties')->url($element['images'][0]) }}" alt="Imagen de propiedad">
                                 @else
                                     <img src="{{ Storage::disk('images')->url('propiety-default.jpg') }}" alt="Imagen de propiedad">
                                 @endif
+                                </a>
                                 <div class="caption">
                                     <h3 style="height: 45px; overflow: hidden">{{ $element["name"] }}</h3>
                                     <div class="price">
@@ -171,11 +173,13 @@
                     @foreach ($properties as $element)
                         <div class="col-sm-6 col-md-4">
                             <div class="thumbnail card">
+                                <a href="{{ action('WebController@propiedad', $element['id'] ) }}" >
                                 @if(count($element["images"]))
                                     <img src="{{ Storage::disk('properties')->url($element['images'][0]) }}" alt="Imagen de propiedad">
                                 @else
                                     <img src="{{ Storage::disk('images')->url('propiety-default.jpg') }}" alt="Imagen de propiedad">
                                 @endif
+                                </a>
                                 <div class="caption">
                                     <h3 style="height: 45px; overflow: hidden">{{ $element["name"] }}</h3>
                                     <div class="price">@if ($element["price"] > 0) $  {{ $element["price"] }} @endif </div>

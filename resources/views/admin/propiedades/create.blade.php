@@ -1,8 +1,6 @@
 @extends('layouts.admin.default')
 
 @section('styles')
-<!-- bootstrap wysihtml5 - text editor -->
-<link rel="stylesheet" href="{{ asset('adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
 <link rel="stylesheet" href="{{ asset('vendors/tags-input/bootstrap-tagsinput.css') }}">
 @endsection
 
@@ -153,8 +151,12 @@
                     </div>
                 </div>
                 <button class="btn btn-primary btn-xs btn-block" type="button" id="btnadd" style="margin-top: 15px;"><span class="fa fa-plus"></span></button>
-            </div>                    
-            <div class="col-md-6">
+            </div>  
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">                  
+            <div class="col-md-12">
                 <label for="descripcion">Descripcion <span class="text-danger">*</span></label>
                 <textarea name="description" id="descripcion" class="form-control" placeholder="Describa la propiedad" required="required" rows="10"></textarea>
             </div>
@@ -189,6 +191,33 @@
             }
             return false;
         });
+    });
+</script>
+<script src="{{asset('adminlte/plugins/tinymce/tinymce.min.js')}}"></script>
+<script src="{{asset('adminlte/plugins/tinymce/themes/modern/theme.min.js')}}"></script>
+<script>
+
+  $(function () {
+        //bootstrap WYSIHTML5 - text editor
+        tinymce.init({
+          selector: '#descripcion',
+          height: 500,
+          resize: false,
+          theme: 'modern',
+          language: 'es_MX',
+          plugins: [
+          'advlist autolink lists link image charmap print preview hr anchor pagebreak ',
+          'searchreplace wordcount visualblocks visualchars code fullscreen spellchecker',
+          'insertdatetime media nonbreaking save table contextmenu directionality',
+          'template paste textcolor colorpicker textpattern imagetools codesample toc help emoticons hr'
+          ],
+          toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+          image_advtab: true,
+          content_css: [
+          '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+          '//www.tinymce.com/css/codepen.min.css'
+          ]
+      });
     });
 </script>
 <script>   
@@ -229,7 +258,7 @@
                 <div class="modal-body">    
                     <div class="row">  
                         <div class="form-group" style="margin-bottom: 40px;">
-                        <div class="col-xs-8 p-left">
+                            <div class="col-xs-8 p-left">
                                 <label for="name" class="control-label col-xs-4">Ubicación</label>
                                 <div class="col-xs-8">
                                     <input id="location-address" name="address" type="text" class="form-control" placeholder="Introduzca una dirección.">

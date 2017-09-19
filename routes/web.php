@@ -28,7 +28,6 @@ Route::post('enviar-mensaje', 'WebController@sendMessage')->name('sendMessage');
 Route::get('property-location', 'WebController@getPropertyLocation');
 //Rutas para el login de administradores
 
-
 //Rutas para el login de usuarios
 Auth::routes();
 	
@@ -61,6 +60,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('admin/propiedades/cambiar-estatus/{id}',            'Admin\PropertyController@status')->name('propiedades.status');
     Route::resource('admin/propiedades',            'Admin\PropertyController');
     Route::post('rate-property', 'Admin\PropertyController@rateProperty')->name('rateProperty');
+    Route::get('delete-comment/{id}',   'Admin\PropertyController@commentDelete')->name('commentDelete');
     Route::get('get-rate-property', 'Admin\PropertyController@getRateProperty')->name('getRateProperty');
     Route::resource('admin/tipos',                  'Admin\TypeController');
     Route::post('admin/administradores/cambiar-estatus/{id}',            'Admin\AdminController@status')->name('administradores.status');    

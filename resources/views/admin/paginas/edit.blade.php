@@ -1,8 +1,4 @@
 @extends('layouts.admin.default')
-@section('styles')
-  <!-- bootstrap wysihtml5 - text editor -->
-  <link rel="stylesheet" href="{{ asset('adminlte/plugins/tinymce/skins/lightgray/content.min.css') }}">
-@endsection
 @section('title', 'Editar pagina')
 @section('content')
     <div class="box box-primary">

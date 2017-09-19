@@ -15,7 +15,9 @@ window.searchPage = class searchPage {
       return `
         <div class="col-sm-6 col-md-4 animate-bottom">
             <div class="thumbnail card">
+                <a href="/inmobiliaria/propiedad/${item.id}" >
                 <img src="${img ? '/imgs/properties/' + img.url : '/imgs/propiety-default.jpg'}" alt="Imagen de propiedad">
+                </a>
                 <div class="caption">
                     <h3 style="height: 45px; overflow: hidden">${item.name}</h3>
                     <div class="price">${ item.price ? item.price : ''}

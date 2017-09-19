@@ -1,63 +1,68 @@
 @extends('layouts.admin.default')
-
 @section('styles')
-<!-- bootstrap wysihtml5 - text editor -->
-<link rel="stylesheet" href="{{ asset('adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
 <link rel="stylesheet" href="{{ asset('vendors/tags-input/bootstrap-tagsinput.css') }}">
 <style>
-.comment-body {
-    position: relative;
-    padding-left: 25px;
-    padding-top: 25px;
-    padding-right: 25px;
-    padding-bottom: 25px;
-    border: 1px solid #d0d0d0;
-    -moz-box-shadow: 0 2px 0 #e6e6e6;
-    box-shadow: 0 2px 0 #e6e6e6;
-    margin-bottom: 40px;
-    background-color: #fff;
-}
+    .comment-body {
+        position: relative;
+        padding-left: 25px;
+        padding-top: 25px;
+        padding-right: 25px;
+        padding-bottom: 25px;
+        border: 1px solid #d0d0d0;
+        -moz-box-shadow: 0 2px 0 #e6e6e6;
+        box-shadow: 0 2px 0 #e6e6e6;
+        margin-bottom: 40px;
+        background-color: #fff;
+    }
 
-.comment-author {
-    font-size: 18px;
-    margin-bottom: 12px;
-    color: #1a1a1a;
-}
+    .comment-author {
+        font-size: 18px;
+        margin-bottom: 12px;
+        color: #1a1a1a;
+    }
 
-.comment-meta {
-    margin-bottom: 16px;
-    color: #808080;
-    text-decoration: none !important;
-    font-size: 14px;
-    font-family: 'proxima_nova_rgregular';
-}
+    .comment-meta {
+        margin-bottom: 16px;
+        color: #808080;
+        text-decoration: none !important;
+        font-size: 14px;
+        font-family: 'proxima_nova_rgregular';
+    }
 
-.comment-text {
-    line-height: 22px;
-    margin-top: 5px;
-    color: #373737;
-    font-size: 16px;
-    margin-bottom: 15px;
-}
+    .comment-text {
+        line-height: 22px;
+        margin-top: 5px;
+        color: #373737;
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    .truncate{
+        overflow: hidden;
+        word-break: break-all;
+        height: 100px;
+        margin-bottom: 5px;
+        word-wrap: break-word;
+    }
 </style>
 @stop
 
 @section('title', 'Editar propiedad')
 @section('content')
-<form action="{{route('propiedades.update', $property -> id)}}" role="form" method="post">
+<form action="{{route('propiedades.update', $property -> id)}}" accept-charset="UTF-8" enctype="multipart/form-data" role="form" method="post">
     {{ csrf_field() }}
     <input type="hidden" name="_method" value="put">
     <div class="box box-primary">
         <div class="box-body">
             <div class="row">
                 <div class="col-md-8">                    
-                 <div class="form-group">
+                   <div class="form-group">
                     <label for="nombre">Nombre  <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="nombre" name="name" placeholder="Nombre de la propiedad" required="required" maxlength="150" value="{{ $property -> name }}">
                 </div>  
             </div> 
             <div class="col-md-4">                    
-             <div class="form-group">
+               <div class="form-group">
                 <label for="estatus">Estatus <span class="text-danger">*</span></label>
                 <select name="status" id="estatus" class="form-control" required="required">
                     <option value="">Seleccione un estatus...</option>
@@ -180,8 +185,21 @@
     </div>
     <div class="form-group">
         <label for="descripcion">Descripcion <span class="text-danger">*</span></label>
-        <textarea name="description" id="descripcion" class="form-control" placeholder="Descripcion de la noticia" required="required" rows="10">{{ $property -> description }}</textarea>
+        <textarea name="description" id="descripcion" class="form-control" placeholder="Descripcion de la noticia" style="resize: none;" required="required" rows="10">{{ $property -> description }}</textarea>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="image" class="control-label">Imagen </label><br>
+            <div id="wrapimg" style="max-height: 180px;overflow: auto;">
+                <div class="warp-btn-file">
+                    <div class="form-control">                                          
+                        <input class="col-md-11" name="image[]" id="image" type="file" >     
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-xs btn-block" type="button" id="btnadd" style="margin-top: 15px;"><span class="fa fa-plus"></span></button>
+        </div>
+    </div>   
 </div>
 <!-- /.box-body -->
 <div class="box-footer text-center">
@@ -191,30 +209,136 @@
 </div>
 </form>
 <div class="row">
-        <div class="col-md-12">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Comentarios</h3>
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Imagenes cargadas</h3>
+            </div>
+            <div class="box-body">
+                @foreach ($images as $element)
+                <div class="col-xs-6 col-md-3">
+                    <a href="{{ route('imagen.edit',$element -> id) }}" id="btn-change-image" title="{{ $property -> nombre }}"> 
+                        <div class="thumbnail" style="background-image: url({{ Storage::disk('properties')->url($element -> url) }}" alt="{{ $property -> nombre }});">
+                            <span class="label label-danger image-edit"><i class="fa fa-pencil"></i></span>
+                        </div>
+                    </a>
                 </div>
-                <div class="box-body">
-                    @foreach ($comments as $element)
-                    <div class="comment-body">
-                        <div class="comment-author vcard">
-                            <cite class="fn">{{ $element -> name }}</cite> <span class="says">dice:</span>
-                        </div>
-                        <div class="comment-meta">{{ $element -> created_at }}
-                        </div>
-                        <p class="comment-text">{{ $element -> content }}</p>
+                @endforeach
+                @if (count($images)<4)
+                <div class="col-xs-6 col-md-3" >
+                    <div class="thumbnail">
+                        <button id="btn-add-image" data-toggle="modal" data-target="#add-image" style="width: 100%; height: 140px; display: flex; align-items: center; text-align: center; font-size: 6rem; background-color: transparent; border: solid 1px #E1E1E1; color:#999"> 
+                            <i class="fa fa-plus" style="margin: auto"></i>
+                        </button>
+                    </div>
+                </div>
+                @endif
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="box box-primary" id="commentsbox">
+            <span class="box-header comments-heading"><h4 class="prisma-h4">Enviar Comentario</h4></span>
+            <div class="box-body" id="comment-form">
+                <div id="respond" class="rounded">
+                    <div class="cancel-comment-reply">
+                        <p style="font-family: 'proxima_nova_rgregular';">Tu dirección de Correo no sera publicada</p>
+                        <form action="{{ route('commentSend') }}" method="post" id="commentform">
+                            {{ csrf_field() }}                          
+                            <div id="comment-author" class="form-group">
+                                <input type="text" class="form-control" placeholder="Nombre (Requerido)" name="name" id="author" value="" size="22" tabindex="1" required="">
+                            </div>
+                            <div id="comment-email" class="form-group">
+                                <input type="text" placeholder="Correo (No se publicara) (Requerido)" required="" class="form-control" name="email" id="email" value="" size="22" tabindex="2" />
+                            </div>
+                            <div id="comment-message" class="form-group">
+                                <textarea name="content" class="form-control" placeholder="Mensaje" id="comment" required="" maxlength="100" style="margin-top: 0px;margin-bottom: 0px;resize:none;height: 150px;width: 100%;"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" name="submit" type="submit" id="commentSubmit" tabindex="5" value="Enviar Comentario" />
+                            </div>
+                            <input type="hidden" name="property_id" value="{{ $property -> id}}" id="comment_post_ID" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Comentarios</h3>
+            </div>
+            <div class="box-body">
+                @foreach ($comments as $element)
+                <div class="comment-body">
+                    <div class="comment-author vcard">
+                        <cite class="fn">{{ $element -> name }}</cite> <span class="says">dice:</span>
+                        @if ($role == '999999')
+                        <a class="pull-right" href="{{ route('commentDelete', $element -> id) }}"><i class="fa fa-trash-o"></i></a>
+                        @endif
+                    </div>
+                    <div class="comment-meta">{{ $element -> created_at }}
+                    </div>
+                    <div class="truncate">
+                        <p class="comment-text">{{ $element -> content }}</p></div>
                     </div>
                     @endforeach
                 </div>
             </div>
         </div>
-</div>
-@stop
-@section('scripts')
+    </div>
+    @stop
+    @section('scripts')
 
-<script type="text/javascript" src="{{ asset('vendors/tags-input/bootstrap-tagsinput.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendors/tags-input/bootstrap-tagsinput.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var count = 1;
+
+            $("#btnadd").click(function() {  
+                $('#wrapimg').append('<div class="form-control" style="margin-top: 15px;"><input id="imagen' + count + '" type="file" class="col-md-11" name="image[]" required="required" /><a href="javascript:void(0)" class="btnremove btn btn-danger btn-xs"><i class="fa fa-remove"></i></a></div>');
+                count++;
+                return false;
+            });
+
+        $('#wrapimg').on("click",".btnremove", function(e){ //click en eliminar campo
+            if( count  > 1 ) {
+                e.preventDefault();
+                $(this).parent('div').remove(); //eliminar el campo
+                count --;
+            }
+            return false;
+        });
+    });
+</script>
+    <script src="{{asset('adminlte/plugins/tinymce/tinymce.min.js')}}"></script>
+    <script src="{{asset('adminlte/plugins/tinymce/themes/modern/theme.min.js')}}"></script>
+    <script>
+        
+      $(function () {
+        //bootstrap WYSIHTML5 - text editor
+        tinymce.init({
+          selector: '#descripcion',
+          height: 500,
+          resize: false,
+          theme: 'modern',
+          language: 'es_MX',
+          plugins: [
+            'advlist autolink lists link image charmap print preview hr anchor pagebreak ',
+            'searchreplace wordcount visualblocks visualchars code fullscreen spellchecker',
+            'insertdatetime media nonbreaking save table contextmenu directionality',
+            'template paste textcolor colorpicker textpattern imagetools codesample toc help emoticons hr'
+          ],
+          toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+          image_advtab: true,
+          content_css: [
+            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+            '//www.tinymce.com/css/codepen.min.css'
+          ]
+         });
+      });
+    </script>
 <script>   
     $('form').submit(function(e){
         // si la cantidad de checkboxes "chequeados" es cero,
@@ -253,7 +377,7 @@
                 <div class="modal-body">    
                     <div class="row">  
                         <div class="form-group" style="margin-bottom: 40px;">
-                        <div class="col-xs-8 p-left">
+                            <div class="col-xs-8 p-left">
                                 <label for="name" class="control-label col-xs-4">Ubicación</label>
                                 <div class="col-xs-8">
                                     <input id="location-address" name="address" type="text" class="form-control" placeholder="Introduzca una dirección.">
