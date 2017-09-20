@@ -12,6 +12,7 @@ use PalmaReal\Page;
 use PalmaReal\Historical;
 use PalmaReal\Message;
 use PalmaReal\Banner;
+use PalmaReal\Media;
 
 class PageController extends Controller
 {
@@ -87,7 +88,7 @@ class PageController extends Controller
     }
 
     public function storeBanner(Request $request){
-        $formats = ['jpg', 'jpeg', 'png', 'svg']; 
+        $formats = ['jpg', 'jpeg', 'png', 'svg'];
 
         try{
             $file = $request -> file('images');
@@ -116,6 +117,27 @@ class PageController extends Controller
             flash('¡Error! Ha ocurrido un problema', 'danger');
         }
         return redirect()->route('paginas.show', $request -> id);
+    }
+
+    public function imageUpload(Request $request){
+        $files_records = array();
+        try{
+            if (!empty($request -> file('file'))) {
+                $image = $request -> file('file');
+                $type_file = $image->getClientOriginalExtension();
+
+                $file_name = time() . mt_rand() . $type_file;
+                $image -> move('imgs/pages/', $file_name ); 
+                $files_records[] = ['table' => 'pages', 'item' => $request->id, 'url' => $file_name];
+            }
+
+            $insert_media = Media::insert($files_records);
+
+            return response()->json(['location' => '/imgs/pages/'. $file_name ]);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e]);
+        }      
     }
 
     public function updateBanner(Request $request, $id){

@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('admin/paginas/eliminar-banner/{id}',                  'Admin\PageController@destroyBanner')->name('paginas.imagen.destroy');
     Route::resource('admin/paginas',                  'Admin\PageController');
     Route::post('admin/perfil/cambiar-contraseña/{id}',                 'Admin\PerfilController@changePassword');
+    Route::post('/page/image-upload/{id}',                 'Admin\PageController@imageUpload')->name('image-upload');
     Route::resource('admin/perfil',                 'Admin\PerfilController');
     Route::resource('admin/roles',                 'Admin\RoleController');
     Route::resource('admin/banners',              'Admin\BannerController');  
