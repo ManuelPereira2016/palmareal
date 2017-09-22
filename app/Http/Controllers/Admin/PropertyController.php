@@ -127,7 +127,7 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-     try{                
+       try{                
         if (!empty($request -> file('image'))) {
             $formats = ['jpg', 'jpeg', 'png', 'svg'];
                 // foreach ($request -> file('image') as $element) {
@@ -215,26 +215,26 @@ class PropertyController extends Controller
     //return redirect('admin/propiedades');
 }
 
-    public function commentDelete($id)
-    {
-       try{
-        PropertyComments::where('id', $id) -> delete();
-        Historical::insert([
-            'transaction' => 3, 
-            'description' => 'El comentario ' . $id . ' fue eliminado', 
-            'user' => Auth::user()->id, 
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-            ]);
-        Log::notice('Eliminacion exitosa en propertyController -> destroy');
-        } catch (\Exception $e) {
-            Log::error('Error en propertyController -> destroy. Error: ['.$e.']');
-            flash('¡Error! Ha ocurrido un problema', 'danger');
-        }
+public function commentDelete($id)
+{
+ try{
+    PropertyComments::where('id', $id) -> delete();
+    Historical::insert([
+        'transaction' => 3, 
+        'description' => 'El comentario ' . $id . ' fue eliminado', 
+        'user' => Auth::user()->id, 
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s')
+        ]);
+    Log::notice('Eliminacion exitosa en propertyController -> destroy');
+} catch (\Exception $e) {
+    Log::error('Error en propertyController -> destroy. Error: ['.$e.']');
+    flash('¡Error! Ha ocurrido un problema', 'danger');
+}
 
-        flash('Comentario eliminado exitosamente ', 'success');
-        return back()->withInput();
-    }
+flash('Comentario eliminado exitosamente ', 'success');
+return back()->withInput();
+}
 
     /**
      * Display the specified resource.
@@ -365,7 +365,7 @@ class PropertyController extends Controller
      */
     public function destroy($id)
     {
-       try{               
+     try{               
         $media = Media::where('item', $id)->get();       
         foreach ($media as $element) {
             if ($delete=Storage::disk('properties')->has($element -> url)) {
@@ -393,6 +393,24 @@ class PropertyController extends Controller
     return redirect()->route('propiedades.index');
 }
 
+public function commentSend(Request $request){
+    try{
+        $email = Auth::user() -> username;
+        $full_name = Auth::user() -> first_name . Auth::user() -> last_name;
+        $request -> request -> add(['email' => $email]);
+        $request -> request -> add(['name' =>  $full_name ]);
+
+        PropertyComments::create($request -> all());
+
+        Log::info('Proceso exitoso en WebController -> commentSend');
+        flash('Mensaje enviado exitosamente', 'success');
+    }catch (\Exception $e) {
+        Log::error('Error en WebController -> commentSend. Error: ['.$e.']');
+        flash('¡Error! Ha ocurrido un problema' . $e, 'danger');
+
+    }
+    return back();
+}
 
     /**
      * Remove the specified resource from storage.

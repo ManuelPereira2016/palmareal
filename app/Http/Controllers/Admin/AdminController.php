@@ -10,6 +10,7 @@ use PalmaReal\Historical;
 use PalmaReal\Admin;
 use PalmaReal\Role;
 use PalmaReal\Property;
+use Validator;
 
 class AdminController extends Controller
 {
@@ -20,7 +21,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $admins = Admin::all();
+        $admins = Admin::where('status', 1)->get();
         return view('admin.admins.index')->with('admins', $admins);
     }
 
@@ -33,10 +34,9 @@ class AdminController extends Controller
     {   
         $roles = Role::where('id', '!=', 1)->get();
         return view('admin.admins.create')->with('roles', $roles);
-
     }
 
-    /**Admins
+    /* Admins
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -64,7 +64,7 @@ class AdminController extends Controller
                 'remember_token' => str_random(10),
                 'created_at' => date('Y:m:d H:i:s'),
                 'updated_at' => date('Y:m:d H:i:s'),
-            ]);
+                ]);
 
             Historical::insert([
                 'transaction' => 1, 
@@ -72,7 +72,7 @@ class AdminController extends Controller
                 'user' => Auth::user()->id, 
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
-            ]);
+                ]);
             Log::info('Registro exitoso en adminController -> Store');
             flash('Proceso exitoso', 'success');
         }catch (\Exception $e) {
@@ -127,7 +127,7 @@ class AdminController extends Controller
                 'user' => Auth::user()->id, 
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-            ]);
+                ]);
             Log::info('Registro exitoso en adminController -> update');
             flash('Proceso exitoso', 'success');
         }catch (\Exception $e) {
@@ -150,28 +150,29 @@ class AdminController extends Controller
             if (count($properties) > 0) {
                 $columns = array_column($properties, 'name');
                 $properties_list = implode('<br> <i class="fa fa-check"></i> ', $columns);
-                
-                Log::info('Intento fallido de eliminar usuario en adminController -> destroy');
+
                 flash('El usuario está vinculado con una o mas propiedades<br>
-                    <div><i class="fa fa-check"></i> '. $properties_list .'</div>', 'danger');
-            } else {
-                $admin = Admin::FindOrFail($id);
-                if (Storage::disk('images')->has($admin -> imagen)) {
-                    Storage::disk('images')->delete($admin -> imagen);
-                }
-                
-                Admin::destroy($id);
-                Historical::insert([
-                    'transaction' => 3, 
-                    'description' => 'Administrador '.$id, 
-                    'user' => Auth::user()->id, 
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
-                Log::info('Registro exitoso en adminController -> destroy');
-                flash('Proceso exitoso', 'success');
+                    <div><i class="fa fa-check"></i> '. $properties_list .'</div>', 'success');
             }
-            
+
+            $admin = Admin::FindOrFail($id);
+            $admin->status = 0;
+            $admin->save();
+            // if (Storage::disk('images')->has($admin -> imagen)) {
+            //     Storage::disk('images')->delete($admin -> imagen);
+            // }
+
+            // Admin::destroy($id);
+            Historical::insert([
+                'transaction' => 3, 
+                'description' => 'Administrador '.$id, 
+                'user' => Auth::user()->id, 
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+            Log::info('Registro exitoso en adminController -> destroy');
+            flash('Proceso exitoso', 'success');
+
         }catch (\Exception $e) {
             Log::error('Error en adminController -> destroy. Error: ['.$e.']');
             flash('¡Error! Ha ocurrido un problema', 'danger');
@@ -198,7 +199,7 @@ class AdminController extends Controller
                 'user' => Auth::user()->id, 
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
-            ]);
+                ]);
             Log::notice('Registro exitoso en propertyController -> Update');
             flash('Estatus cambiado exitosamente', 'success');
         }catch (\Exception $e) {
@@ -216,23 +217,30 @@ class AdminController extends Controller
      */
     public function changePassword(Request $request, $id){
         try{
+            $validator = Validator::make($request->all(), [
+                'password' => 'required|string|min:6|confirmed'
+                ]);
 
-                     
+            if ($validator->fails()) {
+                return redirect('/admin/administradores')
+                ->withErrors($validator)
+                ->withInput();
+            }
+
             Admin::where('id', $id)
             ->update([
                 'password' => bcrypt($request -> password)
-            ]);
-                
-          
+                ]);
+
             Historical::insert([
                 'transaction' => 2, 
                 'description' => 'Cambio de contraseña al administrador '. $id, 
                 'user' => Auth::user()->id, 
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
-            ]);
+                ]);
             Log::notice('Registro exitoso en AdminController -> changePassword');
-            flash('Cambio de contraseña exitoso. Su nueva contraseña es: '.$request -> password, 'success');
+            flash('Cambio de contraseña exitoso.', 'success');
         }catch (\Exception $e) {
             Log::error('Error en AdminController -> changePassword. Error: ['.$e.']');
             flash('¡Error! Ha ocurrido un problema', 'danger');

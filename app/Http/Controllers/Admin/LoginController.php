@@ -77,9 +77,9 @@ class LoginController extends Controller
     {
         $admin = Admin::where(['username' => $request -> username]) -> first();
         if($admin -> status == 0){
-            flash('El usuario actualmene está inactivo', 'danger');
+            flash('El usuario actualmente está inactivo', 'danger');
             return false;
-        }else{
+        } else {
             $result = $this->guard()->attempt(['username' => $request -> username, 'password' => $request -> password]);
             
             if ($result == false) {

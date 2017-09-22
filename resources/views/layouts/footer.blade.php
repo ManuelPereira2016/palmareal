@@ -14,7 +14,7 @@
 			<ul class="menu-footer">				
                 <li class="active"><a href="{{ url('/') }}">Inicio</a></li>
                 <li><a href="{{ url('/constructora') }}">Constructora</a></li>
-                <li><a href="{{ url('/inmobiliaria') }}">Inmibiliaria</a></li>
+                <li><a href="{{ url('/inmobiliaria') }}">Inmobiliaria</a></li>
                 <li><a href="{{ url('/corretaje') }}">Corretaje</a></li>
                 <li><a href="{{ url('/contacto') }}">Contacto</a></li>
 			</ul>

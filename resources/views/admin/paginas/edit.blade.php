@@ -2,7 +2,7 @@
 @section('title', 'Editar pagina')
 @section('content')
     <div class="box box-primary">
-        <form action="{{ route('paginas.update', $page -> id) }}" method="post">
+        <form id="form" action="{{ route('paginas.update', $page -> id) }}" method="post">
             <div class="box-header">
                 <h3 class="box-title">Editar pagina</h3>
             </div>
@@ -28,10 +28,11 @@
                     <input name="description" type="text" class="form-control" id="description" placeholder="Breve descripción" maxlength="200" value="{{ $page -> description }}">                   
                 </div>
                 <div class="form-group">
-                <label for="content">Contenido <span class="text-danger">*</span></label>                         
-                <textarea name="content" id="content" class="textarea" placeholder="Contenido de la pagina" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ $page -> content }}</textarea>
+                <label for="content">Contenido <span class="text-danger">*</span></label>
+                <textarea name="content" id="content" class="textarea" placeholder="Contenido de la pagina" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">Cargando...</textarea>
+                <textarea id="fake" style="display: none;">{{ $page -> content }}</textarea>
             </div>
-            </div>
+            </div>  
             <div class="box-footer text-center">
                 <a href="{{ route('paginas.index') }}" class="btn btn-danger">Cancelar</a>
                 <button type="submit" class="btn btn-success">Aceptar</button>
@@ -41,14 +42,19 @@
 <!-- /.box -->
 @endsection
 @section('scripts')
-    <script src="{{asset('adminlte/plugins/tinymce/tinymce.min.js')}}"></script>
-    <script src="{{asset('adminlte/plugins/tinymce/themes/modern/theme.min.js')}}"></script>
     <script>
+      $('#content').pleaseWait(); // starts the waiter
         
       $(function () {
         //bootstrap WYSIHTML5 - text editor
         tinymce.init({
-          selector: 'textarea',
+          setup: function (ed) {
+            ed.on('init', function(args) {
+              ed.setContent($('#fake').text());
+              $('#content').pleaseWait('stop');
+            });
+          },
+          selector: '#content',
           height: 500,
           theme: 'modern',
           language: 'es_MX',
@@ -56,7 +62,7 @@
             'advlist autolink lists link image charmap print preview hr anchor pagebreak ',
             'searchreplace wordcount visualblocks visualchars code fullscreen spellchecker',
             'insertdatetime media nonbreaking save table contextmenu directionality',
-            'template paste textcolor colorpicker textpattern imagetools codesample toc help emoticons hr'
+            'paste textcolor colorpicker textpattern imagetools codesample toc help emoticons hr'
           ],
           file_picker_types: 'image',
           image_advtab: true,
@@ -118,11 +124,7 @@
               
               input.click();
             },
-          toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
-          content_css: [
-            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-            '//www.tinymce.com/css/codepen.min.css'
-          ]
+          toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat'
          });
       });
     </script>

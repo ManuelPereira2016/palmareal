@@ -242,15 +242,8 @@
             <div class="box-body" id="comment-form">
                 <div id="respond" class="rounded">
                     <div class="cancel-comment-reply">
-                        <p style="font-family: 'proxima_nova_rgregular';">Tu dirección de Correo no sera publicada</p>
                         <form action="{{ route('commentSend') }}" method="post" id="commentform">
-                            {{ csrf_field() }}                          
-                            <div id="comment-author" class="form-group">
-                                <input type="text" class="form-control" placeholder="Nombre (Requerido)" name="name" id="author" value="" size="22" tabindex="1" required="">
-                            </div>
-                            <div id="comment-email" class="form-group">
-                                <input type="text" placeholder="Correo (No se publicara) (Requerido)" required="" class="form-control" name="email" id="email" value="" size="22" tabindex="2" />
-                            </div>
+                            {{ csrf_field() }}
                             <div id="comment-message" class="form-group">
                                 <textarea name="content" class="form-control" placeholder="Mensaje" id="comment" required="" maxlength="100" style="margin-top: 0px;margin-bottom: 0px;resize:none;height: 150px;width: 100%;"></textarea>
                             </div>

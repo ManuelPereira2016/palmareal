@@ -22,7 +22,6 @@ Route::get('inmobiliaria/propiedad/{id}',    'WebController@propiedad');
 Route::get('corretaje',             'WebController@corretaje');
 Route::get('contacto',              'WebController@contacto');
 Route::post('contacto',              'WebController@contactoSend')->name('contacto.send');
-Route::post('add-comment',   'WebController@commentSend')->name('commentSend');
 Route::post('enviar-mensaje', 'WebController@sendMessage')->name('sendMessage');
 
 Route::get('property-location', 'WebController@getPropertyLocation');
@@ -62,6 +61,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('rate-property', 'Admin\PropertyController@rateProperty')->name('rateProperty');
     Route::get('delete-comment/{id}',   'Admin\PropertyController@commentDelete')->name('commentDelete');
     Route::get('get-rate-property', 'Admin\PropertyController@getRateProperty')->name('getRateProperty');
+    Route::post('add-comment',   'Admin\PropertyController@commentSend')->name('commentSend');
     Route::resource('admin/tipos',                  'Admin\TypeController');
     Route::post('admin/administradores/cambiar-estatus/{id}',            'Admin\AdminController@status')->name('administradores.status');    
     Route::post('admin/administradores/cambiar-clave/{id}',            'Admin\AdminController@changePassword')->name('administradores.password');

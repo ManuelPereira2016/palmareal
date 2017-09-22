@@ -28,9 +28,9 @@
 	     folder instead of downloading all of them to reduce the load. -->
 	<link rel="stylesheet" href="{{ asset('adminlte/dist/css/skins/_all-skins.min.css') }}">
 	<!-- Font Awesome -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{{ asset('adminlte/dist/css/font-awesome.min.css') }}">
 	<!-- Ionicons -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+	<link rel="stylesheet" href="{{ asset('adminlte/dist/css/ionicons.min.css') }}">
   	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
  	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
  	<!--[if lt IE 9]>
@@ -72,12 +72,14 @@
 <script src="{{ asset('adminlte/plugins/fastclick/fastclick.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('adminlte/dist/js/app.min.js') }}"></script>
-<!-- SlimScroll 1.3.0 -->
+<script src="{{ asset('adminlte/plugins/Loading-Spinner/jquery.pleaseWait.js') }}"></script>
 <script src="{{ asset('adminlte/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/locationpicker.jquery.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/functions.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/maps.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/rateProperty.js') }}"></script>
+<script src="{{asset('adminlte/plugins/tinymce/tinymce.min.js')}}"></script>
+<script src="{{asset('adminlte/plugins/tinymce/themes/modern/theme.min.js')}}"></script>
 @yield('scripts')
 </body>
 </html>

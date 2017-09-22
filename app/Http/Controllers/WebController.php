@@ -339,20 +339,6 @@ class WebController extends Controller
         return back();
     }
 
-    public function commentSend(Request $request){
-        try{
-            PropertyComments::create($request -> all());
-
-            Log::info('Proceso exitoso en WebController -> commentSend');
-            flash('Mensaje enviado exitosamente', 'success');
-        }catch (\Exception $e) {
-            Log::error('Error en WebController -> commentSend. Error: ['.$e.']');
-            flash('¡Error! Ha ocurrido un problema', 'danger');
-
-        }
-        return back();
-    }
-
     public function sendMessage(Request $request){
         try{
 
@@ -360,7 +346,6 @@ class WebController extends Controller
             $request -> request -> add(['status' => 0]);
             $request -> request -> add(['subject' => 'Propiedad: '. $property -> name]);
             
-
             Message::create($request -> all());
 
             Log::info('Proceso exitoso en WebController -> sendMessage');
