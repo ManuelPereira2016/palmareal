@@ -154,7 +154,7 @@
                                         @endforeach 
                                     @endif
                                     <div class="truncate">
-                                    <p class="text-justify break-words">{{ substr($element["description"], 0, 100) }}</p></div>
+                                    <p class="text-justify break-words">{!! substr($element["description"], 0, 100) !!}</p></div>
                                    <a href="{{ action('WebController@propiedad', $element['id'] ) }}" class="btn btn-second" role="button">Ver más</a>
                                 </div>
                             </div>
@@ -189,7 +189,7 @@
                                         @endforeach 
                                     @endif
                                     <div class="truncate">
-                                    <p class="text-justify break-words">{{ substr($element["description"], 0, 100) }}</p></div>
+                                    <p class="text-justify break-words">{!! substr($element["description"], 0, 100) !!}</p></div>
                                    <a href="{{ action('WebController@propiedad', $element['id'] ) }}" class="btn btn-second" role="button">Ver más</a>
                                 </div>
                             </div>

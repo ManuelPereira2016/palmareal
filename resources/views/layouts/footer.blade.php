@@ -21,7 +21,7 @@
 		</div>
 		<div class="col-md-4 ft-sec-pag">
 			<h4 class="text-center text-capitalize">{{ $footer -> title }}</h4>
-			<p class="text-justify">{{ $footer -> content }}</p>
+			<p class="text-justify">{!! $footer -> content !!}</p>
 		</div>
 		<div class="col-md-4 ft-sec-pag">	
 			<h4 class="text-right">Facebook</h4>		

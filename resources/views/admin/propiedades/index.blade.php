@@ -25,7 +25,6 @@
                                 </form>
                             </td>
                         </tr>
-                            
                         @endforeach
                     </table>
                     {{ $types -> links() }}

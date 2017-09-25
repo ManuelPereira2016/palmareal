@@ -491,5 +491,6 @@ footer .ft-sec-pag{
 .owl-carousel,.owl-min .owl-item img {
     display: block;
     height: 440px !important;
+    width: auto !important;
     margin: 0 auto 15px !important;
 }

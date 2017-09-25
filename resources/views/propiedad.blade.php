@@ -46,7 +46,7 @@
 						<div id="owl-demo" class="owl-carousel owl-theme owl-min" style="margin-bottom: 40px;"> 
 							@foreach ($images as $element)
 							<div class="item">
-								<img src="{{ Storage::disk('properties')->url($element -> url) }}" alt="{{ $property -> nombre . ' ' . $property -> id}}" class="media img-responsive">
+								<img src="{{ Storage::disk('properties')->url($element -> url) }}" alt="{{ $property -> nombre . ' ' . $property -> id}}" class="media">
 							</div>
 							@endforeach			 
 						</div>
@@ -70,7 +70,7 @@
 								<h4 style="display: inline;">Descripción</h4>
 							</div>
 							<div class="panel-body">
-								<p>{{ $property -> description }}</p>
+								<p>{!! $property -> description !!}</p>
 							</div>
 						</div>
 					</div>

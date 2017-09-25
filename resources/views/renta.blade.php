@@ -53,7 +53,7 @@
                                         <h3 style="height: 45px; overflow: hidden">{{ $element -> name }}</h3>
                                         <div class="price">$ {{ $element -> price }} @if ($element -> modality == 2) / Mes @endif</div>
                                         <div class="label label-default">@if ($element -> type == 1) Casa @else Apartamento @endif</div>
-                                        <p class="text-justify">{{ substr($element -> description, 0, 100) }}</p>
+                                        <p class="text-justify">{!! substr($element -> description, 0, 100) !!}</p>
                                        <a href="{{ action('WebController@propiedad', $element -> id ) }}" class="btn btn-second" role="button">Ver más</a>
                                     </div>
                                 </div>
