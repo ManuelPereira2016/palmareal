@@ -91,6 +91,7 @@
                     paginationSpeed : 400,
                     singleItem:true,
                     items : 1, 
+                    margin:300,
                     itemsDesktop : false,
                     itemsDesktopSmall : false,
                     itemsTablet: false,
