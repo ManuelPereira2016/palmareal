@@ -5,6 +5,8 @@
     <article id="home" class="container">
         <section>
             <header class="content-header">
+                <div>{!! $organization -> title_main !!}</div>
+                <br>
                 <h2 class="text-capitalize">{{ $page -> title }}</h2>
                 <small class="subtitle">{{ $page -> subtitle }}</small>
             </header>

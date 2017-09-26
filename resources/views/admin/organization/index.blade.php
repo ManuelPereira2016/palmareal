@@ -19,8 +19,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="text-capitalize">Encabezado / Otros detalles</td>
-                        <td>Editar detalles de contacto y textos principales.</td>
+                        <td class="text-capitalize">Encabezado</td>
+                        <td>Editar numero y correo de contacto.</td>
                         <td class="text-capitalize"></td>
                         <td></td>
                         <td class="text-center">
