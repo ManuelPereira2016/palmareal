@@ -75,6 +75,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::resource('admin/paginas',                  'Admin\PageController');
     Route::get('admin/header',   'Admin\HeaderController@show')->name('header-show');
     Route::get('admin/header/edit', 'Admin\HeaderController@edit')->name('header-edit');
+    Route::post('admin/header/edit/{id}', 'Admin\HeaderController@update')->name('header-update');
     Route::post('admin/perfil/cambiar-contraseña/{id}',                 'Admin\PerfilController@changePassword');
     Route::post('/page/image-upload/{id}',                 'Admin\PageController@imageUpload')->name('image-upload');
     Route::resource('admin/perfil',                 'Admin\PerfilController');

@@ -67,14 +67,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">{{ Lang::get('layout-modal-password.title') }}</h4>
+                    <h4 class="modal-title" id="myModalLabel">Cambiar Contraseña</h4>
                 </div>
                 <div class="modal-body">
                     <form id="changePasswordForm" role="form" method="POST" action="{{ route('administradores.password', 0) }}">
                             {{ csrf_field() }}
                             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class=" control-label">{{ Lang::get('layout-modal-password.new-password') }}</label>
-                                <input id="password" type="password" class="form-control" name="password" required placeholder="{{ Lang::get('layout-modal-password.new-password-placeholder') }}">
+                                <label for="password" class=" control-label">Contraseña nueva</label>
+                                <input id="password" type="password" class="form-control" name="password" required placeholder="Escriba una nueva Contraseña">
 
                                     @if ($errors->has('password'))
                                         <span class="help-block">
@@ -83,8 +83,8 @@
                                     @endif
                             </div>
                             <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                                <label for="confirm-password" class=" control-label">{{ Lang::get('layout-modal-password.confirm-password') }}</label>
-                                <input id="confirm-password" type="password" class="form-control" name="password_confirmation" required placeholder="{{ Lang::get('layout-modal-password.confirm-password-placeholder') }}">
+                                <label for="confirm-password" class=" control-label"> Confirmar contraseña</label>
+                                <input id="confirm-password" type="password" class="form-control" name="password_confirmation" required placeholder="Repita la nueva contraseña">
                                     @if ($errors->has('password_confirmation'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('password_confirmation') }}</strong>
@@ -92,7 +92,7 @@
                                     @endif
                             </div>
                             <div class="form-group text-center">
-                                <button type="submit" class="btn btn-primary">{{ Lang::get('layout-modal-password.enter') }}</button>
+                                <button type="submit" class="btn btn-primary">Actualizar</button>
                             </div>
                         </form>
                 </div>
