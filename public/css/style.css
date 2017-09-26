@@ -35,11 +35,19 @@ main{
 
 }
 
+.form-stand input.form-control {
+	height: 45px;
+}
+
+.form-stand textarea{
+	padding: 20px 10px !important;
+}
+
 .form-stand input, .form-stand textarea{
 	border:solid 1px #003065;
 	background-color: transparent;
 	color: #00313F;
-	padding: 20px 10px;
+	padding: 2px 10px;
 	margin: 10px auto;
 	border-radius: 0;
 }

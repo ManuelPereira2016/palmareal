@@ -2,7 +2,7 @@
     <div class="container">
         <div class="pull-left">
             <div class="data-page">                
-                <i class="glyphicon glyphicon-earphone"></i>+593 99 706 5890 | <i class="glyphicon glyphicon-envelope"></i>ventas@palmarealec.com
+                <i class="glyphicon glyphicon-earphone"></i>{{ $organization -> phone_contact }}<i class="glyphicon glyphicon-envelope"></i>{{ $organization -> email_contact }}
             </div>
         </div>
         <div class="pull-right">

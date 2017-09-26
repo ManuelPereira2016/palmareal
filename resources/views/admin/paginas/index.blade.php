@@ -18,6 +18,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td class="text-capitalize">Encabezado</td>
+                        <td>Editar numero y correo de contacto.</td>
+                        <td class="text-capitalize"></td>
+                        <td></td>
+                        <td class="text-center">
+                            <a class="btn btn-success btn-xs" href="{{ route('header-show') }}" title="Ver"><i class="fa fa-eye"></i></a>
+                            <a class="btn btn-primary btn-xs" href="{{ route('header-edit') }}" title="Editar"><i class="fa fa-pencil"></i></a>
+                        </td>
+                    </tr>
                     @foreach ($pages as $element)
                         <tr>
                             <td class="text-capitalize">{{ $element -> title }}</td>

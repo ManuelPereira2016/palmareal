@@ -73,6 +73,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('admin/paginas/modificar-banner/{id}',                  'Admin\PageController@updateBanner')->name('paginas.imagen.update');
     Route::post('admin/paginas/eliminar-banner/{id}',                  'Admin\PageController@destroyBanner')->name('paginas.imagen.destroy');
     Route::resource('admin/paginas',                  'Admin\PageController');
+    Route::get('admin/header',   'Admin\HeaderController@show')->name('header-show');
+    Route::get('admin/header/edit', 'Admin\HeaderController@edit')->name('header-edit');
     Route::post('admin/perfil/cambiar-contraseña/{id}',                 'Admin\PerfilController@changePassword');
     Route::post('/page/image-upload/{id}',                 'Admin\PageController@imageUpload')->name('image-upload');
     Route::resource('admin/perfil',                 'Admin\PerfilController');

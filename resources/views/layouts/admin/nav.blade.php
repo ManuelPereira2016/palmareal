@@ -33,8 +33,8 @@
                     <i class="fa fa-file-text "></i> <span>Paginas</span>
                 </a>
             </li>
-            @endif   
-            @if (in_array(7, array_column(session('roles'), 'fk_id_module')))
+            @endif
+            @if (in_array(4, array_column(session('roles'), 'fk_id_module')))
                 <li {!! ( Request::is('admin/banners') ? 'class="active"' : '') !!}>
                     <a href="{{ route('banners.index') }}">
                         <i class="fa fa-picture-o"></i><span>Banners</span>

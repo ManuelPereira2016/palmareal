@@ -22,6 +22,7 @@ use PalmaReal\BestProperties;
 use PalmaReal\Map;
 use PalmaReal\Page;
 use PalmaReal\Tag;
+use PalmaReal\Organization;
 
 class WebController extends Controller
 {   
@@ -34,6 +35,7 @@ class WebController extends Controller
     {
         $maps = Map::where('id', 1)->first();
         $banners = Banner::where(['page' => '1'])->get();
+        $organization = Organization::where('id', 1)->first();
         $page = Page::FindOrFail(1);
         $footer = Page::FindOrFail(7);
         $media = Media::where('media.table', 'properties')->get();
@@ -42,7 +44,7 @@ class WebController extends Controller
         ->offset(0)
         ->limit(4)
         ->get();
-        return view('index')->with(['properties' => $properties, 'media' => $media, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps]);
+        return view('index')->with(['organization' => $organization, 'properties' => $properties, 'media' => $media, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps]);
     }
 
     /**
