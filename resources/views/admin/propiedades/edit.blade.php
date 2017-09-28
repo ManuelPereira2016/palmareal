@@ -185,7 +185,7 @@
     </div>
     <div class="form-group">
         <label for="descripcion">Descripcion <span class="text-danger">*</span></label>
-        <textarea name="description" id="descripcion" class="form-control" placeholder="Descripcion de la noticia" style="resize: none;" required="required" rows="10">{{ $property -> description }}</textarea>
+        <textarea name="description" id="descripcion" class="form-control" placeholder="Descripcion de la noticia" style="resize: none;" rows="10">{{ $property -> description }}</textarea>
     </div>
     <div class="row">
         <div class="col-md-6">

@@ -212,7 +212,7 @@ class PropertyController extends Controller
         Log::error('Error en PropertyController -> Store. Error: ['.$e.']');
         flash('¡Error! Ha ocurrido un problema', 'danger');
     }
-    //return redirect('admin/propiedades');
+    return redirect('admin/propiedades');
 }
 
 public function commentDelete($id)
@@ -365,15 +365,16 @@ return back()->withInput();
      */
     public function destroy($id)
     {
-     try{               
+     try{
         $media = Media::where('item', $id)->get();       
         foreach ($media as $element) {
             if ($delete=Storage::disk('properties')->has($element -> url)) {
                 $delete=Storage::disk('properties')->delete($element -> url);
             }
-        } 
+        }
 
         PropertiesTypesRelations::where('property_id', $id) -> delete();
+        GoogleMapsLocations::where('property_id', $id) -> delete();
         Media::where('item', $id) -> delete();
         Property::FindOrFail($id) -> delete();
         Historical::insert([

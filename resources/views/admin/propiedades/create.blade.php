@@ -158,7 +158,7 @@
         <div class="row">                  
             <div class="col-md-12">
                 <label for="descripcion">Descripcion <span class="text-danger">*</span></label>
-                <textarea name="description" id="descripcion" class="form-control" placeholder="Describa la propiedad" required="required" rows="10"></textarea>
+                <textarea name="description" id="descripcion" class="form-control" placeholder="Describa la propiedad" rows="10"></textarea>
             </div>
         </div>
     </div>  
