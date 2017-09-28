@@ -86,16 +86,32 @@
                 });
 
                 $("#owl-demo").owlCarousel({
+                    loop: true,
+                    margin: 500,
+                    singleItem: true,
+                    responsiveClass: true,
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        600: {
+                            items: 1
+                        }, 
+                        1000: {
+                            items: 1,
+                            nav: true,
+                            margin: 20
+                        }
+                    },
                     nav:true, // Show next and prev buttons
                     slideSpeed : 300,
                     paginationSpeed : 400,
-                    singleItem:true,
                     items : 1, 
-                    margin:300,
-                    itemsDesktop : false,
-                    itemsDesktopSmall : false,
-                    itemsTablet: false,
-                    itemsMobile : false
+                    // margin:300,
+                    // itemsDesktop : false,
+                    // itemsDesktopSmall : false,
+                    // itemsTablet: false,
+                    // itemsMobile : false
                       // "singleItem:true" is a shortcut for:
                       // items : 1, 
                       // itemsDesktop : false,

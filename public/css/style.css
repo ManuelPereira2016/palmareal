@@ -496,9 +496,26 @@ footer .ft-sec-pag{
     word-wrap: break-word;
 }
 
-.owl-carousel,.owl-min .owl-item img {
-    display: block;
-    height: 440px !important;
-    width: auto !important;
-    margin: 0 auto 15px !important;
+@media (max-width: 767px) {
+	.owl-carousel,.owl-min .owl-item img {
+	    height: 300px !important;
+	    /*width: auto !important;*/
+	    margin: 0 auto 15px !important;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+	.owl-carousel,.owl-min .owl-item img {
+	    height: 440px !important;
+	    /*width: auto !important;*/
+	    margin: 0 auto 15px !important;
+	}
+}
+
+@media (min-width: 993px) and (max-width: 1200px) {
+	.owl-carousel,.owl-min .owl-item img {
+	    height: 440px !important;
+	    /*width: auto !important;*/
+	    margin: 0 auto 15px !important;
+	}
 }

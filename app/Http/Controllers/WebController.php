@@ -102,9 +102,10 @@ class WebController extends Controller
     {
         $maps = Map::where('id', 1)->first();
         $banners = Banner::where('page', 2)->get();
+        $organization = Organization::where('id', 1)->first();
         $page = Page::FindOrFail(2);
         $footer = Page::FindOrFail(7);
-        return view('constructora')->with(['page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps]);
+        return view('constructora')->with([ 'organization' => $organization, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps]);
     }
 
     /**
@@ -116,6 +117,7 @@ class WebController extends Controller
     {
         $best = null;
         $tags = Tag::all();
+        $organization = Organization::where('id', 1)->first();
         $banners = Banner::where('page', 3)->get();
         $page = Page::FindOrFail(3);
         $maps = Map::where('id', 1)->first();
@@ -142,7 +144,7 @@ class WebController extends Controller
 
         $properties = $this->paginate($properties, 12, $request);
 
-        return view('inmobiliaria')->with(['best_properties' => $best, 'properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media , 'tags' => $tags, 'locations' => $locations]);
+        return view('inmobiliaria')->with(['organization' => $organization, 'best_properties' => $best, 'properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media , 'tags' => $tags, 'locations' => $locations]);
     }
     
     public function search(Request $request){
@@ -150,6 +152,7 @@ class WebController extends Controller
         $tags = Tag::all();
         $properties_types = PropertyTypes::all();
         $banners = Banner::where('page', 3)->get();
+        $organization = Organization::where('id', 1)->first();
         $page = Page::FindOrFail(3);
         $maps = Map::where('id', 1)->first();
         $footer = Page::FindOrFail(7);
@@ -254,7 +257,7 @@ class WebController extends Controller
 
         $properties = $this->paginate($properties, 12, $request);
 
-        return response()->json(['properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties->all(), 'media' => $media, 'tags' => $tags, 'locations' => $locations, 'message' => $message, 'paginator' => view('pagination.properties')->with(['properties' => $properties])->render()]);
+        return response()->json(['organization' => $organization, 'properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties->all(), 'media' => $media, 'tags' => $tags, 'locations' => $locations, 'message' => $message, 'paginator' => view('pagination.properties')->with(['properties' => $properties])->render()]);
     }
 
      /**
@@ -269,6 +272,7 @@ class WebController extends Controller
         if (count($property)>0) {
             $maps = Map::where('id', 1)->first();
             $footer = Page::FindOrFail(7);
+            $organization = Organization::where('id', 1)->first();
             $banners = Banner::where('page', 4)->get();
             $location = GoogleMapsLocations::where('property_id', $id)->get();
             $comments = PropertyComments::where('property_id', $id)->get();
@@ -279,7 +283,7 @@ class WebController extends Controller
             $proximities = explode(',', $property -> proximities);
             $characteristics = explode(',', $property -> characteristics);
             $types = $property -> types;
-            return view('propiedad')->with(['comments' => $comments, 'property' => $property, 'proximities' => $proximities, 'characteristics' => $characteristics,  'images' => $images, 'types' => $types, 'footer' => $footer, 'location' => $location, 'banners' => $banners, 'maps' => $maps]);
+            return view('propiedad')->with(['organization' => $organization ,'comments' => $comments, 'property' => $property, 'proximities' => $proximities, 'characteristics' => $characteristics,  'images' => $images, 'types' => $types, 'footer' => $footer, 'location' => $location, 'banners' => $banners, 'maps' => $maps]);
         } else {
             flash('La propiedad no existe', 'danger');
             return back();
@@ -306,8 +310,9 @@ class WebController extends Controller
         $maps = Map::where('id', 1)->first();
         $banners = Banner::where('page', 5)->get();
         $page = Page::FindOrFail(5);
+        $organization = Organization::where('id', 1)->first();
         $footer = Page::FindOrFail(7);
-        return view('corretaje')->with(['page' => $page, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps]);
+        return view('corretaje')->with(['organization' => $organization, 'page' => $page, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps]);
     }
 
     /**
@@ -318,11 +323,12 @@ class WebController extends Controller
     public function contacto()
     {
         $maps = Map::where('id', 1)->first();
+        $organization = Organization::where('id', 1)->first();
         $banners = Banner::where('page', 6)->get();
         $page = Page::FindOrFail(6);
         $footer = Page::FindOrFail(7);
 
-        return view('contacto')->with(['page' => $page, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps ]);
+        return view('contacto')->with(['organization' => $organization, 'page' => $page, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps ]);
     }
 
     public function contactoSend(Request $request){
