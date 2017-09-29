@@ -29,11 +29,11 @@
 				  	<div class="col-sm-12 col-md-6">
 			      		<input name="name" type="text" class="form-control" id="name" placeholder="Nombre y Apellido" required="required" maxlength="100" pattern="[A-Za-z/\s/]{4,100}">
 			      		<input name="email" type="email" class="form-control" id="email" placeholder="Correo" required="required" maxlength="100">
-			      		<input name="phone" type="number" class="form-control" id="phone" placeholder="Numero Telefonico" required="required" maxlength="15">
+			      		<input name="phone" type="number" class="form-control" id="phone" placeholder="Numero Telefónico" required="required" maxlength="15">
 				  	</div>
 				  	<div class="col-sm-12 col-md-6">
 			      		<input name="subj" type="text" class="form-control" id="subj" placeholder="Asunto del mensaje" required="required" maxlength="190"  pattern="{4,190}">
-			  			<textarea class="form-control" name="message" id="message" placeholder="Descipcion" required="required" maxlength="500" rows="5"></textarea>		
+			  			<textarea class="form-control" name="message" id="message" placeholder="Descripción" required="required" maxlength="500" rows="5"></textarea>		
 				  	</div>
 					<div class="col-md-12 text-center">
 					    <button type="submit" class="hvr-sweep-to-right" style="margin-top: 20px;">Contactar</button>

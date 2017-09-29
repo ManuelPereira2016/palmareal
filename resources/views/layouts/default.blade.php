@@ -38,7 +38,7 @@
         <div id="wrapper-page">
             <header>
                 @include('layouts.navbar')
-                @include('layouts.carousel')
+                @yield('carousel')
             </header>
             <main>
                 @yield('content')

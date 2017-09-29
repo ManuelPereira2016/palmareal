@@ -1,5 +1,7 @@
 @extends('layouts.default')
-
+@section('carousel')
+ @include('layouts.carousel')
+@endsection
 @section('title', $page -> title)
 @section('content')
     <article id="home" class="container">
@@ -36,7 +38,7 @@
                                             <div class="label label-default">{{ $value }}</div>
                                         @endforeach                          
                                     @endif
-                                    <p class="text-justify">{!! substr($element -> description, 0, 100) !!}</p>
+                                    <p class="text-justify">{{ substr(strip_tags($element -> description), 0, 100) }}</p>
                                    <a href="{{ action('WebController@propiedad', $element -> id ) }}" class="btn btn-second" role="button">Ver más</a>
                                 </div>
                             </div>
