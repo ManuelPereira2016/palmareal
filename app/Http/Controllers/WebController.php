@@ -125,6 +125,19 @@ class WebController extends Controller
         $media = Media::where('media.table', 'properties')->get();
         $properties_types = PropertyTypes::all();
         $locations = Locations::all()->pluck('name')->toArray();
+        $maps_props = GoogleMapsLocations::get();
+        $main_lng = 0;
+        $main_lat = 0;
+
+        if(count($maps_props)){
+            foreach ($maps_props as $map) {
+                $main_lng += $map -> longitude;
+                $main_lat += $map -> latitude;
+            }
+
+            $main_lng = $main_lng / count($maps_props);
+            $main_lat = $main_lat / count($maps_props);
+        }
 
         $properties = Property::orderBy('created_at', 'desc')->get();
 
@@ -144,7 +157,7 @@ class WebController extends Controller
 
         $properties = $this->paginate($properties, 12, $request);
 
-        return view('inmobiliaria')->with(['organization' => $organization, 'best_properties' => $best, 'properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media , 'tags' => $tags, 'locations' => $locations]);
+        return view('inmobiliaria')->with(['organization' => $organization, 'best_properties' => $best, 'properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties, 'media' => $media , 'tags' => $tags, 'locations' => $locations, 'maps_props' => $maps_props, 'main_lng' => $main_lng, 'main_lat' => $main_lat]);
     }
     
     public function search(Request $request){
@@ -158,7 +171,20 @@ class WebController extends Controller
         $footer = Page::FindOrFail(7);
         $media = Media::where('media.table', 'properties')->get();
         $locations = Locations::all()->pluck('name')->toArray();
+        $maps_props = GoogleMapsLocations::get();
         $message = "";
+        $main_lng = 0;
+        $main_lat = 0;
+
+        if(count($maps_props)){
+            foreach ($maps_props as $map) {
+                $main_lng += $map -> longitude;
+                $main_lat += $map -> latitude;
+            }
+
+            $main_lng = $main_lng / count($maps_props);
+            $main_lat = $main_lat / count($maps_props);
+        }
 
         if($request->has('name')){
             $properties = Property::search($request->name)->get();
@@ -257,7 +283,7 @@ class WebController extends Controller
 
         $properties = $this->paginate($properties, 12, $request);
 
-        return response()->json(['organization' => $organization, 'properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties->all(), 'media' => $media, 'tags' => $tags, 'locations' => $locations, 'message' => $message, 'paginator' => view('pagination.properties')->with(['properties' => $properties])->render()]);
+        return response()->json(['organization' => $organization, 'properties_types' => $properties_types, 'page' => $page, 'footer' => $footer, 'banners' => $banners, 'maps' => $maps, 'properties' => $properties->all(), 'media' => $media, 'tags' => $tags, 'locations' => $locations, 'maps_props' => $maps_props, 'message' => $message, 'paginator' => view('pagination.properties')->with(['properties' => $properties])->render()]);
     }
 
      /**

@@ -32,7 +32,7 @@
                 <textarea name="content" id="content" class="textarea" placeholder="Contenido de la pagina" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">Cargando...</textarea>
                 <textarea id="fake" style="display: none;">{{ $page -> content }}</textarea>
             </div>
-            </div>  
+            </div>
             <div class="box-footer text-center">
                 <a href="{{ route('paginas.index') }}" class="btn btn-danger">Cancelar</a>
                 <button type="submit" class="btn btn-success">Aceptar</button>
@@ -64,7 +64,7 @@
             'insertdatetime media nonbreaking save table contextmenu directionality',
             'paste textcolor colorpicker textpattern imagetools codesample toc help emoticons hr'
           ],
-          file_picker_types: 'image',
+          file_picker_types: 'image media',
           image_advtab: true,
           images_upload_handler: function (blobInfo, success, failure) {
               var xhr, formData;
@@ -94,7 +94,14 @@
           file_picker_callback: function(cb, value, meta) {
               var input = document.createElement('input');
               input.setAttribute('type', 'file');
-              input.setAttribute('accept', 'image/*');
+
+              if (meta.filetype == 'image') {
+                input.setAttribute('accept', 'image/*');
+              }
+
+              if (meta.filetype == 'media') {
+                input.setAttribute('accept', 'video/*');
+              }
               
               // Note: In modern browsers input[type="file"] is functional without 
               // even adding it to the DOM, but that might not be the case in some older
@@ -104,7 +111,7 @@
 
               input.onchange = function() {
                 var file = this.files[0];
-                
+               
                 var reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = function () {
@@ -117,8 +124,41 @@
                   var blobInfo = blobCache.create(id, file, base64);
                   blobCache.add(blobInfo);
 
-                  // call the callback and populate the Title field with the file name
-                  cb(blobInfo.blobUri(), { title: file.name });
+                  if (file.type.match(/video/gi)){
+                    // Show progress loading
+                    $('body').pleaseWait(); // starts loading icon
+
+                    // lets upload the video
+                    var xhr, formData;
+                    xhr = new XMLHttpRequest();
+                    xhr.withCredentials = false;
+                    xhr.open('POST', '{{ route('video-upload', $page -> id) }}');
+                    var token = $('[name="csrf-token"]').attr('content');
+                    xhr.setRequestHeader("X-CSRF-Token", token);
+                    xhr.onload = function() {
+                        var json;
+                        if (xhr.status != 200) {
+                            console.log('HTTP Error: ' + xhr.status);
+                            return;
+                        }
+                        json = JSON.parse(xhr.responseText);
+
+                        if (!json || typeof json.location != 'string') {
+                            console.log('Invalid JSON: ' + xhr.responseText);
+                            return;
+                        }
+                        // call the callback and populate the Title field with the file name
+                        cb(json.location, { title: file.name });
+
+                        $('body').pleaseWait('stop');
+                    };
+                    formData = new FormData();
+                    formData.append('file', blobInfo.blob(), blobInfo.filename());
+                    xhr.send(formData);
+                  } else {
+                    // call the callback and populate the Title field with the file name
+                    cb(blobInfo.blobUri(), { title: file.name });
+                  }
                 };
               };
               

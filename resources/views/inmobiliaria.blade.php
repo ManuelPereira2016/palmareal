@@ -8,7 +8,7 @@
                     <h2 class="text-capitalize">{{ $page -> title }}</h2>
                     <small class="subtitle">{{ $page -> subtitle }}</small>
                 </header>
-                <div class="content-body">
+                <div class="content-body" style="overflow: auto;">
                     {!! $page -> content !!}
                 </div>
             </div>
@@ -205,7 +205,52 @@
             </div>
         </div>
 	</article>
+    @foreach ($maps_props as $map)
+
+    @endforeach
+    
 @endsection
 @section('scripts')
 <script type="text/javascript">new searchPage()</script>
+        <script>
+            function initMap() {
+
+                var marker;
+                var infowindow = new google.maps.InfoWindow({});
+
+                @if($main_lng && $main_lat)
+                    var palmareal = {lng: {{$main_lng}}, lat: {{$main_lat}}};
+                @else
+                    var palmareal = {lng: {{$maps -> longitude}}, lat: {{$maps -> latitude}}};
+                @endif
+
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 13,
+                    center: palmareal
+                });
+
+                @foreach ( $maps_props as $location)
+                    var property = {lng: {{ $location -> longitude }}, lat: {{ $location -> latitude }}};
+
+                    marker = new google.maps.Marker({
+                        position: property,
+                        map: map
+                    });
+
+                    @if ($location -> property)
+                        google.maps.event.addListener(marker, 'click', (function (marker) {
+                            return function () {
+                                infowindow.setContent( "<a href='{{ action('WebController@propiedad', $location -> property -> id ) }}'> {{ $location -> property -> name }}</a>" )
+                                infowindow.open(map, marker);
+                            }
+                        })(marker));
+                    @endif
+                @endforeach
+
+                // var marker = new google.maps.Marker({
+                //     position: palmareal,
+                //     map: map
+                // });
+            }
+        </script>
 @endsection

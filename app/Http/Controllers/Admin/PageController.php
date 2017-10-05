@@ -76,7 +76,7 @@ class PageController extends Controller
             flash('Proceso exitoso', 'success');
         }catch (\Exception $e) {
             Log::error('Error en pageController -> update. Error: ['.$e.']');
-            flash('¡Error! Ha ocurrido un problema', 'danger');
+            flash('¡Error! Ha ocurrido un problema'. $e, 'danger');
         }
         return redirect()->route('paginas.show', $id);
     }
@@ -134,6 +134,28 @@ class PageController extends Controller
             $insert_media = Media::insert($files_records);
 
             return response()->json(['location' => '/imgs/pages/'. $file_name ]);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e]);
+        }
+    }
+
+    public function videoUpload(Request $request){
+        $files_records = array();
+
+        try{
+            if (!empty($request -> file('file'))) {
+                $video = $request -> file('file');
+                $type_file = $video->getClientOriginalExtension();
+
+                $file_name = time() . mt_rand() . $type_file;
+                $video -> move('videos/pages/', $file_name ); 
+                $files_records[] = ['table' => 'pages', 'item' => $request->id, 'url' => $file_name];
+            }
+
+            $insert_media = Media::insert($files_records);
+
+            return response()->json(['location' => '/videos/pages/'. $file_name ]);
 
         } catch (\Exception $e) {
             return response()->json(['error' => $e]);

@@ -46,8 +46,9 @@
             <footer class="footer-site">
                 @include('layouts.footer')
             </footer>
-        </div>   
+        </div>
         <!-- Parameters Google Maps -->
+         @if (strpos(Request::path(), 'inmobiliaria') === false)
         <script>
             function initMap() {
                 var palmareal = {lng: {{ $maps -> longitude }}, lat: {{ $maps -> latitude }}};
@@ -61,6 +62,7 @@
                 });
             }
         </script>
+        @endif
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script type="text/javascript" src="{{ asset('vendors/jquery.min.js') }}"></script>
         <!-- Scripts -->

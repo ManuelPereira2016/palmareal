@@ -211,6 +211,12 @@ main p{
 	}
 }
 
+@media (max-width: 400px){	
+	.navbar-brand img{
+		width: 100% !important;
+	}
+}
+
 @media (max-width: 900px) {
 	.navbar-brand img{
 		width: 400px;
@@ -517,5 +523,10 @@ footer .ft-sec-pag{
 	    height: 440px !important;
 	    /*width: auto !important;*/
 	    margin: 0 auto 15px !important;
+	}
+}
+@media (max-width: 767px) {
+	.title-article > span {
+		margin-left: 0px !important;
 	}
 }

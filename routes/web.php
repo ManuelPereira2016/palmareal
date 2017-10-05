@@ -18,7 +18,7 @@ Route::get('inmobiliaria',          'WebController@inmobiliaria');
 Route::post('inmobiliaria',          'WebController@search')->name('search');
 // Route::get('inmobiliaria/venta',    'WebController@venta');
 // Route::get('inmobiliaria/renta',    'WebController@renta');
-Route::get('inmobiliaria/propiedad/{id}',    'WebController@propiedad');
+Route::get('inmobiliaria/propiedad/{id}',    'WebController@propiedad')->name('propiedad');
 Route::get('corretaje',             'WebController@corretaje');
 Route::get('contacto',              'WebController@contacto');
 Route::post('contacto',              'WebController@contactoSend')->name('contacto.send');
@@ -78,6 +78,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('admin/header/edit/{id}', 'Admin\HeaderController@update')->name('header-update');
     Route::post('admin/perfil/cambiar-contraseña/{id}',                 'Admin\PerfilController@changePassword');
     Route::post('/page/image-upload/{id}',                 'Admin\PageController@imageUpload')->name('image-upload');
+    Route::post('/page/video-upload/{id}',                 'Admin\PageController@videoUpload')->name('video-upload');
     Route::resource('admin/perfil',                 'Admin\PerfilController');
     Route::resource('admin/roles',                 'Admin\RoleController');
     Route::resource('admin/banners',              'Admin\BannerController');  

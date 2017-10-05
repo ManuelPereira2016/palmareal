@@ -12,7 +12,7 @@
                 <h2 class="text-capitalize">{{ $page -> title }}</h2>
                 <small class="subtitle">{{ $page -> subtitle }}</small>
             </header>
-            <div class="content-body">
+            <div class="content-body" style="overflow:auto;">
                 {!! $page -> content !!}
             </div>
         </section>
@@ -25,11 +25,13 @@
                 @foreach ($properties as $element)
                     <div class="col-sm-6 col-md-3">
                             <div class="thumbnail card">
+                                <a href="{{ action('WebController@propiedad', $element -> id ) }}">
                                 @if(array_key_exists($element -> id, $item = array_column($media->toArray(), 'url', 'item')))
                                     <img src="{{ Storage::disk('properties')->url($item[$element -> id]) }}" alt="Imagen de propiedad">
                                 @else
                                     <img src="{{ Storage::disk('images')->url('propiety-default.jpg') }}" alt="Imagen de propiedad">
                                 @endif
+                                </a>
                                 <div class="caption">
                                     <h3 style="height: 45px; overflow: hidden">{{ $element -> name }}</h3>
                                     <div class="price">@if ($element -> price > 0) $ {{ $element -> price }} @endif </div>
