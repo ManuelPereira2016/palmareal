@@ -158,7 +158,7 @@ class PageController extends Controller
             return response()->json(['location' => '/videos/pages/'. $file_name ]);
 
         } catch (\Exception $e) {
-            return response()->json(['error' => $e]);
+            return response()->json(['error' => json_encode($e)]);
         }      
     }
 

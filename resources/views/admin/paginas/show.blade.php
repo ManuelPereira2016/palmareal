@@ -25,7 +25,7 @@
 		        	<p><b>Descripción</b></p>
 		          	<p>{{ $page -> description }}</p>
 		        </li>
-		        <li>
+		        <li style="overflow: auto;">
 		        	<p><b>Contenido</b></p>
 		          	<p>{!! $page -> content !!}</p>
 		        </li>

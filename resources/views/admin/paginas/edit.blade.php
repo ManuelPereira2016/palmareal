@@ -110,24 +110,10 @@
               // once you do not need it anymore.
 
               input.onchange = function() {
+                $('body').pleaseWait(); // starts loading icon
                 var file = this.files[0];
-               
-                var reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = function () {
-                  // Note: Now we need to register the blob in TinyMCEs image blob
-                  // registry. In the next release this part hopefully won't be
-                  // necessary, as we are looking to handle it internally.
-                  var id = 'blobid' + (new Date()).getTime();
-                  var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
-                  var base64 = reader.result.split(',')[1];
-                  var blobInfo = blobCache.create(id, file, base64);
-                  blobCache.add(blobInfo);
 
-                  if (file.type.match(/video/gi)){
-                    // Show progress loading
-                    $('body').pleaseWait(); // starts loading icon
-
+                if (file.type.indexOf('video') == 0){
                     // lets upload the video
                     var xhr, formData;
                     xhr = new XMLHttpRequest();
@@ -153,13 +139,28 @@
                         $('body').pleaseWait('stop');
                     };
                     formData = new FormData();
-                    formData.append('file', blobInfo.blob(), blobInfo.filename());
+                    formData.append('file', file);
                     xhr.send(formData);
-                  } else {
+                } else {
+                  var reader = new FileReader();
+                  reader.readAsDataURL(file);
+                  reader.onload = function () {
+                    // Note: Now we need to register the blob in TinyMCEs image blob
+                    // registry. In the next release this part hopefully won't be
+                    // necessary, as we are looking to handle it internally.
+                    var id = 'blobid' + (new Date()).getTime();
+                    var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                    var base64 = reader.result.split(',')[1];
+                    var blobInfo = blobCache.create(id, file, base64);
+                    blobCache.add(blobInfo);
+                    
                     // call the callback and populate the Title field with the file name
                     cb(blobInfo.blobUri(), { title: file.name });
-                  }
-                };
+
+                    $('body').pleaseWait('stop');
+                  };
+                }
+               
               };
               
               input.click();

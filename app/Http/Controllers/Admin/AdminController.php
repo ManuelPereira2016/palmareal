@@ -21,7 +21,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $admins = Admin::where('status', 1)->get();
+        $admins = Admin::get();
         return view('admin.admins.index')->with('admins', $admins);
     }
 
