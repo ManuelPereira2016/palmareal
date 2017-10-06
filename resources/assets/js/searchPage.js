@@ -45,7 +45,8 @@ window.searchPage = class searchPage {
   search(){
     let data = this.form.serialize();
     this.filters = data
-
+    
+    this.triggerScrollTop()
     window.showLoading('#properties-container')
 
     axios.post(window.location.href.split('?')[0], data)
@@ -89,7 +90,7 @@ window.searchPage = class searchPage {
 
   getPages(url){
     window.showLoading('#properties-container')
-
+    this.triggerScrollTop()
     axios.post(url, this.filters)
     .then((res)=>{
       res = res.data

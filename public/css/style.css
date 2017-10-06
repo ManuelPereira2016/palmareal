@@ -530,3 +530,12 @@ footer .ft-sec-pag{
 		margin-left: 0px !important;
 	}
 }
+
+iframe {
+	border: 0 !important;
+}
+
+video {
+	border: 1px solid #eee;
+    background-color: #666;
+}
