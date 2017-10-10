@@ -46,12 +46,19 @@
       $('#content').pleaseWait(); // starts the waiter
         
       $(function () {
+        $('body').on('DOMNodeInserted', '.mce-fade', function (e) {
+          if (!$('#webm-warning').length){
+            $('[role="tabpanel"].mce-first').prepend(
+            '<span id="webm-warning" style="padding-left: 20px;display: block;margin-top: 10px;margin-bottom: -5px;    font-weight: 600;">Se recomienda utilizar unicamente videos en formato WEBM.</span>');
+          }
+        });
+
         //bootstrap WYSIHTML5 - text editor
         tinymce.init({
           setup: function (ed) {
             ed.on('init', function(args) {
               ed.setContent($('#fake').text());
-              $('#content').pleaseWait('stop');
+              $('#content').pleaseWait('stop');             
             });
           },
           selector: '#content',

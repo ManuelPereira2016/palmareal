@@ -538,4 +538,5 @@ iframe {
 video {
 	border: 1px solid #eee;
     background-color: #666;
+    object-fit: fill;
 }
