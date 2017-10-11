@@ -136,11 +136,14 @@
                         <div class="col-sm-6 col-md-3 col-lg-3">
                             <div class="thumbnail card">
                                 <a href="{{ action('WebController@propiedad', $element['id'] ) }}" >
+                                <div class="overlay-img"> 
+                                    <span>Ver más</span>
                                 @if(count($element["images"]))
                                     <img src="{{ Storage::disk('properties')->url($element['images'][0]) }}" alt="Imagen de propiedad">
                                 @else
                                     <img src="{{ Storage::disk('images')->url('propiety-default.jpg') }}" alt="Imagen de propiedad">
                                 @endif
+                                </div>
                                 </a>
                                 <div class="caption">
                                     <h3 style="height: 45px; overflow: hidden">{{ $element["name"] }}</h3>

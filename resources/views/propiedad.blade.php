@@ -139,7 +139,50 @@
 				</div>
 			</div>
 			<div class="col-md-4">
-				<div class="panel">
+
+				<div class="contact-form container">
+					<div class="row header">
+						<h1>Contactar &nbsp;</h1>
+						<h3>Llena el formulario debajo para comunicarte con nosotros!</h3>
+					</div>
+					<div class="row body">
+						<form action="{{ route('sendMessage') }}" method="post" >
+							{{ csrf_field() }}
+							<input type="hidden" name="property" value="{{ $property -> id }}">
+							<ul>
+								<li>
+
+									<label for="name">Nombre y Apellido</label>
+									<input type="text" name="name" required="" id="name" placeholder="Nombre completo" />
+
+
+									<label for="phone">Teléfono</label>
+									<input type="text" name="phone" placeholder="Numero de teléfono" />      
+
+								</li>
+								<li>
+
+									<label for="email">E-mail <span class="req">*</span></label>
+									<input type="email" name="email" placeholder="Correo electronico" />
+
+								</li>        
+								<li><div class="divider"></div></li>
+								<li>
+									<label for="message">Mensaje</label>
+									<textarea cols="46" style="resize: none;" rows="3" required="" name="message"></textarea>
+								</li>
+								<li>
+									<input class="btn btn-submit hvr-float" type="submit" value="Contactar" />
+									<small>o presiona <strong>enter</strong></small>
+								</li>
+								
+							</ul>
+						</form>  
+					</div>
+				</div>
+
+
+			<!--	<div class="panel">
 					<div class="panel-body">
 						<h4 class="text-center">Contactar</h4>
 						<form action="{{ route('sendMessage') }}" method="post" role="form" class="form-style form-search">
@@ -170,7 +213,7 @@
 							</div>
 						</form>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		@if (Auth::check())
@@ -182,19 +225,19 @@
 		@endif
 	</section>
 
-	</article>
-	@if (count($location))
-	<div id="wrap-map">
-		<header class="content-header">
-			<h2>Ubicacion Exacta</h2>
-		</header>
-		<!-- <div id="map-2"></div> -->
-		<div id="map-2" style="background-color: grey;height: 400px;margin-left: auto;margin-right: auto;margin-bottom: 20px;"></div>
-	</div>
-	@endif
-	@endsection
-	@section('scripts')
-	<script type="text/javascript">
-		new showLocation();
-	</script>
-	@endsection
+</article>
+@if (count($location))
+<div id="wrap-map">
+	<header class="content-header">
+		<h2>Ubicacion Exacta</h2>
+	</header>
+	<!-- <div id="map-2"></div> -->
+	<div id="map-2" style="background-color: grey;height: 400px;margin-left: auto;margin-right: auto;margin-bottom: 20px;"></div>
+</div>
+@endif
+@endsection
+@section('scripts')
+<script type="text/javascript">
+	new showLocation();
+</script>
+@endsection
