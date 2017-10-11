@@ -26,11 +26,14 @@
                     <div class="col-sm-6 col-md-3">
                             <div class="thumbnail card">
                                 <a href="{{ action('WebController@propiedad', $element -> id ) }}">
+                                <div class="overlay-img"> 
+                                    <span>Ver más</span>
                                 @if(array_key_exists($element -> id, $item = array_column($media->toArray(), 'url', 'item')))
                                     <img src="{{ Storage::disk('properties')->url($item[$element -> id]) }}" alt="Imagen de propiedad">
                                 @else
                                     <img src="{{ Storage::disk('images')->url('propiety-default.jpg') }}" alt="Imagen de propiedad">
                                 @endif
+                                </div>
                                 </a>
                                 <div class="caption">
                                     <h3 style="height: 45px; overflow: hidden">{{ $element -> name }}</h3>
@@ -50,3 +53,16 @@
         </section>
     </article>
 @endsection
+@section('scripts')
+<script type="text/javascript">
+$(function(){
+    $('.card .overlay-img').on('mouseout', function(){
+        $(this).parent().find('span').css('display', 'none')
+    })
+
+    $('.card .overlay-img').on('mouseover', function(){
+        $(this).parent().find('span').css('display', 'block')
+    })
+})
+</script>
+@endsection('scripts')

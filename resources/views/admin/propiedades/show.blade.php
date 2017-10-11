@@ -52,7 +52,7 @@
 		<div class="box-header with-border">  				
 			<a class="btn btn-primary" href="{{route('propiedades.index')}}">Regresar</a>
 			<a class="pull-right rate" style="padding-right: 25px;padding-top: 5px;" title="Destacada" id="mark-property" href="#">
-				<i class="fa fa-heart-o fa-2x" style="color:#5056FF;"></i>
+				<i class="fa fa-heart-o hvr-bounce-in fa-2x" style="color:#5056FF;"></i>
 			</a>
 		</div>
 		<div class="box-body">

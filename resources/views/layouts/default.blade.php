@@ -19,6 +19,7 @@
         <!-- Styles -->
         <link href="{{ asset('vendors/bootstrap/css/bootstrap.css') }}?v=3.3.7" rel="stylesheet">
         <link href="{{ asset('vendors/font-awesome/css/font-awesome.min.css') }}?v=4.7.0" rel="stylesheet">
+        <link href="{{ asset('vendors/hover-master/css/hover-min.css') }}" rel="stylesheet" media="all">
         <link href="{{ asset('css/style.css') }}?v=1.1" rel="stylesheet">
         <!-- Owl Stylesheets -->
         <link rel="stylesheet" href="{{ asset('vendors/owlcarousel/owl.carousel.min.css') }}">

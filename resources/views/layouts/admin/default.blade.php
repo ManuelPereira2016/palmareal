@@ -31,6 +31,7 @@
 	<link rel="stylesheet" href="{{ asset('adminlte/dist/css/font-awesome.min.css') }}">
 	<!-- Ionicons -->
 	<link rel="stylesheet" href="{{ asset('adminlte/dist/css/ionicons.min.css') }}">
+  	<link href="{{ asset('vendors/hover-master/css/hover-min.css') }}" rel="stylesheet" media="all">
   	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
  	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
  	<!--[if lt IE 9]>

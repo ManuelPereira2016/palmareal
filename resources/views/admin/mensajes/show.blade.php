@@ -14,7 +14,7 @@
 	            		<div class="col-md-6">	            			         
 				            <li>
 				            	<p><i class="ion ion-person"></i> <b>Email</b></p>
-				              	<p>{{ $message -> email }}</p>
+				              	<p><a href="mailto:{{ $message -> email }}">{{ $message -> email }}</a></p>
 				            </li>   
 	            		</div>
 	            		<div class="col-md-6">

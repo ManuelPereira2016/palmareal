@@ -394,6 +394,26 @@ footer .ft-sec-pag{
 .card img {
   height: 140px;
   width: 100%;
+  transition: all .25s ease-in-out;
+}
+
+.card .overlay-img {
+	background: #000;
+}
+
+.overlay-img span{
+	position: absolute;
+    top: 70px;
+    left: 33%;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    display: none;
+    transition: all .25s ease-in;
+}
+
+.card img:hover {
+	opacity: 0.5;
 }
 
 #loader {
