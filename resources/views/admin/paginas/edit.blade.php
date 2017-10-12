@@ -49,7 +49,7 @@
         $('body').on('DOMNodeInserted', '.mce-fade', function (e) {
           if (!$('#webm-warning').length){
             $('[role="tabpanel"].mce-first').prepend(
-            '<span id="webm-warning" style="padding-left: 20px;display: block;margin-top: 10px;margin-bottom: -5px;    font-weight: 600;">Se recomienda utilizar unicamente videos en formato WEBM.</span>');
+            '<span id="webm-warning" style="padding-left: 20px;display: block;margin-top: 10px;margin-bottom: -5px;font-weight: 600;">Se recomienda utilizar videos en formato h264 MP4 ligeros.</span>');
           }
         });
 

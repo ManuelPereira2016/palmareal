@@ -523,6 +523,9 @@ footer .ft-sec-pag{
 }
 
 @media (max-width: 767px) {
+  video {
+    width: 100%;
+  }
 	.owl-carousel,.owl-min .owl-item img {
 	    height: 300px !important;
 	    /*width: auto !important;*/
@@ -557,8 +560,8 @@ iframe {
 
 video {
 	border: 1px solid #eee;
-    background-color: #666;
-    object-fit: fill;
+  background-color: #666;
+  object-fit: fill;
 }
 
 /* Contact form css */
