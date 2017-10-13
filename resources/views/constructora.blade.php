@@ -7,7 +7,7 @@
            	<h2 class="text-capitalize">@yield('title')</h2>
             <small class="subtitle">{{ $page -> subtitle }}</small>
         </header>
-        <section class="text-center" style="overflow:auto;">
+        <section class="text-center" style="overflow:none;">
         	{!! $page -> content !!}
         </section>
 	</article>

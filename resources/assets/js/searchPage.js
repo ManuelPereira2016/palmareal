@@ -68,15 +68,15 @@ window.searchPage = class searchPage {
 
         row.append(this.properties(prop, img[0]));
 
-        if(row.children().length % 3 == 0){
-          $('#properties-container').append(row);
-          row = $('<div class="row"></div>')
-        }
+        // if(row.children().length % 3 == 0){
+        //   $('#properties-container').append(row);
+        //   row = $('<div class="row"></div>')
+        // }
       })
 
-      if(length < 3){
+      // if(length < 3){
         $('#properties-container').append(row);
-      }
+      // }
 
       if(res.message){
         $('#message').addClass('alert-' + res.message[0].level).css('display', 'block')

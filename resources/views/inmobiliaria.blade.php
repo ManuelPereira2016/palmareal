@@ -18,7 +18,7 @@
                     <form id="form">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <h3>Busqueda</h3>
+                            <h3>Búsqueda</h3>
                             <div class="alert" id="message" style="display: none;"></div>     
                         </div>
                         <div class="form-group">
@@ -133,7 +133,7 @@
                     <div class="row">
                     @if ($best_properties)
                     @foreach ($best_properties as $element)
-                        <div class="col-sm-6 col-md-3 col-lg-3">
+                        <div class="properties">
                             <div class="thumbnail card">
                                 <a href="{{ action('WebController@propiedad', $element['id'] ) }}" >
                                 <div class="overlay-img"> 
@@ -166,14 +166,14 @@
                     </div>
                 </div>
                 <div class="col-md-12 content-header" id="properties-page" style="padding-top: 0px;">
-                    <h2>Ultimas Propiedades</h2>
+                    <h2>Últimas Propiedades</h2>
                     <small class="subtitle">Mire las ultimas propiedades cargadas</small>
                 </div>
                 <div id="properties-container">
                 @php($i=1)
                 <div class="row">
                     @foreach ($properties as $element)
-                        <div class="col-sm-6 col-md-4">
+                        <div class="properties">
                             <div class="thumbnail card">
                                 <a href="{{ action('WebController@propiedad', $element['id'] ) }}" >
                                 <div class="overlay-img"> 
@@ -199,11 +199,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if ($i % 3 == 0 && $i != 1)
-                        </div>
-                        <div class="row">
-                        @endif
-                        @php($i++)
+
                     @endforeach
                 </div>
                 {{ $properties -> links() }}

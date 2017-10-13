@@ -18,7 +18,7 @@
         </section>
         <section>
             <header class="content-header">
-                <h2>Ultimas Propiedades</h2>
+                <h2>Últimas Propiedades</h2>
                 <small class="subtitle">Mire las ultimas propiedades cargadas</small>
             </header>
             <div class="row">
