@@ -12,11 +12,11 @@
                 <h2 class="text-capitalize">{{ $page -> title }}</h2>
                 <small class="subtitle">{{ $page -> subtitle }}</small>
             </header>
-            <div class="content-body" style="overflow:auto;">
+            <div class="content-body module" style="overflow:auto;">
                 {!! $page -> content !!}
             </div>
         </section>
-        <section>
+        <section class="module">
             <header class="content-header">
                 <h2>Últimas Propiedades</h2>
                 <small class="subtitle">Mire las ultimas propiedades cargadas</small>
@@ -56,6 +56,40 @@
 @section('scripts')
 <script type="text/javascript">
 $(function(){
+    var win = $(window);
+    var allMods = $(".module");
+
+    $.fn.visible = function(partial) {
+        
+        var $t            = $(this),
+            $w            = $(window),
+            viewTop       = $w.scrollTop(),
+            viewBottom    = viewTop + $w.height(),
+            _top          = $t.offset().top,
+            _bottom       = _top + $t.height(),
+            compareTop    = partial === true ? _bottom : _top,
+            compareBottom = partial === true ? _top : _bottom;
+        
+        return ((compareBottom <= viewBottom) && (compareTop >= viewTop));
+    };
+
+    // Already visible modules
+    allMods.each(function(i, el) {
+      var el = $(el);
+      if (el.visible(true)) {
+        el.addClass("already-visible"); 
+      } 
+    });
+
+    win.scroll(function(event) {
+      allMods.each(function(i, el) {
+        var el = $(el);
+        if (el.visible(true)) {
+          el.addClass("come-in"); 
+        } 
+      });
+    });
+
     $('.card .overlay-img').on('mouseout', function(){
         $(this).parent().find('span').css('display', 'none')
     })

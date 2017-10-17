@@ -16,7 +16,7 @@
                     <h4>{{ $element -> name }}</h4>
                     <p>{{ $element -> description }}</p>
                     @if (!empty($element -> link ))
-                        <div class="text-center"><a href="{{ url($element -> link) }}" class="btn btn-primary">Ver más</a></div>
+                        <div class="text-center"><a href="{{ url($element -> link) }}" class="btn btn-primary hvr-float">Ver más</a></div>
                     @endif
                 </div>
             </div>

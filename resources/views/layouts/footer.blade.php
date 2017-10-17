@@ -1,5 +1,5 @@
 @if (strpos(Request::path(), 'propiedad') === false)
-<div id="wrap-map">
+<div id="wrap-map" class="module">
     <header class="content-header">
         <h2>Google Maps</h2>
         <small class="subtitle">Visitenos en nuestra sede principal.</small>

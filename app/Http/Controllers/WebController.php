@@ -271,7 +271,7 @@ class WebController extends Controller
             });
 
             $properties = $new_properties;
-        }       
+        }
 
         // Verificamos los valores que se enviaron.
         $input = $request->except('_token');
@@ -279,6 +279,17 @@ class WebController extends Controller
             if($value){
                 $message = flash('Se han encontrado '. count($properties) .' resultados', 'info')->messages;
             }
+        }
+
+        if($request->has('sort_by')){
+            $lista = $properties->all();
+
+            uasort($lista, function($a, $b) {
+                return strtotime($a['created_at']) - strtotime($b['created_at']);
+            });
+            $properties = $lista;
+        } else {
+            $properties = $properties->all();
         }
 
         $properties = $this->paginate($properties, 12, $request);

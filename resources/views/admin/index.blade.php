@@ -4,13 +4,15 @@
 @section('content')
         <div class="row">
             <div class="col-md-6">
-                <div class="small-box bg-aqua">
-                    <div class="inner">
-                        <h3>{{$num_propiedades}}</h3>
-                        <p>Propiedades</p>
+                <a href="/admin/propiedades">
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h3>{{$num_propiedades}}</h3>
+                            <p>Propiedades</p>
+                        </div>
+                        <div class="icon"><i class="ion ion-home"></i></div>
                     </div>
-                    <div class="icon"><i class="ion ion-home"></i></div>
-                </div>
+                </a>
             </div>
             {{-- <div class="col-md-4">
                 <div class="small-box bg-green">
@@ -22,17 +24,18 @@
                 </div>
             </div> --}}
             <div class="col-md-6">
-                <div class="small-box bg-red">
-                    <div class="inner">
-                        <h3>{{$num_users}}</h3>
-                        <p>Usuarios</p>
+                <a href="/admin/administradores">
+                    <div class="small-box bg-red">
+                        <div class="inner">
+                            <h3>{{$num_users}}</h3>
+                            <p>Usuarios</p>
+                        </div>
+                        <div class="icon"><i class="ion ion-person-stalker"></i></div>
                     </div>
-                    <div class="icon"><i class="ion ion-person-stalker"></i></div>
-                </div>
+                </a>
             </div>
         </div>
         <!-- Small boxes (End box) -->
-
         {{-- <div class="row">
             <div class="col-md-6">
                 <!-- Chat box -->
@@ -108,8 +111,8 @@
                     <div class="box-body chat" id="chat-box">
                         <ul>
                             <li><b>Descripcion</b> {{ $maps -> description }}</li>
-                            <li><b>Longitud</b> {{ $maps -> longitude }}</li>
-                            <li><b>Latitud</b> {{ $maps -> latitude }}</li>
+                            <li><b>Longitud</b> <span id="lng-val">{{ $maps -> longitude }}</span></li>
+                            <li><b>Latitud</b> <span id="lat-val">{{ $maps -> latitude }}</span></li>
                         </ul>
                         <button id="btn-change-map" data-toggle="modal" data-target="#changeMap" type="button" class="btn btn-primary btn-xs">Modificar</button>
                     </div>
@@ -147,4 +150,14 @@
             </div>            
         </form>
     </div>
+@endsection
+@section('scripts')
+<script type="text/javascript">
+    $(function () {
+        $('#changeMap').on('shown.bs.modal', function(){
+            $('#latitude').val($('#lat-val').text())
+            $('#longitude').val($('#lng-val').text())
+        })
+    })
+</script>
 @endsection

@@ -36,6 +36,17 @@
                         </div> --}}
                         <div class="form-group">
                             <button class="btn btn-success">Buscar</button>
+                            <button id="btn-clear" class="btn btn-warning">Limpiar Filtros</button>
+                        </div>
+                        <div class="form-group">
+                            <h4>Ordenar por</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a id="sort-by" class="filter-link" href=""><span><b>Fecha</b></span>
+                                        <input id="sort_by" disabled="" name="sort_by" type="hidden" value="1" >
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <h4>Precio</h4>
@@ -133,7 +144,7 @@
                     <div class="row">
                     @if ($best_properties)
                     @foreach ($best_properties as $element)
-                        <div class="properties">
+                        <div class="properties module">
                             <div class="thumbnail card">
                                 <a href="{{ action('WebController@propiedad', $element['id'] ) }}" >
                                 <div class="overlay-img"> 
@@ -172,7 +183,7 @@
                 <div id="properties-container">
                 <div class="row">
                     @foreach ($properties as $element)
-                        <div class="properties">
+                        <div class="properties module">
                             <div class="thumbnail card">
                                 <a href="{{ action('WebController@propiedad', $element['id'] ) }}" >
                                 <div class="overlay-img"> 
@@ -222,6 +233,25 @@
                 $('#construcciones').on('mouseover', '.card .overlay-img', function(){
                     $(this).parent().find('span').css('display', 'block')
                 })
+                
+                $('#btn-clear').on('click', function(e){
+                    e.preventDefault()
+                    $('#form').find('input:not("[type=checkbox]")').val('')
+                    $('#form').find("[type=checkbox]").removeAttr('checked')
+                })
+
+                $('.filter-link').on('click', function(e){
+                    if($(this).hasClass('selected')){
+                        $(this).removeClass('selected')
+                        $(this).find('input').attr('disabled', true)
+                    } else {
+                        $(this).addClass('selected')
+                        $(this).find('input').removeAttr('disabled')
+                    }
+                    e.preventDefault()
+                    e.stopPropagation()
+                })
+
             })
 
             function initMap() {
