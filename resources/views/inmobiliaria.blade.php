@@ -170,7 +170,6 @@
                     <small class="subtitle">Mire las ultimas propiedades cargadas</small>
                 </div>
                 <div id="properties-container">
-                @php($i=1)
                 <div class="row">
                     @foreach ($properties as $element)
                         <div class="properties">
@@ -216,11 +215,11 @@
 <script type="text/javascript">new searchPage()</script>
         <script>
             $(function(){
-                $('.card .overlay-img').on('mouseout', function(){
+                $('#construcciones').on('mouseout', '.card .overlay-img', function(){
                     $(this).parent().find('span').css('display', 'none')
                 })
 
-                $('.card .overlay-img').on('mouseover', function(){
+                $('#construcciones').on('mouseover', '.card .overlay-img', function(){
                     $(this).parent().find('span').css('display', 'block')
                 })
             })
