@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use PalmaReal\Http\Controllers\Controller;
 use PalmaReal\PropertyTypes;
+use PalmaReal\PropertiesTypesRelations;
 use PalmaReal\Historical;
+use Exception;
 
 class TypeController extends Controller
 {
@@ -101,10 +103,12 @@ class TypeController extends Controller
      */
     public function destroy($id)
     {
-        try{           
-            
-            PropertyTypes::FindOrFail($id) -> delete();
+        try{
+            if (PropertiesTypesRelations::where('properties_type_id', $id)->count()){
+                throw new Exception('Existen propiedades asociadas a este tipo.');
+            }
 
+            PropertyTypes::Find($id)->delete();
             Historical::insert([
                 'transaction' => 3, 
                 'description' => 'Tipo de inmueble ' . $id , 
@@ -115,8 +119,8 @@ class TypeController extends Controller
             Log::notice('Proceso exitoso en TypeController -> destroy');
             flash('Tipo de inmueble eliminado exitosamente', 'success');
         }catch (\Exception $e) {
-            Log::error('Error en TypeController -> destroy. Error: ['.$e.']');
-            flash('¡Error! Ha ocurrido un problema', 'danger');
+            Log::error('Error en TypeController -> destroy. Error: ['.$e->getMessage().']');
+            flash('¡Error! '. $e->getMessage(), 'danger');
         }
         return back();
     }

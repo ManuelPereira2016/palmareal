@@ -11,4 +11,9 @@ class BestProperties extends Model
     protected $fillable = [
     	'id', 'property_id', 'avg', 'author'
     ];
+
+    public function property()
+    {
+        return $this->belongsTo('PalmaReal\Property', 'property_id');
+    }
 }

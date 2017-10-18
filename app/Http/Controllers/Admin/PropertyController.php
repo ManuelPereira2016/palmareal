@@ -30,10 +30,11 @@ class PropertyController extends Controller
     {
         $types = PropertyTypes::paginate(5);
         $tags = Tag::paginate(5);
+        $rated_properties = BestProperties::all();
         $properties = Property::select('properties.*', 'admins.first_name as first_name', 'admins.last_name as last_name', 'admins.username as username')
         ->join('admins', 'admins.id', 'properties.admin')
         ->get();
-        return view('admin.propiedades.index')->with(['properties' => $properties, 'tags' => $tags, 'types' => $types]);
+        return view('admin.propiedades.index')->with(['rated_properties' => $rated_properties, 'properties' => $properties, 'tags' => $tags, 'types' => $types]);
     }
      /**
      * Show the form for creating a new resource.
@@ -215,6 +216,27 @@ class PropertyController extends Controller
     return redirect('admin/propiedades');
 }
 
+public function deleteRated($id)
+{
+ try{
+    BestProperties::where('id', $id) -> delete();
+    Historical::insert([
+        'transaction' => 3, 
+        'description' => 'La propiedad ' . $id . ' Ya no se encuentra entre las destacadas.', 
+        'user' => Auth::user()->id, 
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s')
+        ]);
+    Log::notice('Eliminacion exitosa en BestProperties -> destroy');
+} catch (\Exception $e) {
+    Log::error('Error en quitar Propiedad destacada. Error: ['.$e.']');
+    flash('¡Error! Ha ocurrido un problema', 'danger');
+}
+
+    flash('La propiedad ya no aparecera entre las destacadas.', 'success');
+    return back()->withInput();
+}
+
 public function commentDelete($id)
 {
  try{
@@ -232,8 +254,8 @@ public function commentDelete($id)
     flash('¡Error! Ha ocurrido un problema', 'danger');
 }
 
-flash('Comentario eliminado exitosamente ', 'success');
-return back()->withInput();
+    flash('Comentario eliminado exitosamente ', 'success');
+    return back()->withInput();
 }
 
     /**

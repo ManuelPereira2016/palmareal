@@ -135,11 +135,11 @@
                     <div class="modal-body">      
                         <div class="form-group">
                             <label for="latitude" class="control-label">Latitud</label>
-                            <input id="latitude" name="latitude" type="text" class="form-control" placeholder="Latitud">
+                            <input id="latitude" required="" name="latitude" type="text" class="form-control" placeholder="Latitud">
                         </div>     
                         <div class="form-group">
                             <label for="longitude" class="control-label">Longitud</label>
-                            <input id="longitude" name="longitude" type="text" class="form-control" placeholder="Longitud">
+                            <input id="longitude" required="" name="longitude" type="text" class="form-control" placeholder="Longitud">
                         </div>                
                     </div>
                     <div class="modal-footer text-center">

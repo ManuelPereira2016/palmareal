@@ -63,6 +63,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('get-rate-property', 'Admin\PropertyController@getRateProperty')->name('getRateProperty');
     Route::post('add-comment',   'Admin\PropertyController@commentSend')->name('commentSend');
     Route::resource('admin/tipos',                  'Admin\TypeController');
+    Route::delete('admin/rated-properties/delete/{id}',            'Admin\PropertyController@deleteRated')->name('best_properties_destroy');
+    Route::post('admin/clear-history',  'Admin\PageController@clearHistory')->name('clear_history');
     Route::post('admin/administradores/cambiar-estatus/{id}',            'Admin\AdminController@status')->name('administradores.status');    
     Route::post('admin/administradores/cambiar-clave/{id}',            'Admin\AdminController@changePassword')->name('administradores.password');
     Route::resource('admin/mensajes',        'Admin\MessageController');

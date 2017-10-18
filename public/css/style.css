@@ -829,7 +829,7 @@ video::-webkit-media-controls-panel {
 }
 
 /* Animations */
-.come-in {
+/*.come-in {
   -webkit-animation-name: fadeInUp;
   animation-name: fadeInUp;
   -webkit-animation-duration: 1s;
@@ -860,9 +860,9 @@ video::-webkit-media-controls-panel {
   100% {
     opacity: 1;
     -webkit-transform: none;
-    transform: none;
+    transform: none;<
   }
-}
+}*/
 
 .filter-link:hover, .filter-link:focus {
   text-decoration: none !important;
@@ -872,4 +872,22 @@ video::-webkit-media-controls-panel {
 .filter-link.selected {
   text-decoration: none !important;
   color: #23527c !important;
+}
+
+.come-in {
+    visibility: visible !important;
+    -webkit-transform: translateY(0) scale(1) !important;
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+    opacity: 1 !important;
+    -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.6, 0.2, 0.1, 1) 0.47s, opacity 0.3s cubic-bezier(0.6, 0.2, 0.1, 1) 0.47s !important;
+    transition: transform 0.3s cubic-bezier(0.6, 0.2, 0.1, 1) 0.47s, opacity 0.3s cubic-bezier(0.6, 0.2, 0.1, 1) 0.47s !important;
+}
+
+.module {
+    visibility: visible;
+    -webkit-transform: translateY(20px) scale(0.9);
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    opacity: 0;
 }

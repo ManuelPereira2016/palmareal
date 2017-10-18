@@ -27,6 +27,16 @@ class PageController extends Controller
         return view('admin.paginas.index')->with(['pages' => $pages]);
     }
 
+    public function clearHistory(){
+        $historical = Historical::all();
+
+        foreach ($historical as $value) {
+            $value->delete();
+        }
+
+        return response()->json('History cleared.');
+    }
+
       /**
      * Display the specified resource.
      *

@@ -6,6 +6,9 @@
 @section('title', 'Historial')
 @section('content')
     <div class="box box-primary">
+            <div class="box-header with-border fillable">
+                <a href="#" id="clear-history" class="btn btn-danger">Eliminar historial</a>
+            </div>
         <div class="box-body">
             <table id="example1" class="table table-bordered table-striped  table-hover">
                 <thead>
@@ -57,6 +60,19 @@ $(function () {
         "info": true,
         "autoWidth": false
     });
+    var token = $('[name="csrf-token"]').attr('content');
+
+    $('#clear-history').on('click', function(){
+        $.ajax({
+            url:'/admin/clear-history',
+            type: 'POST',
+            data: {'_token' : token }
+        })
+        .done(function(data){
+            location.reload();
+        })
+    })
+
 });
 </script>
 @endsection
