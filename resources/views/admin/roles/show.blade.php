@@ -2,7 +2,8 @@
 
 @section('title', 'Ver Rol')
 @section('content')
-<div class="col-md-7">
+<div class="row">
+<div class="col-md-12">
   	<div class="box box-primary">
         <div class="box-body">
 			<ul class="box-list">
@@ -15,6 +16,20 @@
 		          	<p>{{ $rol -> description}}</p>
 		        </li>
 			</ul>
+			<div class="row">
+	        <ul class="box-list">
+	        	<li>
+		        	<div class="col-md-6">
+		        		<p><i class="fa fa-calendar"></i> <b>Creación</b></p>
+		          		<p>{{ date_format($rol ->created_at, 'd/m/Y') }}</p>
+		        	</div>
+		        	<div class="col-md-6">
+		        		<p><i class="fa fa-calendar"></i> <b>Modificación</b></p>
+		          		<p>{{ date_format($rol ->updated_at, 'd/m/Y') }}</p>
+		        	</div>
+		        </li>
+	        </ul>
+	        </div>
 			<table class="table">
 				<tr>		
 					@foreach ($modules as $element)			
@@ -35,23 +50,6 @@
         </div>
     </div>
 </div>
-<div class="col-md-5">
-    <div class="box  box-primary">
-    	<div class="box-body">
-	        <ul class="box-list">
-	        	<li>
-		        	<div class="col-md-6">
-		        		<p><i class="fa fa-calendar"></i> <b>Creación</b></p>
-		          		<p>{{ date_format($rol ->created_at, 'd/m/Y') }}</p>
-		        	</div>
-		        	<div class="col-md-6">
-		        		<p><i class="fa fa-calendar"></i> <b>Modificación</b></p>
-		          		<p>{{ date_format($rol ->updated_at, 'd/m/Y') }}</p>
-		        	</div>
-		        </li>
-	        </ul>
-    	</div>
-    </div>
 </div>
 @stop
 @section('modals')
