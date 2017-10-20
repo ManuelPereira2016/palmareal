@@ -2,12 +2,12 @@
     <div class="container">
         <div class="pull-left">
             <div class="data-page">                
-                <i class="glyphicon glyphicon-earphone"></i>{{ $organization -> phone_contact }}<i class="glyphicon glyphicon-envelope"></i>{{ $organization -> email_contact }}
+                <i class="glyphicon glyphicon-earphone glyphicon-phone"></i>{{ $organization -> phone_contact }}<i class="glyphicon glyphicon-envelope glyphicon-email"></i>{{ $organization -> email_contact }}
             </div>
         </div>
         <div class="pull-right">
             <ul class="social-links">
-                <li><a href="https://www.facebook.com/Conjunto-Habitacional-Palma-Real-240491539330838/" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                <li><a class="media-social-facebook" href="https://www.facebook.com/Conjunto-Habitacional-Palma-Real-240491539330838/" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a></li>
                 {{-- <li><a href="http://twitter.com/" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a></li>
                 <li><a href="http://instagram.com/" title="Instagram" target="_blank"><i class="fa fa-instagram"></i></a></li> --}}
             </ul>

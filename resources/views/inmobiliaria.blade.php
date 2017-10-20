@@ -19,7 +19,7 @@
                         {{ csrf_field() }}
                         <div class="form-group">
                             <h3>Búsqueda</h3>
-                            <div class="alert" id="message" style="display: none;"></div>     
+                            <div class="alert" id="message" style="display: none;"></div>
                         </div>
                         <div class="form-group">
                             <input id="name" name="name" type="text" class="form-control" placeholder="Indique una o mas palabras claves" value="" >
