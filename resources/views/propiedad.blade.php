@@ -45,8 +45,7 @@
 					<div class="col-md-12">
 						<div id="owl-demo" class="owl-carousel owl-theme owl-min" style="margin-bottom: 40px;"> 
 							@foreach ($images as $element)
-							<div class="item">
-								<img src="{{ Storage::disk('properties')->url($element -> url) }}" alt="{{ $property -> nombre . ' ' . $property -> id}}" class="media">
+							<div class="image-fixed item" style="background-image: url('{{ Storage::disk('properties')->url($element -> url) }}');">
 							</div>
 							@endforeach			 
 						</div>

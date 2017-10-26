@@ -330,7 +330,7 @@
             'advlist autolink lists link image charmap print preview hr anchor pagebreak ',
             'searchreplace wordcount visualblocks visualchars code fullscreen spellchecker',
             'insertdatetime media nonbreaking save table contextmenu directionality',
-            'template paste textcolor colorpicker textpattern imagetools codesample toc help emoticons hr'
+            'template paste textcolor colorpicker textpattern imagetools codesample toc help emoticons hr youtube'
           ],
           file_picker_types: 'media',
           image_advtab: true,
@@ -432,7 +432,8 @@
               
               input.click();
             },
-          toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+          extended_valid_elements: "+iframe[src|width|height|name|align|class]",
+          toolbar1: 'formatselect | youtube | removeformat | bold italic  strikethrough  forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent '
           image_advtab: true,
           content_css: [
             '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',

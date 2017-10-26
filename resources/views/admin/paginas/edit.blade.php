@@ -69,7 +69,7 @@
             'advlist autolink lists link image charmap print preview hr anchor pagebreak ',
             'searchreplace wordcount visualblocks visualchars code fullscreen spellchecker',
             'insertdatetime media nonbreaking save table contextmenu directionality',
-            'paste textcolor colorpicker textpattern imagetools codesample toc help emoticons hr'
+            'paste textcolor colorpicker textpattern imagetools codesample toc help emoticons hr youtube'
           ],
           file_picker_types: 'image media',
           image_advtab: true,
@@ -172,7 +172,8 @@
               
               input.click();
             },
-          toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat'
+          extended_valid_elements: "+iframe[src|width|height|name|align|class]",
+          toolbar1: 'formatselect | youtube | removeformat | bold italic  strikethrough  forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent '
          });
       });
     </script>

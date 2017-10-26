@@ -66,6 +66,7 @@
         @endif
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script type="text/javascript" src="{{ asset('vendors/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('vendors/FitVids.js/jquery.fitvids.js') }}"></script>
         <!-- Scripts -->
         <script type="text/javascript" src="{{ asset('vendors/bootstrap/js/bootstrap.min.js') }}?v=3.3.7"></script>
         <!-- Scripts -->
@@ -87,6 +88,9 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
+
+                // Fitvids responsive embed video
+                $(".content-body").fitVids();
 
                 $("#owl-demo").owlCarousel({
                     loop: true,
@@ -171,6 +175,30 @@
                 } 
               });
             });
+        })
+        </script>
+
+        <!-- Make responsives images used in tinymce CONTENT -->
+        <script type="text/javascript">
+        $(function(){
+            var element = '.content-body'
+
+            $(element).find('img').addClass('img-responsive center-block')
+
+            // Find a TR from a table not responsive
+            var trows = $(element).find('img').parents('tr')
+
+            trows.each(function(){
+                if ($(this).width() > $(element).width()) {
+                    var tabla = $(this).parents('table')
+
+                    tabla.before('<div class="images-container"></div>')
+
+                    var new_container = tabla.prev()
+
+                    $(this).find('img').addClass('card-image').appendTo(new_container)
+                }
+            })
         })
         </script>
 
